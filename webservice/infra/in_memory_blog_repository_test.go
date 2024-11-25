@@ -6,13 +6,13 @@ import (
 )
 
 func TestAddBlogPostToBlogRepo(t *testing.T) {
-	repo := new(BlogPostRepository)
+	repo := new(MemoryBlogPostRepository)
 	repo.PostBlog("This is a test blog post")
 }
 
 func TestGetBlogPostFromBlogRepo(t *testing.T) {
 	// Arrange
-	repo := BlogPostRepository{
+	repo := MemoryBlogPostRepository{
 		posts: []string{},
 	}
 	test_string := "This is a test blog post"

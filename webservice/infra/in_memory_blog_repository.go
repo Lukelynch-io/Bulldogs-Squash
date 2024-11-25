@@ -1,14 +1,14 @@
 package infra
 
-type BlogPostRepository struct {
+type MemoryBlogPostRepository struct {
 	posts []string
 }
 
-func (repo *BlogPostRepository) GetBlogs() []string {
+func (repo *MemoryBlogPostRepository) GetBlogs() []string {
 	return repo.posts
 }
 
-func (repo *BlogPostRepository) PostBlog(post string) (bool, error) {
+func (repo *MemoryBlogPostRepository) PostBlog(post string) (bool, error) {
 	if len(repo.posts) == 0 {
 		repo.posts = []string{post}
 		return true, nil

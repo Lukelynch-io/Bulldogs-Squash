@@ -10,7 +10,7 @@ func doSomethingwithIBlogRepo(repo infra.IBlogRepository) {
 }
 
 func TestGetBlogPostsReturnsArrayOfString(t *testing.T) {
-	blogRepo := new(infra.BlogPostRepository)
+	blogRepo := new(infra.MemoryBlogPostRepository)
 	doSomethingwithIBlogRepo(blogRepo)
 
 }
