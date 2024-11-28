@@ -2,24 +2,46 @@
 import BlogPost from './BlogPost.vue'
 import { ref } from 'vue';
 
-const items = ref<object[]>([{
-  title: "test1",
-  description: "test2"
-},
-{
-  title: "test3",
-  description: "test4"
-}]);
-const newWord = ref<string>("");
+interface Post {
+  title: string;
+  description: string;
+}
 
-const addWord = () => {
-  if (newWord.value.trim() !== "") {
-    items.value.push(newWord.value);
-    newWord.value = "";
+const items = ref<Post[]>(
+  [
+    {
+      title: "test1",
+      description: "test2"
+    },
+    {
+      title: "test3",
+      description: "test4"
+    }
+  ]
+);
+const newPostTitle = ref<string>("");
+const newPostDescription = ref<string>("");
+
+function isPostValid(postTitle: string, postDescription: string) {
+  if (postTitle.trim() === "") {
+    return false;
+  }
+  if (postDescription.trim() === "") {
+    return false;
+  }
+  return true;
+}
+
+const addPost = () => {
+  if (isPostValid(newPostTitle.value, newPostDescription.value)) {
+    let newPost: Post = { title: newPostTitle.value, description: newPostDescription.value };
+    items.value.push(newPost);
+    newPostTitle.value = "";
+    newPostDescription.value = "";
   }
 };
 
-const popWord = () => {
+const popPost = () => {
   if (items.value.length > 0) {
     items.value.pop();
   }
@@ -28,13 +50,17 @@ const popWord = () => {
 
 <template>
   <h1>This is the landing page</h1>
-  <input type="text" v-model="newWord" placeholder="Enter a word" @keyup.enter="addWord" />
-  <button @click="addWord">Add Word</button>
+  <input type="text" v-model="newPostTitle" placeholder="Enter a blog title" />
+  <br>
+  <input type="textarea" v-model="newPostDescription" placeholder="Enter your blog description"
+    @keyup.enter="addPost" />
+  <br>
+  <button @click="addPost">Add Post</button>
   <div>
     <BlogPost v-for="item in items">
       <template #blogTitle>{{ item.title }}</template>
       <template #blogDescription>{{ item.description }}</template>
     </BlogPost>
   </div>
-  <button @click="popWord">Remove Last Word</button>
+  <button @click="popPost">Remove Last Word</button>
 </template>
