@@ -4,10 +4,8 @@ import LandingPage from './components/LandingPage.vue'
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="../public/img/bulldogs.png" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+    <div class="bulldog-image-wrapper">
+      <img alt="Vue logo" class="logo" src="../public/img/bulldogs.png" width="125" height="125" />
     </div>
   </header>
 
@@ -15,3 +13,22 @@ import LandingPage from './components/LandingPage.vue'
     <LandingPage />
   </main>
 </template>
+
+<style scoped>
+.bulldog-image-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  max-width: 100%;
+  /* Optional: keeps the image responsive */
+}
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>

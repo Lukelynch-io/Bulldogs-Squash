@@ -49,13 +49,15 @@ const popPost = () => {
 </script>
 
 <template>
-  <h1>This is the landing page</h1>
-  <input type="text" v-model="newPostTitle" placeholder="Enter a blog title" />
-  <br>
-  <input type="textarea" v-model="newPostDescription" placeholder="Enter your blog description"
-    @keyup.enter="addPost" />
-  <br>
-  <button @click="addPost">Add Post</button>
+  <div class="wrapper">
+    <h1>This is the landing page</h1>
+    <input type="text" v-model="newPostTitle" placeholder="Enter a blog title" />
+    <br>
+    <textarea rows="5" cols="50" v-model="newPostDescription" placeholder="Enter your blog description"
+      @keyup.enter="addPost" />
+    <br>
+    <button @click="addPost">Add Post</button>
+  </div>
   <div>
     <BlogPost v-for="item in items">
       <template #blogTitle>{{ item.title }}</template>
@@ -64,3 +66,12 @@ const popPost = () => {
   </div>
   <button @click="popPost">Remove Last Word</button>
 </template>
+
+
+<style scoped>
+.wrapper {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+</style>
