@@ -2,6 +2,10 @@
 </script>
 
 <template>
-  <h2>Blog Title</h2>
-  <p>Blog Description</p>
+  <h2>
+    <slot name="blogTitle"></slot>
+  </h2>
+  <p>
+    <slot name="blogDescription"></slot>
+  </p>
 </template>
