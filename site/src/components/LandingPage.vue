@@ -3,6 +3,7 @@ import BlogPost from './BlogPost.vue'
 import { ref } from 'vue';
 
 interface Post {
+  key: number;
   title: string;
   description: string;
 }
@@ -10,10 +11,12 @@ interface Post {
 const items = ref<Post[]>(
   [
     {
+      key: 1,
       title: "test1",
       description: "test2"
     },
     {
+      key: 2,
       title: "test3",
       description: "test4"
     }
@@ -34,7 +37,7 @@ function isPostValid(postTitle: string, postDescription: string) {
 
 const addPost = () => {
   if (isPostValid(newPostTitle.value, newPostDescription.value)) {
-    let newPost: Post = { title: newPostTitle.value, description: newPostDescription.value };
+    const newPost: Post = { key: items.value.length + 1, title: newPostTitle.value, description: newPostDescription.value };
     items.value.push(newPost);
     newPostTitle.value = "";
     newPostDescription.value = "";
@@ -59,7 +62,7 @@ const popPost = () => {
     <button @click="addPost">Add Post</button>
   </div>
   <div>
-    <BlogPost v-for="item in items">
+    <BlogPost v-for="item in items" :key="'blog-' + item.key">
       <template #blogTitle>{{ item.title }}</template>
       <template #blogDescription>{{ item.description }}</template>
     </BlogPost>

@@ -1,8 +1,11 @@
 <script setup lang="ts">
 import LandingPage from './components/LandingPage.vue'
+import Header from './components/Header.vue'
 </script>
 
 <template>
+
+  <Header />
   <header>
     <div class="bulldog-image-wrapper">
       <img alt="Vue logo" class="logo" src="../public/img/bulldogs.png" width="125" height="125" />

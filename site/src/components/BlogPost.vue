@@ -1,6 +1,3 @@
-<script lang="ts">
-</script>
-
 <template>
   <div class="blog-post">
     <h2>
