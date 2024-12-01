@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import LandingPage from './components/LandingPage.vue'
 import Header from './components/Header.vue'
+import BlogPostCollection from './components/BlogPostCollection.vue';
 </script>
 
 <template>
@@ -13,7 +13,7 @@ import Header from './components/Header.vue'
   </header>
 
   <main>
-    <LandingPage />
+    <BlogPostCollection />
   </main>
 </template>
 
