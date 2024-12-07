@@ -6,11 +6,11 @@ import BlogPostCollection from './components/BlogPostCollection.vue';
 <template>
 
   <Header />
-  <header>
-    <div class="bulldog-image-wrapper">
-      <img alt="Vue logo" class="logo" src="../public/img/bulldogs.png" width="125" height="125" />
-    </div>
-  </header>
+  <!-- <header> -->
+  <!--   <div class="bulldog-image-wrapper"> -->
+  <!--     <img alt="Vue logo" class="logo" src="../public/img/bulldogs.png" width="125" height="125" /> -->
+  <!--   </div> -->
+  <!-- </header> -->
 
   <main>
     <BlogPostCollection />
