@@ -1,7 +1,7 @@
 <template>
   <div class="card-collection">
     <div class="card">
-      <h2>Heading One</h2>
+      <h2>2024 Summer Tournament</h2>
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui dolorum reiciendis itaque, vitae mollitia ad
         accusantium similique pariatur minus repellat maiores voluptatibus recusandae perspiciatis fugiat provident
         nostrum assumenda inventore velit!</p>
@@ -9,7 +9,7 @@
       <a>Read More</a>
     </div>
     <div class="card">
-      <h2>Heading Two</h2>
+      <h2>End of year Christmas Party</h2>
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui dolorum reiciendis itaque, vitae mollitia ad
         accusantium similique pariatur minus repellat maiores voluptatibus recusandae perspiciatis fugiat provident
         nostrum</p>
@@ -17,14 +17,14 @@
       <a>Read More</a>
     </div>
     <div class="card">
-      <h2>Heading Three</h2>
+      <h2>Upcoming AGM</h2>
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui dolorum reiciendis itaque, vitae mollitia ad
         nostrum assumenda inventore velit!</p>
       <img src="../../public/img/bulldogs.png" alt="Bulldog">
       <a>Read More</a>
     </div>
     <div class="card">
-      <h2>Heading Four</h2>
+      <h2>Squash Secret Santa</h2>
       <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Qui dolorum reiciendis itaque, vitae mollitia ad </p>
       <img src="../../public/img/bulldogs.png" alt="Bulldog">
       <a>Read More</a>

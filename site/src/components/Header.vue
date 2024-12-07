@@ -59,6 +59,8 @@ a {
   padding-right: 2.5px;
   font-weight: 600;
   text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .hamburger-menu-item:last-of-type {
