@@ -24,6 +24,10 @@ import BlogPostCollection from './components/BlogPostCollection.vue';
   align-items: center;
 }
 
+main {
+  margin-bottom: 1ch;
+}
+
 .logo {
   max-width: 100%;
   /* Optional: keeps the image responsive */

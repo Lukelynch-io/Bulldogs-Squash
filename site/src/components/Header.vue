@@ -1,10 +1,19 @@
 <template>
   <div class="header">
+    <div class="flex-1"></div>
     <h1><a href="#">Bulldogs Squash Club</a></h1>
-    <div class="hamburger-menu">
-      <a class="hamburger-menu-item" href="#">About</a>
-      <a class="hamburger-menu-item" href="#">Fixtures</a>
-      <a class="hamburger-menu-item" style="" href="#">Contact Us</a>
+    <div class="flex flex-1">
+      <ul class="hamburger-menu">
+        <li>
+          <a class="hamburger-menu-item" href="#">About</a>
+        </li>
+        <li>
+          <a class="hamburger-menu-item" href="#">Fixtures</a>
+        </li>
+        <li>
+          <a class="hamburger-menu-item" style="" href="#">Contact Us</a>
+        </li>
+      </ul>
     </div>
   </div>
 </template>
@@ -16,9 +25,20 @@
   width: 100%;
   padding-left: 1ch;
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: flex-end;
 }
 
+.flex {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+/* TODO: Clean this up*/
 .header h1,
 a {
   color: white;
@@ -29,12 +49,12 @@ a {
 }
 
 .hamburger-menu {
-  display: table;
+  display: flex;
+  list-style: none;
+  justify-content: space-between;
 }
 
 .hamburger-menu-item {
-  display: table-cell;
-  vertical-align: middle;
   padding-left: 2.5px;
   padding-right: 2.5px;
   font-weight: 600;
@@ -47,6 +67,6 @@ a {
 }
 
 .hamburger-menu-item:hover {
-  background-color: rgb(26 35 68 / var(--tw-bg-opacity, 1));
+  text-decoration-line: underline;
 }
 </style>
