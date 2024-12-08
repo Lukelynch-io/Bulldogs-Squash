@@ -1,7 +1,9 @@
 <template>
   <div class="header">
     <div class="flex-1"></div>
-    <h1><a href="#">Bulldogs Squash Club</a></h1>
+    <h1>
+      <RouterLink to="/">Bulldogs Squash Club</RouterLink>
+    </h1>
     <div class="flex flex-1">
       <ul class="hamburger-menu">
         <li>
@@ -12,6 +14,9 @@
         </li>
         <li>
           <a class="hamburger-menu-item" style="" href="#">Contact Us</a>
+        </li>
+        <li>
+          <RouterLink class="hamburger-menu-item" to="/Login">Login</RouterLink>
         </li>
       </ul>
     </div>

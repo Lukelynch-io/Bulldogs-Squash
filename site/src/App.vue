@@ -1,19 +1,11 @@
 <script setup lang="ts">
 import Header from './components/Header.vue'
-import BlogPostCollection from './components/BlogPostCollection.vue';
 </script>
 
 <template>
-
   <Header />
-  <!-- <header> -->
-  <!--   <div class="bulldog-image-wrapper"> -->
-  <!--     <img alt="Vue logo" class="logo" src="../public/img/bulldogs.png" width="125" height="125" /> -->
-  <!--   </div> -->
-  <!-- </header> -->
-
   <main>
-    <BlogPostCollection />
+    <RouterView />
   </main>
 </template>
 
