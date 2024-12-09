@@ -1,36 +1,38 @@
+<script setup lang="ts">
+import type BlogPostData from '@/datatypes/BlogPost';
+const foo = defineProps<BlogPostData>(
+)
+</script>
 <template>
   <div class="blog-post">
     <h2>
-      <slot name="blogTitle"></slot>
+      {{ foo.title }}
     </h2>
     <p>
-      <slot name="blogDescription"></slot>
+      {{ foo.description }}
     </p>
+    <img :src=foo.imageUrl alt="Bulldog">
   </div>
 </template>
 
 <style scoped>
+img {
+  max-width: 100%;
+  display: block;
+}
+
 .blog-post {
-  border: 2px solid black;
-  /* Black border */
-  padding: 20px;
-  /* Add padding inside the border */
-  margin: 20px 0;
-  /* Space between blog posts */
-  border-radius: 8px;
-  /* Rounded corners */
-  background-color: #f9f9f9;
-  /* Light gray background */
-}
-
-.blog-post h2 {
-  margin-bottom: 10px;
-  /* Space between title and description */
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 2rem;
   text-align: center;
+  display: grid;
+  grid-template-rows: subgrid;
+  grid-row: span 4;
 }
 
-.blog-post p {
-  margin-top: 0;
-  /* Remove top margin from paragraph */
+.blog-post:hover {
+  box-shadow: 0px 2px 10px 0px black;
+  transition: box-shadow 0.1s linear;
 }
 </style>
