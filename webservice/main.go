@@ -38,9 +38,21 @@ func getBlogPosts(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, blogposts)
 }
 
+func addBlogPost(c *gin.Context) {
+	var newBlogPost blogpost
+
+	if err := c.BindJSON(&newBlogPost); err != nil {
+		return
+	}
+
+	blogposts = append(blogposts, newBlogPost)
+	c.Status(http.StatusCreated)
+}
+
 func main() {
 	router := gin.Default()
 	router.GET("/blogposts", getBlogPosts)
+	router.POST("/blogposts", addBlogPost)
 
 	router.Run("localhost:8080")
 }

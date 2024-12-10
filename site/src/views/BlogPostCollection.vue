@@ -1,20 +1,26 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import type BlogPostData from '@/datatypes/BlogPost';
 import BlogPost from '../components/BlogPost.vue';
 
 const blogPosts = ref<BlogPostData[]>([]); // Reactive array for blog posts
 
-// Fetch blog posts from the API
-fetch("/api/blogposts")
-  .then((response) => response.json())
-  .then((data: BlogPostData[]) => {
-    console.log(data);
-    blogPosts.value = data; // Update the reactive array
-  })
-  .catch((error) => {
-    console.error("Error fetching blog posts:", error);
-  });
+function RefreshBlogPosts() {
+  // Fetch blog posts from the API
+  fetch("/api/blogposts")
+    .then((response) => response.json())
+    .then((data: BlogPostData[]) => {
+      blogPosts.value = data; // Update the reactive array
+    })
+    .catch((error) => {
+      console.error("Error fetching blog posts:", error);
+    });
+}
+
+onMounted(() => {
+  RefreshBlogPosts();
+  setInterval(RefreshBlogPosts, 2000);
+})
 
 </script>
 
