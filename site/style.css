@@ -1,0 +1,40 @@
+@import url('./colours.css');
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+* {
+	margin: 0;
+}
+
+body {
+	font-family: "Arial";
+	background-color: var(--color-background);
+	/* width: 90%; */
+	transition: width 0.2s linear;
+}
+
+input::placeholder,
+textarea::placeholder {
+	font-family: "Arial";
+}
+
+input:-ms-input-placeholder,
+textarea:-ms-input-placeholder {
+	font-family: "Arial";
+}
+
+input::-ms-input-placeholder,
+textarea::-ms-input-placeholder {
+	font-family: "Arial";
+}
+
+/**/
+/* @media only screen and (max-width: 1000px) { */
+/*   body { */
+/*     width: 100%; */
+/*   } */
+/* } */

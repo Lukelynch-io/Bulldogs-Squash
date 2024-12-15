@@ -22,6 +22,7 @@ img {
 }
 
 .blog-post {
+  color: var(--blue-contrast);
   border: 1px solid #ccc;
   border-radius: 6px;
   padding: 2rem;
@@ -32,7 +33,7 @@ img {
 }
 
 .blog-post:hover {
-  box-shadow: 0px 2px 10px 0px black;
+  box-shadow: 0px 2px 10px 0px var(--shadow-color);
   transition: box-shadow 0.1s linear;
 }
 </style>

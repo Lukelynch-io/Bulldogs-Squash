@@ -1,3 +1,7 @@
+<script setup lang="ts">
+import { RouterLink } from 'vue-router';
+</script>
+
 <template>
   <div class="header">
     <div class="flex-1"></div>
@@ -7,10 +11,10 @@
     <div class="flex flex-1">
       <ul class="hamburger-menu">
         <li>
-          <a class="hamburger-menu-item" href="#">About</a>
+          <RouterLink class="hamburger-menu-item" to="/About">About</RouterLink>
         </li>
         <li>
-          <a class="hamburger-menu-item" href="#">Fixtures</a>
+          <RouterLink class="hamburger-menu-item" to="/Fixtures">Fixtures</RouterLink>
         </li>
         <li>
           <RouterLink class="hamburger-menu-item" to="/Post">Contact Us</RouterLink>
@@ -24,8 +28,10 @@
 </template>
 
 <style scoped>
+@import url('../../colours.css');
+
 .header {
-  background-color: rgb(26 35 126 / var(--tw-bg-opacity, 1));
+  background-color: var(--blue-9);
   border-radius: 0px 0px 5px 5px;
   width: 100%;
   padding-left: 1ch;
@@ -46,8 +52,7 @@
 /* TODO: Clean this up*/
 .header h1,
 a {
-  color: white;
-  font-family: "Arial";
+  color: var(--blue-contrast);
   margin-top: 0.5ch;
   margin-bottom: 0.5ch;
   text-decoration: none;
