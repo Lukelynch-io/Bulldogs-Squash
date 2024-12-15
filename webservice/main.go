@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 	"webservice/app/blog"
-	infra_interfaces "webservice/app/infra_interfaces"
+	"webservice/app/infra_interfaces"
 	"webservice/infra"
 	"webservice/testdata"
 
@@ -22,7 +22,6 @@ func addBlogPost(c *gin.Context) {
 	if err := c.BindJSON(&newBlogPost); err != nil {
 		return
 	}
-
 	iblogPostRepository.PostBlog(newBlogPost)
 	c.Status(http.StatusCreated)
 }

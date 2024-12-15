@@ -6,8 +6,3 @@ type Post struct {
 	Description string `json:"description"`
 	ImageUrl    string `json:"imageUrl"`
 }
-
-func AddBlogPost(postArray []Post, newPost Post) []Post {
-	postArray = append(postArray, newPost)
-	return postArray
-}

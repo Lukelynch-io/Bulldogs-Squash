@@ -13,7 +13,7 @@
           <a class="hamburger-menu-item" href="#">Fixtures</a>
         </li>
         <li>
-          <a class="hamburger-menu-item" style="" href="#">Contact Us</a>
+          <RouterLink class="hamburger-menu-item" to="/Post">Contact Us</RouterLink>
         </li>
         <li>
           <RouterLink class="hamburger-menu-item" to="/Login">Login</RouterLink>

@@ -2,15 +2,15 @@ package blog_test
 
 import (
 	"testing"
+	"webservice/app/infra_interfaces"
 	"webservice/infra"
 )
 
-func doSomethingwithIBlogRepo(repo infra.IBlogRepository) {
+func doSomethingwithIBlogRepo(repo infra_interfaces.IBlogRepository) {
 	repo.GetBlogs()
 }
 
 func TestGetBlogPostsReturnsArrayOfString(t *testing.T) {
-	blogRepo := new(infra.MemoryBlogPostRepository)
+	blogRepo := &infra.MemoryBlogPostRepository{}
 	doSomethingwithIBlogRepo(blogRepo)
-
 }
