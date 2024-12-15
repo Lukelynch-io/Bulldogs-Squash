@@ -22,7 +22,7 @@ img {
 }
 
 .blog-post {
-  color: var(--blue-contrast);
+  color: var(--shadow-color);
   border: 1px solid #ccc;
   border-radius: 6px;
   padding: 2rem;

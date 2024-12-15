@@ -1,5 +1,10 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
+import { ref } from 'vue';
+
+const toggleDarkMode = () => {
+  document.body.classList.toggle('dark')
+}
 </script>
 
 <template>
@@ -21,6 +26,9 @@ import { RouterLink } from 'vue-router';
         </li>
         <li>
           <RouterLink class="hamburger-menu-item" to="/Login">Login</RouterLink>
+        </li>
+        <li>
+          <button class="hamburger-menu-item" @click="toggleDarkMode">Dark Mode</button>
         </li>
       </ul>
     </div>
