@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
-import { ref } from 'vue';
 
 const toggleDarkMode = () => {
   document.body.classList.toggle('dark')

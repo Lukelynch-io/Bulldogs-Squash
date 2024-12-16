@@ -1,24 +1,37 @@
 package infra
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+	"webservice/app/blog"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestAddBlogPostToBlogRepo(t *testing.T) {
 	repo := new(MemoryBlogPostRepository)
-	repo.PostBlog("This is a test blog post")
+	newPost := blog.Post{
+		ID:          "1",
+		Title:       "Test Title",
+		Description: "Test Description",
+		ImageUrl:    "imageUrl",
+	}
+	repo.PostBlog(newPost)
 }
 
 func TestGetBlogPostFromBlogRepo(t *testing.T) {
 	// Arrange
 	repo := MemoryBlogPostRepository{
-		posts: []string{},
+		posts: []blog.Post{},
 	}
-	test_string := "This is a test blog post"
+	newPost := blog.Post{
+		ID:          "1",
+		Title:       "Test Title",
+		Description: "Test Description",
+		ImageUrl:    "imageUrl",
+	}
 	// Act
-	repo.PostBlog(test_string)
+	repo.PostBlog(newPost)
 	actual := repo.GetBlogs()
 	// Assert
-	assert.Equal(t, test_string, actual[0])
+	assert.Equal(t, newPost, actual[0])
 }

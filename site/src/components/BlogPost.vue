@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type BlogPostData from '@/datatypes/BlogPost';
-const foo = defineProps<BlogPostData>(
-)
+const foo = defineProps<BlogPostData>()
 </script>
 <template>
   <div class="blog-post">
