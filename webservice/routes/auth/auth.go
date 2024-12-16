@@ -2,10 +2,9 @@ package auth
 
 import (
 	"net/http"
-	"time"
+	"webservice/app/auth"
 
 	"github.com/gin-gonic/gin"
-	"github.com/golang-jwt/jwt/v5"
 )
 
 var secretKey = []byte("secret-key")
@@ -18,12 +17,7 @@ func Routes(route *gin.Engine) {
 }
 
 func requestToken(c *gin.Context) {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
-		jwt.MapClaims{
-			"username": "test_username",
-			"exp":      time.Now().Add(time.Hour * 24).Unix(),
-		})
-	tokenString, err := token.SignedString(secretKey)
+	tokenString, err := auth.GenerateNewToken(secretKey, "test_claim")
 	if err != nil {
 		c.Status(http.StatusBadRequest)
 		return
