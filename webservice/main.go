@@ -25,5 +25,5 @@ func main() {
 	auth.Routes(router, []byte(secretKey))
 	blogpost.Routes(router, iblogPostRepository)
 
-	router.Run("localhost:8080")
+	router.RunTLS("localhost:8080", "./certs/dev-cert.pem", "./certs/dev-key.pem")
 }
