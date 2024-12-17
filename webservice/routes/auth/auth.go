@@ -3,13 +3,15 @@ package auth
 import (
 	"net/http"
 	"webservice/app/auth"
+	blog_claims "webservice/app/blog/claims"
 
 	"github.com/gin-gonic/gin"
 )
 
-var secretKey = []byte("secret-key")
+var SecretKey []byte
 
-func Routes(route *gin.Engine) {
+func Routes(route *gin.Engine, secretKey []byte) {
+	SecretKey = secretKey
 	auth := route.Group("/auth")
 	{
 		auth.POST("/token", requestToken)
@@ -17,10 +19,19 @@ func Routes(route *gin.Engine) {
 }
 
 func requestToken(c *gin.Context) {
-	tokenString, err := auth.GenerateNewToken(secretKey, "test_claim")
+	// TODO: Add call to get user claims
+	claims := []auth.Claim{
+		blog_claims.CREATE_BLOG,
+	}
+	tokenString, err := auth.GenerateNewToken(SecretKey, claims, "test_claim")
 	if err != nil {
 		c.Status(http.StatusBadRequest)
 		return
 	}
-	c.String(http.StatusOK, tokenString)
+	returnObj := struct {
+		Token string
+	}{
+		Token: tokenString,
+	}
+	c.IndentedJSON(http.StatusOK, returnObj)
 }

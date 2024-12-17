@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"webservice/app/infra_interfaces"
 	"webservice/infra"
 	"webservice/routes/auth"
@@ -13,11 +14,15 @@ import (
 var iblogPostRepository infra_interfaces.IBlogRepository
 
 func main() {
+	var secretKey = os.Getenv("JWT_Secret_Key")
+	if secretKey == "" {
+		os.Exit(1)
+	}
 	iblogPostRepository = &infra.MemoryBlogPostRepository{}
 	iblogPostRepository.LoadAllPosts(testdata.LoadDummyData())
 
 	router := gin.Default()
-	auth.Routes(router)
+	auth.Routes(router, []byte(secretKey))
 	blogpost.Routes(router, iblogPostRepository)
 
 	router.Run("localhost:8080")
