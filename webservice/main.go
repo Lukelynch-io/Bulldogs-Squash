@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"log"
 	"os"
 	"webservice/app/infra_interfaces"
 	"webservice/infra"
@@ -13,10 +15,12 @@ import (
 
 var iblogPostRepository infra_interfaces.IBlogRepository
 
+const JWT_SECRET_KEY = "Jwt_Secret_Key"
+
 func main() {
-	var secretKey = os.Getenv("JWT_Secret_Key")
+	var secretKey = os.Getenv(JWT_SECRET_KEY)
 	if secretKey == "" {
-		os.Exit(1)
+		log.Fatal(fmt.Sprintf("%s was not defined", JWT_SECRET_KEY))
 	}
 	iblogPostRepository = &infra.MemoryBlogPostRepository{}
 	iblogPostRepository.LoadAllPosts(testdata.LoadDummyData())

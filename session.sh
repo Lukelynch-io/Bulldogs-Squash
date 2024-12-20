@@ -1,5 +1,5 @@
 #!/bin/zsh
 
-./webservice/session.sh
-./site/session.sh
+(cd ./webservice && ./session.sh)
+(cd ./site && ./session.sh)
 
