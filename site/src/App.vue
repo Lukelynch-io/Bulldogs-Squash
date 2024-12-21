@@ -1,9 +1,18 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import Header from './components/Header.vue';
+import LoginModal from './components/LoginModal.vue';
+
+const isLoginActive = ref(false);
+
+const toggleLoginModel = () => {
+  isLoginActive.value = !isLoginActive.value
+};
 </script>
 
 <template>
-  <Header />
+  <Header v-bind:is-login-showing="toggleLoginModel" />
+  <LoginModal v-bind:flag="isLoginActive" :toggle-flag="toggleLoginModel" />
   <main>
     <RouterView />
   </main>

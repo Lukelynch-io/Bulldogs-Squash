@@ -1,14 +1,27 @@
 <script setup lang="ts">
-
 const foo = defineProps<{
-  display: boolean
+  flag: boolean
+  toggleFlag: Function
 }>()
+window.onclick = function (event) {
+  var modal = document.getElementById("login-modal")
+  if (event.target == modal) {
+    foo.toggleFlag()
+  }
+}
 </script>
 
 <template>
-  <div class="modal" :class="{ 'is-visible': foo.display, 'is-hidden': !foo.display }">
+  <div id="login-modal" class="modal" :class="{ 'is-visible': foo.flag, 'is-hidden': !foo.flag }">
     <div class="modal-content">
-      <p>This is the login modal</p>
+      <div class="modal-content-wrapper">
+        <p>Login</p>
+        <input type="text" placeholder="username" />
+        <input type="password" placeholder="password" />
+        <div style="display:grid; place-items: center;">
+          <button type="button">Login</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -24,13 +37,12 @@ const foo = defineProps<{
   width: 100%;
   height: 100%;
   overflow: auto;
-  opacity: 0;
-  /* Start hidden */
-  visibility: hidden;
-  /* Prevent clicks when hidden */
-  transition: opacity 0.5s ease, visibility 0.5s ease;
-  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s linear;
   /* cubic-bezier creates a smoother transition curve */
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s linear;
+  background-color: rgba(0, 0, 0, 0.4);
+
+  display: grid;
+  place-items: center;
 }
 
 .modal.is-visible {
@@ -51,8 +63,23 @@ const foo = defineProps<{
   /* 15% from the top and centered */
   padding: 20px;
   border: 1px solid #888;
-  width: 80%;
+  border-radius: 15px 15px 15px 15px;
+  width: max(40%, 400px);
+  height: 60%;
   /* Could be more or less, depending on screen size */
+  display: grid;
+  place-items: center;
+}
+
+.modal-content input,
+.modal-content button {
+  display: block;
+  margin: 1ch;
+}
+
+.modal-content-wrapper {
+  display: block;
+  text-align: center;
 }
 
 .displayblock {
