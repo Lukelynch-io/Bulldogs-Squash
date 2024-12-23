@@ -12,7 +12,7 @@ const toggleLoginModel = () => {
 
 <template>
   <Header v-bind:is-login-showing="toggleLoginModel" />
-  <LoginModal v-bind:flag="isLoginActive" :toggle-flag="toggleLoginModel" />
+  <LoginModal :flag="isLoginActive" :toggle-flag="toggleLoginModel" />
   <main>
     <RouterView />
   </main>

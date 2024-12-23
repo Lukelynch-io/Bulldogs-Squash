@@ -29,7 +29,7 @@ func requestToken(c *gin.Context) {
 		return
 	}
 	returnObj := struct {
-		Token string
+		Token string `json:"token"`
 	}{
 		Token: tokenString,
 	}

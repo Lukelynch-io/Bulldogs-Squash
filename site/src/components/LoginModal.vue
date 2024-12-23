@@ -1,8 +1,13 @@
 <script setup lang="ts">
+import LoginButton from './LoginButton.vue';
+import PasswordInput from './PasswordInput.vue';
+import TextInput from './TextInput.vue';
+
 const foo = defineProps<{
   flag: boolean
   toggleFlag: Function
 }>()
+
 window.onclick = function (event) {
   var modal = document.getElementById("login-modal")
   if (event.target == modal) {
@@ -15,11 +20,10 @@ window.onclick = function (event) {
   <div id="login-modal" class="modal" :class="{ 'is-visible': foo.flag, 'is-hidden': !foo.flag }">
     <div class="modal-content">
       <div class="modal-content-wrapper">
-        <p>Login</p>
-        <input type="text" placeholder="username" />
-        <input type="password" placeholder="password" />
+        <TextInput placeholder="Username" />
+        <PasswordInput placeholder="Password" />
         <div style="display:grid; place-items: center;">
-          <button type="button">Login</button>
+          <LoginButton />
         </div>
       </div>
     </div>
@@ -59,6 +63,7 @@ window.onclick = function (event) {
 
 .modal-content {
   background-color: #fefefe;
+  box-shadow: 0px 0px 20px 0px black;
   margin: 15% auto;
   /* 15% from the top and centered */
   padding: 20px;

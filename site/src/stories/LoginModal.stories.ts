@@ -23,6 +23,6 @@ export const Primary: Story = {
     template: '<LoginModal v-bind="args"/>',
   }),
   args: {
-    display: true,
+    flag: true,
   },
 }
