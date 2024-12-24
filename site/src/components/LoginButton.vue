@@ -1,8 +1,13 @@
 <script setup lang="ts">
+const props = defineProps<{
+  // buttonAction: Function
+}>()
+
+function buttonAction() { }
 </script>
 
 <template>
-  <button type="button">Login</button>
+  <button type="button" @click="buttonAction()">Login</button>
 </template>
 
 <style scoped>

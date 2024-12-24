@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import LoginButton from './LoginButton.vue';
 import PasswordInput from './PasswordInput.vue';
 import TextInput from './TextInput.vue';
@@ -14,16 +15,25 @@ window.onclick = function (event) {
     foo.toggleFlag()
   }
 }
+
+const username = ref('')
+const password = ref('')
+function SendLoginRequest() {
+  console.log("Username emitted: " + username.value);
+  console.log("Password: " + password.value)
+}
+
+
 </script>
 
 <template>
   <div id="login-modal" class="modal" :class="{ 'is-visible': foo.flag, 'is-hidden': !foo.flag }">
     <div class="modal-content">
       <div class="modal-content-wrapper">
-        <TextInput placeholder="Username" />
-        <PasswordInput placeholder="Password" />
+        <TextInput placeholder="Username" @usernameChange="(user: string) => username = user" />
+        <PasswordInput placeholder="Password" @passwordChange="(pass: string) => password = pass" />
         <div style="display:grid; place-items: center;">
-          <LoginButton />
+          <LoginButton @click="SendLoginRequest" />
         </div>
       </div>
     </div>

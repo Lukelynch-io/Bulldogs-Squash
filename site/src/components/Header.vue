@@ -43,6 +43,7 @@ const toggleDarkMode = () => {
 
 .header {
   background-color: var(--blue-9);
+  color: var(--blue-contrast);
   border-radius: 0px 0px 5px 5px;
   width: 100%;
   padding-left: 1ch;

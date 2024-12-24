@@ -19,7 +19,7 @@ function RefreshBlogPosts() {
 
 onMounted(() => {
   RefreshBlogPosts();
-  setInterval(RefreshBlogPosts, 2000);
+  setInterval(RefreshBlogPosts, 100000);
 })
 
 </script>
