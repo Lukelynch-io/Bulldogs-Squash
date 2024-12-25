@@ -3,7 +3,6 @@ package auth
 import (
 	"net/http"
 	"webservice/app/auth"
-	blog_claims "webservice/app/blog/claims"
 
 	"github.com/gin-gonic/gin"
 )
@@ -18,16 +17,24 @@ func Routes(route *gin.Engine, secretKey []byte) {
 	}
 }
 
+type requestObj struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
 func requestToken(c *gin.Context) {
 	// TODO: Add call to get user claims
-	claims := []auth.Claim{
-		blog_claims.CREATE_BLOG,
-	}
-	tokenString, err := auth.GenerateNewToken(SecretKey, claims, "test_claim")
-	if err != nil {
+	var userDetails requestObj
+
+	if err := c.BindJSON(&userDetails); err != nil {
 		c.Status(http.StatusBadRequest)
 		return
 	}
+	tokenString, err := auth.HandleUserAuth(SecretKey, userDetails.Username, userDetails.Password)
+	if err != 0 {
+		c.Status(err)
+	}
+
 	returnObj := struct {
 		Token string `json:"token"`
 	}{

@@ -1,3 +1,3 @@
-package auth
+package claim
 
 type Claim string
