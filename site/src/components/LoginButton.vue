@@ -1,13 +1,9 @@
 <script setup lang="ts">
-const props = defineProps<{
-  // buttonAction: Function
-}>()
 
-function buttonAction() { }
 </script>
 
 <template>
-  <button type="button" @click="buttonAction()">Login</button>
+  <button type="button">Login</button>
 </template>
 
 <style scoped>
@@ -18,6 +14,12 @@ button {
   border: none;
   border-radius: 5px 5px 5px 5px;
   color: white;
-  padding: 3px 10px 3px 10px;
+  padding: 6px 20px 6px 20px;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+button:hover {
+  cursor: pointer;
 }
 </style>

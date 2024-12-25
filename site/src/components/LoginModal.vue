@@ -22,8 +22,6 @@ function SendLoginRequest() {
   console.log("Username emitted: " + username.value);
   console.log("Password: " + password.value)
 }
-
-
 </script>
 
 <template>
@@ -79,8 +77,7 @@ function SendLoginRequest() {
   padding: 20px;
   border: 1px solid #888;
   border-radius: 15px 15px 15px 15px;
-  width: max(40%, 400px);
-  height: 60%;
+  height: 30%;
   /* Could be more or less, depending on screen size */
   display: grid;
   place-items: center;
@@ -89,7 +86,7 @@ function SendLoginRequest() {
 .modal-content input,
 .modal-content button {
   display: block;
-  margin: 1ch;
+  margin: 1ch 1ch 0ch 1ch;
 }
 
 .modal-content-wrapper {

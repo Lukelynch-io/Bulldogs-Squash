@@ -31,7 +31,7 @@ const toggleDarkMode = () => {
           <p class="hamburger-menu-item" @click="props.isLoginShowing()">Login</p>
         </li>
         <li>
-          <button class="hamburger-menu-item" @click="toggleDarkMode">Dark Mode</button>
+          <p class="hamburger-menu-item" @click="toggleDarkMode">Dark Mode</p>
         </li>
       </ul>
     </div>
@@ -79,18 +79,15 @@ a {
 .hamburger-menu-item {
   padding-left: 2.5px;
   padding-right: 2.5px;
+  margin-right: 0.5rem;
   font-weight: 600;
   text-decoration: none;
   white-space: nowrap;
   overflow: hidden;
 }
 
-.hamburger-menu-item:last-of-type {
-  border-radius: 0px 0px 5px 0px;
-  padding-right: 1ch;
-}
-
 .hamburger-menu-item:hover {
   text-decoration-line: underline;
+  cursor: pointer;
 }
 </style>

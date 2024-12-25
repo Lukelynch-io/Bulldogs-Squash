@@ -21,6 +21,7 @@ function emitUsernameChange() {
 <style scoped>
 input,
 button {
+  box-sizing: border-box;
   display: block;
   border: none;
   background-color: lightgrey;
