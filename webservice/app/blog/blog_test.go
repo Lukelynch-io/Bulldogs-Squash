@@ -1,14 +1,15 @@
-package infra
+package blog_test
 
 import (
 	"testing"
 	"webservice/app/blog"
+	"webservice/infra"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/go-playground/assert/v2"
 )
 
 func TestAddBlogPostToBlogRepo(t *testing.T) {
-	repo := new(MemoryBlogPostRepository)
+	repo := new(infra.MemoryBlogPostRepository)
 	newPost := blog.Post{
 		ID:          "1",
 		Title:       "Test Title",
@@ -20,9 +21,7 @@ func TestAddBlogPostToBlogRepo(t *testing.T) {
 
 func TestGetBlogPostFromBlogRepo(t *testing.T) {
 	// Arrange
-	repo := MemoryBlogPostRepository{
-		posts: []blog.Post{},
-	}
+	repo := infra.MemoryBlogPostRepository{}
 	newPost := blog.Post{
 		ID:          "1",
 		Title:       "Test Title",

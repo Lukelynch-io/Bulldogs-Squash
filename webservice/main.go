@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"webservice/app/infra_interfaces"
+	"webservice/app/blog"
 	"webservice/infra"
 	"webservice/routes/auth"
 	"webservice/routes/blogpost"
@@ -13,7 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var iblogPostRepository infra_interfaces.IBlogRepository
+var iblogPostRepository blog.IBlogRepository
 
 const JWT_SECRET_KEY = "Jwt_Secret_Key"
 

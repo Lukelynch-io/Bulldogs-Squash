@@ -3,14 +3,13 @@ package blogpost
 import (
 	"net/http"
 	"webservice/app/blog"
-	"webservice/app/infra_interfaces"
 
 	"github.com/gin-gonic/gin"
 )
 
-var iBlogRepo infra_interfaces.IBlogRepository
+var iBlogRepo blog.IBlogRepository
 
-func Routes(router *gin.Engine, repo infra_interfaces.IBlogRepository) {
+func Routes(router *gin.Engine, repo blog.IBlogRepository) {
 	iBlogRepo = repo
 	router.GET("/blogposts", getBlogPosts)
 	router.POST("/blogposts", addBlogPost)
