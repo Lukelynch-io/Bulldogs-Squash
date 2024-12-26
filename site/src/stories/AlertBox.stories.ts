@@ -26,6 +26,7 @@ export const Primary: Story = {
   }),
   args: {
     messageType: MessageType.Info,
-    message: "This is the message"
+    messageTitle: "Alert Title",
+    messageDescription: "This is the message"
   },
 }
