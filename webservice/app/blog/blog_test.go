@@ -21,7 +21,7 @@ func TestAddBlogPostToBlogRepo(t *testing.T) {
 
 func TestGetBlogPostFromBlogRepo(t *testing.T) {
 	// Arrange
-	repo := infra.MemoryBlogPostRepository{}
+	repo := new(infra.MemoryBlogPostRepository)
 	newPost := blog.Post{
 		ID:          "1",
 		Title:       "Test Title",
@@ -29,8 +29,8 @@ func TestGetBlogPostFromBlogRepo(t *testing.T) {
 		ImageUrl:    "imageUrl",
 	}
 	// Act
-	repo.PostBlog(newPost)
-	actual := repo.GetBlogs()
+	blog.PostBlog(repo, newPost)
+	actual := blog.GetPosts(repo)
 	// Assert
 	assert.Equal(t, newPost, actual[0])
 }
