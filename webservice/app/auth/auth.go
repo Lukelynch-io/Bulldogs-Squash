@@ -9,6 +9,27 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
+type UserId string
+
+type User struct {
+	UserId       UserId
+	Username     string
+	PasswordHash string
+}
+
+type IAuthRepo interface {
+	GetUserByUserId(UserId) (User, error)
+	CreateUser(string, string) (UserId, error)
+}
+
+func CreateUser(repo IAuthRepo, username string, passwordHash string) (UserId, error) {
+	return repo.CreateUser(username, passwordHash)
+}
+
+func GetUserByUserId(repo IAuthRepo, userId UserId) (User, error) {
+	return repo.GetUserByUserId(userId)
+}
+
 func HandleUserAuth(secretKey []byte, username string, password string) (string, int) {
 	// TODO: Do something with validation result
 	_, err := ValidateUser(username, password)

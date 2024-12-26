@@ -16,7 +16,7 @@ func TestAddBlogPostToBlogRepo(t *testing.T) {
 		Description: "Test Description",
 		ImageUrl:    "imageUrl",
 	}
-	repo.PostBlog(newPost)
+	blog.PostBlog(repo, newPost)
 }
 
 func TestGetBlogPostFromBlogRepo(t *testing.T) {
