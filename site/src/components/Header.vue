@@ -1,11 +1,18 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
 const props = defineProps<{
   isLoginShowing: Function
 }>()
 
+const themeToggleTitle = ref("Dark Mode")
 const toggleDarkMode = () => {
   document.body.classList.toggle('dark')
+  if (themeToggleTitle.value === "Dark Mode") {
+    themeToggleTitle.value = "Light Mode"
+  } else {
+    themeToggleTitle.value = "Dark Mode"
+  }
 }
 
 </script>
@@ -31,7 +38,7 @@ const toggleDarkMode = () => {
           <p class="hamburger-menu-item" @click="props.isLoginShowing()">Login</p>
         </li>
         <li>
-          <p class="hamburger-menu-item" @click="toggleDarkMode">Dark Mode</p>
+          <p class="hamburger-menu-item" @click="toggleDarkMode">{{ themeToggleTitle }}</p>
         </li>
       </ul>
     </div>
@@ -61,7 +68,7 @@ const toggleDarkMode = () => {
   flex: 1;
 }
 
-/* TODO: Clean this up*/
+/* TODO: Clean this up */
 .header h1,
 a {
   color: var(--blue-contrast);
