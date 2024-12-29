@@ -3,6 +3,7 @@ package infra
 import (
 	"errors"
 	"webservice/app/auth"
+	"webservice/app/auth/claim"
 )
 
 type MemoryAuthRepository struct {
@@ -18,18 +19,32 @@ func (repo *MemoryAuthRepository) GetUserByUserId(userId auth.UserId) (auth.User
 	return auth.User{}, errors.New("Could not find user")
 }
 
-func (repo *MemoryAuthRepository) CreateUser(username string, passwordHash string) (auth.UserId, error) {
+func (repo *MemoryAuthRepository) CreateUser(newUser auth.User) (bool, error) {
 	for i := 0; i < len(repo.users); i++ {
-		if repo.users[i].Username == username {
-			return auth.UserId(""), errors.New("Username already taken. Please try another")
+		if repo.users[i].Username == newUser.Username {
+			return false, errors.New("Username already taken. Please try another")
 		}
-	}
-	newUser := auth.User{
-		UserId:       auth.UserId(username),
-		Username:     username,
-		PasswordHash: passwordHash,
 	}
 	repo.users = append(repo.users, newUser)
 
-	return newUser.UserId, nil
+	return true, nil
+}
+
+func (repo *MemoryAuthRepository) updateUser(userId auth.UserId, updatedUser auth.User) (bool, error) {
+	for i := 0; i < len(repo.users); i++ {
+		if repo.users[i].UserId == userId {
+			repo.users[i] = updatedUser
+			return true, nil
+		}
+	}
+	return false, errors.New("User not found")
+}
+
+func (repo *MemoryAuthRepository) GrantUserClaim(userId auth.UserId, newClaim claim.Claim) (bool, error) {
+	foundUser, getUserError := repo.GetUserByUserId(userId)
+	if getUserError != nil {
+		return false, getUserError
+	}
+	foundUser.Claims[newClaim] = newClaim
+	return true, nil
 }

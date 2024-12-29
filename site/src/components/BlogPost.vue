@@ -14,12 +14,7 @@ const foo = defineProps<BlogPostData>()
   </div>
 </template>
 
-<style scoped>
-img {
-  max-width: 100%;
-  display: block;
-}
-
+<style>
 .blog-post {
   color: var(--shadow-color);
   border: 1px solid #ccc;
@@ -29,6 +24,11 @@ img {
   display: grid;
   grid-template-rows: subgrid;
   grid-row: span 4;
+}
+
+.blog-post img {
+  max-width: 100%;
+  display: block;
 }
 
 .blog-post:hover {

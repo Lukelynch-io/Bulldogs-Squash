@@ -107,6 +107,10 @@
 	--blue-track: #1f4fff;
 }
 
+.dark img {
+	filter: brightness(75%);
+}
+
 @supports (color: color(display-p3 1 1 1)) {
 	@media (color-gamut: p3) {
 

@@ -17,20 +17,20 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="alertarea" :class="{ show: showAlert }">
-    <div class="alertwrapper">
-      <h3 class="alertheader">{{ props.messageTitle }}</h3>
+  <div class="alert-area" :class="{ show: showAlert }">
+    <div class="alert-wrapper">
+      <h3 class="alert-header">{{ props.messageTitle }}</h3>
       <p>{{ props.messageDescription }}</p>
     </div>
   </div>
 </template>
 
-<style scoped>
-.alertheader {
+<style>
+.alert-header {
   text-align: center;
 }
 
-.alertwrapper {
+.alert-wrapper {
   border: 5px solid greenyellow;
   background: green;
   color: white;
@@ -39,7 +39,7 @@ onMounted(() => {
   padding-right: 1rem;
 }
 
-.alertarea {
+.alert-area {
   display: grid;
   position: fixed;
   width: 100%;
@@ -53,7 +53,7 @@ onMounted(() => {
   transition: transform 0.5s ease-in-out;
 }
 
-.alertarea.show {
+.alert-area.show {
   transform: translateY(0);
 }
 </style>

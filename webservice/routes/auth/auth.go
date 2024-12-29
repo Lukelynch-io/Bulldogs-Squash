@@ -8,9 +8,11 @@ import (
 )
 
 var SecretKey []byte
+var AuthRepo auth.IAuthRepo
 
-func Routes(route *gin.Engine, secretKey []byte) {
+func Routes(route *gin.Engine, secretKey []byte, authRepo auth.IAuthRepo) {
 	SecretKey = secretKey
+	AuthRepo = authRepo
 	auth := route.Group("/auth")
 	{
 		auth.POST("/token", requestToken)

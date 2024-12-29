@@ -4,7 +4,7 @@
 
 - Api
     - Blog posts
-        - get blog posts (anyone)
+        - ~~~get blog posts (anyone)~~~
         - post new posts (selected members)
         - edit existing posts (only poster/admin/committee member)
     - Auth/admin 

@@ -9,25 +9,27 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-type UserId string
-
-type User struct {
-	UserId       UserId
-	Username     string
-	PasswordHash string
-}
-
 type IAuthRepo interface {
 	GetUserByUserId(UserId) (User, error)
-	CreateUser(string, string) (UserId, error)
+	CreateUser(User) (bool, error)
+	GrantUserClaim(UserId, claim.Claim) (bool, error)
 }
 
 func CreateUser(repo IAuthRepo, username string, passwordHash string) (UserId, error) {
-	return repo.CreateUser(username, passwordHash)
+	newUser := NewUser(username, passwordHash)
+	_, createUserError := repo.CreateUser(newUser)
+	if createUserError != nil {
+		return UserId(""), createUserError
+	}
+	return newUser.UserId, nil
 }
 
 func GetUserByUserId(repo IAuthRepo, userId UserId) (User, error) {
 	return repo.GetUserByUserId(userId)
+}
+
+func GrantUserClaim(repo IAuthRepo, userId UserId, newClaim claim.Claim) (bool, error) {
+	return repo.GrantUserClaim(userId, newClaim)
 }
 
 func HandleUserAuth(secretKey []byte, username string, password string) (string, int) {
