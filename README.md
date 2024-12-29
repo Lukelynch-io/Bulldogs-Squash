@@ -4,8 +4,8 @@
 
 - Api
     - Blog posts
-        - ~~~get blog posts (anyone)~~~
-        - post new posts (selected members)
+        - <del>get blog posts (anyone)</del>
+        - <del>post new posts (selected members)</del>
         - edit existing posts (only poster/admin/committee member)
     - Auth/admin 
     - Payments?
