@@ -7,15 +7,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var SecretKey []byte
-var AuthRepo auth.IAuthRepo
-
-func Routes(route *gin.Engine, secretKey []byte, authRepo auth.IAuthRepo) {
-	SecretKey = secretKey
-	AuthRepo = authRepo
+func Routes(route *gin.Engine) {
 	auth := route.Group("/auth")
 	{
 		auth.POST("/token", requestToken)
+		auth.POST("/user/create", createUser)
 	}
 }
 
@@ -25,6 +21,7 @@ type requestObj struct {
 }
 
 func requestToken(c *gin.Context) {
+	authRepo := c.MustGet("authRepo").(auth.IAuthRepo)
 	// TODO: Add call to get user claims
 	var userDetails requestObj
 
@@ -32,9 +29,11 @@ func requestToken(c *gin.Context) {
 		c.Status(http.StatusBadRequest)
 		return
 	}
-	tokenString, err := auth.HandleUserAuth(SecretKey, userDetails.Username, userDetails.Password)
+	secretKey := c.MustGet("secretKey").([]byte)
+	tokenString, err := auth.HandleUserAuth(authRepo, secretKey, userDetails.Username, userDetails.Password)
 	if err != 0 {
 		c.Status(err)
+		return
 	}
 
 	returnObj := struct {

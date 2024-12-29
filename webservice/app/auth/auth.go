@@ -1,16 +1,17 @@
 package auth
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 	"webservice/app/auth/claim"
-	"webservice/app/blog/blog_claims"
 
 	"github.com/golang-jwt/jwt"
 )
 
 type IAuthRepo interface {
 	GetUserByUserId(UserId) (User, error)
+	GetUserByUsername(string) (User, error)
 	CreateUser(User) (bool, error)
 	GrantUserClaim(UserId, claim.Claim) (bool, error)
 }
@@ -29,26 +30,23 @@ func GetUserByUserId(repo IAuthRepo, userId UserId) (User, error) {
 }
 
 func GrantUserClaim(repo IAuthRepo, userId UserId, newClaim claim.Claim) (bool, error) {
+	// TODO: add executing user verification
 	return repo.GrantUserClaim(userId, newClaim)
 }
 
-func HandleUserAuth(secretKey []byte, username string, password string) (string, int) {
+func HandleUserAuth(authRepo IAuthRepo, secretKey []byte, username string, password string) (string, int) {
 	// TODO: Do something with validation result
-	_, err := ValidateUser(username, password)
+	foundUser, err := authRepo.GetUserByUsername(username)
+	fmt.Printf("Found user ID: %s", foundUser.UserId)
 	if err != nil {
 		return "", http.StatusUnauthorized
 	}
-	claims := blog_claims.GetBlogClaims()
 
-	tokenString, err := GenerateNewToken(secretKey, claims, "test_claim")
+	tokenString, err := GenerateNewToken(secretKey, claim.ClaimMapIntoArray(foundUser.Claims), "test_claim")
 	if err != nil {
 		return "", http.StatusBadRequest
 	}
 	return tokenString, 0
-}
-
-func ValidateUser(username string, password string) (bool, error) {
-	return true, nil
 }
 
 func GenerateNewToken(secretKey []byte, claims []claim.Claim, username string) (string, error) {

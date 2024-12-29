@@ -14,23 +14,51 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var iblogPostRepository blog.IBlogRepository
-var iAuthUserRepository auth.IAuthRepo
+var IBlogPostRepository blog.IBlogRepository
+var IAuthUserRepository auth.IAuthRepo
+var SecretKey []byte
 
 const JWT_SECRET_KEY = "Jwt_Secret_Key"
 
-func main() {
+func setupSecretKey() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Set("secretKey", SecretKey)
+	}
+}
+
+func setupAuthRepo() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Set("authRepo", IAuthUserRepository)
+	}
+}
+
+func setupBlogRepo() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Set("blogRepo", IBlogPostRepository)
+	}
+}
+
+func setupDependencies() {
+	IAuthUserRepository = new(infra.MemoryAuthRepository)
+	IBlogPostRepository = new(infra.MemoryBlogPostRepository)
 	var secretKey = os.Getenv(JWT_SECRET_KEY)
 	if secretKey == "" {
 		log.Fatal(fmt.Sprintf("%s was not defined", JWT_SECRET_KEY))
 	}
-	iblogPostRepository = new(infra.MemoryBlogPostRepository)
-	iblogPostRepository.LoadAllPosts(testdata.LoadDummyData())
-	iAuthUserRepository = new(infra.MemoryAuthRepository)
+	SecretKey = []byte(secretKey)
+	IBlogPostRepository.LoadAllPosts(testdata.LoadDummyData())
+}
 
-	router := gin.Default()
-	auth_route.Routes(router, []byte(secretKey), iAuthUserRepository)
-	blogpost.Routes(router, iblogPostRepository)
+func main() {
+	setupDependencies()
+
+	router := gin.New()
+	router.Use(
+		setupSecretKey(),
+		setupAuthRepo())
+	auth_route.Routes(router)
+
+	blogpost.Routes(router)
 
 	router.RunTLS("localhost:8080", "./certs/dev-cert.pem", "./certs/dev-key.pem")
 }

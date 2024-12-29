@@ -7,24 +7,23 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var iBlogRepo blog.IBlogRepository
-
-func Routes(router *gin.Engine, repo blog.IBlogRepository) {
-	iBlogRepo = repo
+func Routes(router *gin.Engine) {
 	router.GET("/blogposts", getBlogPosts)
 	router.POST("/blogposts", addBlogPost)
 }
 
 func getBlogPosts(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, iBlogRepo.GetBlogs())
+	blogRepo := c.MustGet("blogRepo").(blog.IBlogRepository)
+	c.IndentedJSON(http.StatusOK, blogRepo.GetBlogs())
 }
 
 func addBlogPost(c *gin.Context) {
+	blogRepo := c.MustGet("blogRepo").(blog.IBlogRepository)
 	var newBlogPost blog.Post
 
 	if err := c.BindJSON(&newBlogPost); err != nil {
 		return
 	}
-	iBlogRepo.PostBlog(newBlogPost)
+	blogRepo.PostBlog(newBlogPost)
 	c.Status(http.StatusCreated)
 }
