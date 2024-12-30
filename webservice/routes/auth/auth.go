@@ -15,7 +15,7 @@ func Routes(route *gin.Engine) {
 	}
 }
 
-type requestObj struct {
+type RequestTokenObj struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
@@ -23,7 +23,7 @@ type requestObj struct {
 func requestToken(c *gin.Context) {
 	authRepo := c.MustGet("authRepo").(auth.IAuthRepo)
 	// TODO: Add call to get user claims
-	var userDetails requestObj
+	var userDetails RequestTokenObj
 
 	if err := c.BindJSON(&userDetails); err != nil {
 		c.Status(http.StatusBadRequest)
