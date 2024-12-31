@@ -3,6 +3,7 @@ package auth
 import (
 	"net/http"
 	"webservice/app/auth"
+	"webservice/app/auth/claim"
 	"webservice/env"
 
 	"github.com/gin-gonic/gin"
@@ -35,4 +36,31 @@ func createUser(c *gin.Context) {
 	}
 	c.Status(http.StatusCreated)
 	return
+}
+
+type updateUserClaimsRequestObj struct {
+	Username string                      `json:"username"`
+	Claims   map[claim.Claim]claim.Claim `json:"claims"`
+}
+
+func updateUserClaims(c *gin.Context) {
+	authRepo := c.MustGet(env.AuthRepo).(auth.IAuthRepo)
+	var newUserClaims updateUserClaimsRequestObj
+
+	if err := c.BindJSON(&newUserClaims); err != nil {
+		c.Status(http.StatusBadRequest)
+		return
+	}
+
+	foundUser, err := auth.GetUserByUsername(authRepo, newUserClaims.Username)
+	if err != nil {
+		c.Status(http.StatusBadRequest)
+		return
+	}
+
+	for _, claim := range newUserClaims.Claims {
+		auth.GrantUserClaim(authRepo, foundUser.UserId, claim)
+	}
+	c.Status(http.StatusOK)
+
 }

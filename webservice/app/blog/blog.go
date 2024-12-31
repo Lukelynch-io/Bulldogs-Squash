@@ -2,7 +2,7 @@ package blog
 
 import (
 	"errors"
-	"webservice/app/auth"
+	"webservice/app/auth/claim"
 	"webservice/app/blog/blog_claims"
 )
 
@@ -23,8 +23,8 @@ func GetPosts(repo IBlogRepository) []Post {
 	return repo.GetBlogs()
 }
 
-func PostBlog(blogRepo IBlogRepository, post Post, user auth.User) (bool, error) {
-	if user.Claims[blog_claims.CREATE_BLOG] == blog_claims.CREATE_BLOG {
+func PostBlog(blogRepo IBlogRepository, post Post, userClaims map[claim.Claim]claim.Claim) (bool, error) {
+	if userClaims[blog_claims.CREATE_BLOG] == blog_claims.CREATE_BLOG {
 		blogRepo.PostBlog(post)
 		return true, nil
 	}

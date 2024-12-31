@@ -35,7 +35,7 @@ func setupAuthRepo() gin.HandlerFunc {
 
 func setupBlogRepo() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Set(env.AuthRepo, IBlogPostRepository)
+		c.Set(env.BlogRepo, IBlogPostRepository)
 	}
 }
 
@@ -56,7 +56,8 @@ func main() {
 	router := gin.New()
 	router.Use(
 		setupSecretKey(),
-		setupAuthRepo())
+		setupAuthRepo(),
+		setupBlogRepo())
 	auth_route.Routes(router)
 
 	blogpost.Routes(router)

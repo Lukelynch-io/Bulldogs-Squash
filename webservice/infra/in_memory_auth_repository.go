@@ -19,13 +19,13 @@ func (repo *MemoryAuthRepository) GetUserByUserId(userId auth.UserId) (auth.User
 	return auth.User{}, errors.New("Could not find user")
 }
 
-func (repo *MemoryAuthRepository) GetUserByUsername(username string) (auth.User, error) {
+func (repo *MemoryAuthRepository) GetUserByUsername(username string) (*auth.User, error) {
 	for _, user := range repo.users {
 		if user.Username == username {
-			return user, nil
+			return &user, nil
 		}
 	}
-	return auth.User{}, errors.New("User not found")
+	return nil, errors.New("User not found")
 }
 
 func (repo *MemoryAuthRepository) CreateUser(newUser auth.User) (bool, error) {

@@ -12,8 +12,13 @@ func Routes(route *gin.Engine) {
 	auth := route.Group("/auth")
 	{
 		auth.POST("/token", requestToken)
-		auth.POST("/user/create", createUser)
+		userAuth := auth.Group("/user")
+		{
+			userAuth.POST("/create", createUser)
+			userAuth.PATCH("/claims", updateUserClaims)
+		}
 	}
+
 }
 
 type RequestTokenObj struct {

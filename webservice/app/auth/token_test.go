@@ -40,3 +40,18 @@ func TestValidateToken(t *testing.T) {
 
 	}
 }
+
+func TestGetClaimFromToken(t *testing.T) {
+	token, isSuccess := auth.ValidateToken(expectedToken, secretKey)
+	if !isSuccess {
+		t.Fail()
+		return
+	}
+
+	parsedClaims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		t.Fail()
+		return
+	}
+	assert.Equal(t, parsedClaims["username"], username)
+}

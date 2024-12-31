@@ -23,7 +23,7 @@ func TestAddBlogPostToBlogRepo(t *testing.T) {
 	repo := new(infra.MemoryBlogPostRepository)
 	authorisedUser.Claims[blog_claims.CREATE_BLOG] = blog_claims.CREATE_BLOG
 
-	blog.PostBlog(repo, newPost, authorisedUser)
+	blog.PostBlog(repo, newPost, authorisedUser.Claims)
 }
 
 func TestGetBlogPostFromBlogRepo(t *testing.T) {
@@ -31,7 +31,7 @@ func TestGetBlogPostFromBlogRepo(t *testing.T) {
 	repo := new(infra.MemoryBlogPostRepository)
 	authorisedUser.Claims[blog_claims.CREATE_BLOG] = blog_claims.CREATE_BLOG
 	// Act
-	blog.PostBlog(repo, newPost, authorisedUser)
+	blog.PostBlog(repo, newPost, authorisedUser.Claims)
 	actual := blog.GetPosts(repo)
 	// Assert
 	assert.Equal(t, newPost, actual[0])
@@ -41,7 +41,7 @@ func TestPostBlogPostAsUnauthorisedUserDoesntWork(t *testing.T) {
 	// Arrange
 	repo := new(infra.MemoryBlogPostRepository)
 	// Act
-	isPostBlogSuccess, _ := blog.PostBlog(repo, newPost, unauthorisedUser)
+	isPostBlogSuccess, _ := blog.PostBlog(repo, newPost, unauthorisedUser.Claims)
 	// Assert
 	assert.Equal(t, isPostBlogSuccess, false)
 }
