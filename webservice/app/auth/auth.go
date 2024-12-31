@@ -3,10 +3,7 @@ package auth
 import (
 	"fmt"
 	"net/http"
-	"time"
 	"webservice/app/auth/claim"
-
-	"github.com/golang-jwt/jwt"
 )
 
 type IAuthRepo interface {
@@ -47,14 +44,4 @@ func HandleUserAuth(authRepo IAuthRepo, secretKey []byte, username string, passw
 		return "", http.StatusBadRequest
 	}
 	return tokenString, 0
-}
-
-func GenerateNewToken(secretKey []byte, claims []claim.Claim, username string) (string, error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
-		jwt.MapClaims{
-			"username": username,
-			"claims":   claims,
-			"exp":      time.Now().Add(time.Hour * 24).Unix(),
-		})
-	return token.SignedString(secretKey)
 }

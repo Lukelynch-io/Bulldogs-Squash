@@ -1,16 +1,22 @@
 package blogpost
 
 import (
-	"fmt"
 	"net/http"
+	"webservice/app/auth"
 	"webservice/app/blog"
 
 	"github.com/gin-gonic/gin"
 )
 
 func CheckAuthorizationMiddleware(c *gin.Context) {
-	fmt.Printf("Header: %s", c.Request.Header.Get("Authorization"))
-
+	authHeader := c.Request.Header.Get("Authorization")
+	//TODO: Figure out how this should be used
+	_, isSuccess := auth.ExtractBearerToken(authHeader)
+	if !isSuccess {
+		c.Status(http.StatusBadRequest)
+		c.Abort()
+		return
+	}
 }
 
 func Routes(router *gin.Engine) {
