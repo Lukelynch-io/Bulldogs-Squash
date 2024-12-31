@@ -10,7 +10,7 @@ import (
 	"github.com/testcontainers/testcontainers-go/wait"
 )
 
-func TestTestContainers(t *testing.T) {
+func SetupPostgresContainer(t *testing.T) (*postgres.PostgresContainer, func(), bool) {
 	ctx := context.Background()
 
 	dbName := "users"
@@ -27,20 +27,29 @@ func TestTestContainers(t *testing.T) {
 				WithOccurrence(2).
 				WithStartupTimeout(5*time.Second)),
 	)
-	defer func() {
+	terminateContainer := func() {
+		t.Log("Shutting down container...")
 		if err := testcontainers.TerminateContainer(postgresContainer); err != nil {
 			t.Logf("failed to terminate container: %s", err)
 			t.Fail()
 		}
-	}()
+	}
 	if startContainerError != nil {
 		t.Logf("failed to start container: %s", startContainerError)
 		t.Fail()
-		return
+		return nil, func() {}, false
 	}
 	connStr, err := postgresContainer.ConnectionString(ctx)
 	if err != nil {
 		t.Log(err)
 	}
 	t.Log("Connection String: ", connStr)
+	return postgresContainer, terminateContainer, true
+}
+
+func TestTestContainers(t *testing.T) {
+	_, terminateContainerFunction, isSuccess := SetupPostgresContainer(t)
+	if isSuccess {
+	}
+	terminateContainerFunction()
 }
