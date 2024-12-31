@@ -3,6 +3,7 @@ package auth
 import (
 	"net/http"
 	"webservice/app/auth"
+	"webservice/env"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,7 +18,7 @@ type createUserErrorResponse struct {
 }
 
 func createUser(c *gin.Context) {
-	authRepo := c.MustGet("authRepo").(auth.IAuthRepo)
+	authRepo := c.MustGet(env.AuthRepo).(auth.IAuthRepo)
 	var userDetails createUserRequestObj
 
 	if err := c.BindJSON(&userDetails); err != nil {

@@ -6,6 +6,7 @@ import (
 	"os"
 	"webservice/app/auth"
 	"webservice/app/blog"
+	"webservice/env"
 	"webservice/infra"
 	auth_route "webservice/routes/auth"
 	"webservice/routes/blogpost"
@@ -22,19 +23,19 @@ const JWT_SECRET_KEY = "Jwt_Secret_Key"
 
 func setupSecretKey() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Set("secretKey", SecretKey)
+		c.Set(env.SecretKey, SecretKey)
 	}
 }
 
 func setupAuthRepo() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Set("authRepo", IAuthUserRepository)
+		c.Set(env.AuthRepo, IAuthUserRepository)
 	}
 }
 
 func setupBlogRepo() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Set("blogRepo", IBlogPostRepository)
+		c.Set(env.AuthRepo, IBlogPostRepository)
 	}
 }
 
