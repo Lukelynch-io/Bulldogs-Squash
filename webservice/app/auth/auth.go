@@ -39,7 +39,7 @@ func HandleUserAuth(authRepo IAuthRepo, secretKey []byte, username string, passw
 		return "", http.StatusUnauthorized
 	}
 
-	tokenString, err := GenerateNewToken(secretKey, claim.ClaimMapIntoArray(foundUser.Claims), "test_claim")
+	tokenString, err := GenerateNewToken(secretKey, claim.ClaimMapIntoArray(foundUser.Claims), "test_claim", nil)
 	if err != nil {
 		return "", http.StatusBadRequest
 	}

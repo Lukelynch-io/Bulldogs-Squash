@@ -9,12 +9,17 @@ import (
 	"github.com/golang-jwt/jwt"
 )
 
-func GenerateNewToken(secretKey []byte, claims []claim.Claim, username string) (string, error) {
+func GenerateNewToken(secretKey []byte, claims []claim.Claim, username string, creationTime *time.Time) (string, error) {
+
+	if creationTime == nil {
+		defaultCreationTime := time.Now().Add(time.Hour * 24)
+		creationTime = &defaultCreationTime
+	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256,
 		jwt.MapClaims{
 			"username": username,
 			"claims":   claims,
-			"exp":      time.Now().Add(time.Hour * 24).Unix(),
+			"exp":      creationTime.Unix(),
 		})
 	return token.SignedString(secretKey)
 }
