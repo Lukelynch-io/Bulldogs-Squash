@@ -7,7 +7,7 @@ import (
 	"webservice/app/auth/claim"
 
 	"github.com/go-playground/assert/v2"
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 var secretKey []byte
@@ -15,7 +15,7 @@ var claims []claim.Claim = []claim.Claim{}
 
 var testTime = time.Date(2025, time.January, 1, 0, 0, 0, 0, time.UTC)
 
-const expectedToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjbGFpbXMiOltdLCJleHAiOjE3MzU2ODk2MDAsInVzZXJuYW1lIjoidXNlcm5hbWUifQ.X_HoDH0jF7e2UHWAN8iaE3LRd7x2suIdvqOnNp0rshY`
+const expectedToken = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InVzZXJuYW1lIiwiY2xhaW1zIjpbXSwiZXhwIjoxNzM1Njg5NjAwfQ.hHy-nkmmQkgaYAQs5GEpU1kdTv4vqN2zCFGT0MZcB_M`
 
 func TestGenerateAndValidateToken(t *testing.T) {
 	tokenString, err := auth.GenerateNewToken(secretKey, claims, username, &testTime)
@@ -27,11 +27,12 @@ func TestGenerateAndValidateToken(t *testing.T) {
 }
 
 func TestValidateToken(t *testing.T) {
-	token, isSuccess := auth.ValidateToken(expectedToken, secretKey)
+	token, claims, isSuccess := auth.ValidateToken(expectedToken, secretKey)
 	if !isSuccess {
 		t.Fail()
 		return
 	}
+	t.Log(claims)
 	if parsedClaims, ok := token.Claims.(jwt.MapClaims); !ok {
 		t.Fail()
 		return
@@ -42,12 +43,12 @@ func TestValidateToken(t *testing.T) {
 }
 
 func TestGetClaimFromToken(t *testing.T) {
-	token, isSuccess := auth.ValidateToken(expectedToken, secretKey)
+	token, claims, isSuccess := auth.ValidateToken(expectedToken, secretKey)
 	if !isSuccess {
 		t.Fail()
 		return
 	}
-
+	t.Log(claims)
 	parsedClaims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
 		t.Fail()
