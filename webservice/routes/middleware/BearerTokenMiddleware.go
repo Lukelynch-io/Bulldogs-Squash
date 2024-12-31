@@ -8,7 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// TODO: CLEAN THIS UP DUMBASS!!!
 func BearerTokenMiddleware(c *gin.Context) {
 	secretKey := c.MustGet(env.SecretKey).([]byte)
 	authRepo := c.MustGet(env.AuthRepo).(auth.IAuthRepo)
