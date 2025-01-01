@@ -2,20 +2,21 @@ package app
 
 import (
 	"errors"
+	"net/http"
 	"webservice/domain"
 )
 
-func UpdateUserClaims(authRepo domain.IAuthRepo, targetUsername string, newClaims map[domain.Claim]domain.Claim) {
+func UpdateUserClaims(authRepo domain.IAuthRepo, targetUsername string, newClaims map[domain.Claim]domain.Claim) int {
 	foundUser, err := GetUserByUsername(authRepo, targetUsername)
 	if err != nil {
-		c.Status(http.StatusBadRequest)
-		return
+		return http.StatusNotModified
 	}
 
 	for _, claim := range newClaims {
 		// FIXME: This is not valid LOGIC
 		grantUserClaim(authRepo, foundUser.UserId, foundUser.UserId, claim)
 	}
+	return http.StatusOK
 }
 
 func grantUserClaim(repo domain.IAuthRepo, actingUserId domain.UserId, targetUserId domain.UserId, newClaim domain.Claim) (bool, error) {
@@ -24,7 +25,7 @@ func grantUserClaim(repo domain.IAuthRepo, actingUserId domain.UserId, targetUse
 	if error != nil {
 		return false, errors.New("FORBIDDEN")
 	}
-	if canUserGrantClaim(actingUser, newClaim) {
+	if canUserGrantClaim(*actingUser, newClaim) {
 		return repo.GrantUserClaim(targetUserId, newClaim)
 	}
 	return false, errors.New("FORBIDDEN")

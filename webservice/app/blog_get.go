@@ -1,5 +1,7 @@
 package app
 
-func GetPosts(repo IBlogRepository) []Post {
+import "webservice/domain"
+
+func GetPosts(repo domain.IBlogRepository) []domain.Post {
 	return repo.GetBlogs()
 }

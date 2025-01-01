@@ -7,8 +7,7 @@ import (
 	"webservice/domain"
 	"webservice/env"
 	"webservice/infra"
-	auth_route "webservice/routes/auth"
-	"webservice/routes/blogpost"
+	"webservice/routes"
 	"webservice/testdata"
 
 	"github.com/gin-gonic/gin"
@@ -57,9 +56,8 @@ func main() {
 		setupSecretKey(),
 		setupAuthRepo(),
 		setupBlogRepo())
-	auth_route.Routes(router)
-
-	blogpost.Routes(router)
+	routes.LoadAuthRoutes(router)
+	routes.LoadBlogPostRoutes(router)
 
 	router.RunTLS("localhost:8080", "./certs/dev-cert.pem", "./certs/dev-key.pem")
 }

@@ -3,8 +3,8 @@ package app_test
 import (
 	"testing"
 	"webservice/app"
-	"webservice/app/blog/blog_claims"
 	"webservice/domain"
+	"webservice/domain/blog_claims"
 	"webservice/infra"
 
 	"github.com/go-playground/assert/v2"

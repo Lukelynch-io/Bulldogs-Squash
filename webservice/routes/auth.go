@@ -1,16 +1,15 @@
-package auth
+package routes
 
 import (
 	"net/http"
 	"webservice/app"
-	"webservice/app/auth"
 	"webservice/domain"
 	"webservice/env"
 
 	"github.com/gin-gonic/gin"
 )
 
-func Routes(route *gin.Engine) {
+func LoadAuthRoutes(route *gin.Engine) {
 	auth := route.Group("/auth")
 	{
 		auth.POST("/token", requestToken)
@@ -38,16 +37,16 @@ func requestToken(c *gin.Context) {
 		c.Status(http.StatusBadRequest)
 		return
 	}
-	tokenString, err := app.AuthenticateUser(authRepo, secretKey, userDetails.Username, userDetails.Password)
-	if err != 0 {
-		c.Status(err)
+	tokenString, resultType := app.AuthenticateUser(authRepo, secretKey, userDetails.Username, userDetails.Password)
+	if resultType != http.StatusOK {
+		c.Status(resultType)
 		return
 	}
 
 	returnObj := struct {
 		Token string `json:"token"`
 	}{
-		Token: tokenString,
+		Token: *tokenString,
 	}
 	c.IndentedJSON(http.StatusOK, returnObj)
 }

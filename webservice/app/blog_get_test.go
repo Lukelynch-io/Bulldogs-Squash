@@ -3,9 +3,8 @@ package app_test
 import (
 	"testing"
 	"webservice/app"
-	"webservice/app/auth"
-	"webservice/app/blog/blog_claims"
 	"webservice/domain"
+	"webservice/domain/blog_claims"
 	"webservice/infra"
 
 	"github.com/go-playground/assert/v2"
@@ -19,7 +18,7 @@ func TestGetBlogPostFromBlogRepo(t *testing.T) {
 		Description: "Test Description",
 		ImageUrl:    "imageUrl",
 	}
-	var authorisedUser auth.User = auth.NewUser("username", "password")
+	var authorisedUser domain.User = domain.NewUser("username", "password")
 	repo := new(infra.MemoryBlogPostRepository)
 	authorisedUser.Claims[blog_claims.CREATE_BLOG] = blog_claims.CREATE_BLOG
 	// Act

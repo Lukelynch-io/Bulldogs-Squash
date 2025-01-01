@@ -1,10 +1,11 @@
 package app_test
 
 import (
+	"net/http"
 	"testing"
 	"webservice/app"
-	"webservice/app/blog/blog_claims"
 	"webservice/domain"
+	"webservice/domain/blog_claims"
 	"webservice/infra"
 
 	"github.com/go-playground/assert/v2"
@@ -15,9 +16,11 @@ func TestGrantUserWithCreateClaim(t *testing.T) {
 	const username = "username"
 	const password = "password"
 	var testUser domain.User = domain.NewUser(username, password)
+	claim_map := make(map[domain.Claim]domain.Claim)
+	claim_map[blog_claims.CREATE_BLOG] = blog_claims.CREATE_BLOG
 	repo := new(infra.MemoryAuthRepository)
 	repo.CreateUser(testUser)
 	// Act
-	resultFlag, _ := app.UpdateUserClaims(repo, testUser.UserId, blog_claims.CREATE_BLOG)
-	assert.Equal(t, resultFlag, true)
+	result := app.UpdateUserClaims(repo, testUser.Username, claim_map)
+	assert.Equal(t, result, http.StatusOK)
 }

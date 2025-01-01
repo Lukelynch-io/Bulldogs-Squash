@@ -1,8 +1,8 @@
-package middleware
+package routes
 
 import (
 	"net/http"
-	"webservice/app/auth"
+	"webservice/domain"
 	"webservice/env"
 
 	"github.com/gin-gonic/gin"
@@ -10,15 +10,15 @@ import (
 
 func BearerTokenMiddleware(c *gin.Context) {
 	secretKey := c.MustGet(env.SecretKey).([]byte)
-	authRepo := c.MustGet(env.AuthRepo).(auth.IAuthRepo)
+	authRepo := c.MustGet(env.AuthRepo).(domain.IAuthRepo)
 	authHeader := c.Request.Header.Get("Authorization")
-	tokenString, isSuccess := auth.ExtractBearerToken(authHeader)
+	tokenString, isSuccess := domain.ExtractBearerToken(authHeader)
 	if !isSuccess {
 		c.Status(http.StatusBadRequest)
 		c.Abort()
 		return
 	}
-	claims, validationError := auth.ValidateToken(tokenString, secretKey)
+	claims, validationError := domain.ValidateToken(tokenString, secretKey)
 	if validationError != nil {
 		c.Status(http.StatusBadRequest)
 		c.Abort()

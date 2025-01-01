@@ -1,4 +1,4 @@
-package auth
+package routes
 
 import (
 	"net/http"
@@ -52,7 +52,6 @@ func updateUserClaims(c *gin.Context) {
 		return
 	}
 	app.UpdateUserClaims(authRepo, newUserClaims.Username, newUserClaims.Claims)
-
 	c.Status(http.StatusOK)
 
 }
