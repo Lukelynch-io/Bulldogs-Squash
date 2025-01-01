@@ -18,8 +18,8 @@ func BearerTokenMiddleware(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	_, claims, isSuccess := auth.ValidateToken(tokenString, secretKey)
-	if !isSuccess {
+	claims, validationError := auth.ValidateToken(tokenString, secretKey)
+	if validationError != nil {
 		c.Status(http.StatusBadRequest)
 		c.Abort()
 		return
