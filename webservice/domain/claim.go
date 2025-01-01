@@ -1,4 +1,4 @@
-package claim
+package domain
 
 type Claim string
 

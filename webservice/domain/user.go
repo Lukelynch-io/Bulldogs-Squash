@@ -1,18 +1,23 @@
-package auth
+package domain
 
 import (
-	"webservice/app/auth/claim"
-
 	"github.com/google/uuid"
 )
 
 type UserId string
 
+type userRole string
+
+const AdminRole = userRole("admin")
+const Poster = userRole("poster")
+const Viewer = userRole("viewer")
+
 type User struct {
 	UserId       UserId
 	Username     string
 	PasswordHash string
-	Claims       map[claim.Claim]claim.Claim
+	Claims       map[Claim]Claim
+	Role         userRole
 }
 
 func NewUser(username string, passwordHash string) User {
@@ -20,6 +25,6 @@ func NewUser(username string, passwordHash string) User {
 		UserId:       UserId(uuid.New().String()),
 		Username:     username,
 		PasswordHash: passwordHash,
-		Claims:       make(map[claim.Claim]claim.Claim),
+		Claims:       make(map[Claim]Claim),
 	}
 }

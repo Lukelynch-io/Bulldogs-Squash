@@ -2,8 +2,8 @@ package auth
 
 import (
 	"net/http"
-	"webservice/app/auth"
-	"webservice/app/auth/claim"
+	"webservice/app"
+	"webservice/domain"
 	"webservice/env"
 
 	"github.com/gin-gonic/gin"
@@ -19,7 +19,7 @@ type createUserErrorResponse struct {
 }
 
 func createUser(c *gin.Context) {
-	authRepo := c.MustGet(env.AuthRepo).(auth.IAuthRepo)
+	authRepo := c.MustGet(env.AuthRepo).(domain.IAuthRepo)
 	var userDetails createUserRequestObj
 
 	if err := c.BindJSON(&userDetails); err != nil {
@@ -27,7 +27,7 @@ func createUser(c *gin.Context) {
 		return
 	}
 
-	_, createUserError := auth.CreateUser(authRepo, userDetails.Username, userDetails.PasswordHash)
+	_, createUserError := app.CreateUser(authRepo, userDetails.Username, userDetails.PasswordHash)
 	if createUserError != nil {
 		c.IndentedJSON(http.StatusInternalServerError, createUserErrorResponse{
 			Error: createUserError.Error(),
@@ -39,28 +39,20 @@ func createUser(c *gin.Context) {
 }
 
 type updateUserClaimsRequestObj struct {
-	Username string                      `json:"username"`
-	Claims   map[claim.Claim]claim.Claim `json:"claims"`
+	Username string                        `json:"username"`
+	Claims   map[domain.Claim]domain.Claim `json:"claims"`
 }
 
 func updateUserClaims(c *gin.Context) {
-	authRepo := c.MustGet(env.AuthRepo).(auth.IAuthRepo)
+	authRepo := c.MustGet(env.AuthRepo).(domain.IAuthRepo)
 	var newUserClaims updateUserClaimsRequestObj
 
 	if err := c.BindJSON(&newUserClaims); err != nil {
 		c.Status(http.StatusBadRequest)
 		return
 	}
+	app.UpdateUserClaims(authRepo, newUserClaims.Username, newUserClaims.Claims)
 
-	foundUser, err := auth.GetUserByUsername(authRepo, newUserClaims.Username)
-	if err != nil {
-		c.Status(http.StatusBadRequest)
-		return
-	}
-
-	for _, claim := range newUserClaims.Claims {
-		auth.GrantUserClaim(authRepo, foundUser.UserId, claim)
-	}
 	c.Status(http.StatusOK)
 
 }

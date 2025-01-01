@@ -1,9 +1,9 @@
 package testdata
 
-import "webservice/app/blog"
+import "webservice/domain"
 
 // blogposts slice to seed record album data.
-var blogposts = []blog.Post{
+var blogposts = []domain.Post{
 	{
 		ID:          "1",
 		Title:       "2024 Summer Tournament",
@@ -24,6 +24,6 @@ var blogposts = []blog.Post{
 	},
 }
 
-func LoadDummyData() []blog.Post {
+func LoadDummyData() []domain.Post {
 	return blogposts
 }

@@ -2,7 +2,9 @@ package auth
 
 import (
 	"net/http"
+	"webservice/app"
 	"webservice/app/auth"
+	"webservice/domain"
 	"webservice/env"
 
 	"github.com/gin-gonic/gin"
@@ -27,7 +29,7 @@ type RequestTokenObj struct {
 }
 
 func requestToken(c *gin.Context) {
-	authRepo := c.MustGet(env.AuthRepo).(auth.IAuthRepo)
+	authRepo := c.MustGet(env.AuthRepo).(domain.IAuthRepo)
 	secretKey := c.MustGet(env.SecretKey).([]byte)
 	// TODO: Add call to get user claims
 	var userDetails RequestTokenObj
@@ -36,7 +38,7 @@ func requestToken(c *gin.Context) {
 		c.Status(http.StatusBadRequest)
 		return
 	}
-	tokenString, err := auth.HandleUserAuth(authRepo, secretKey, userDetails.Username, userDetails.Password)
+	tokenString, err := app.AuthenticateUser(authRepo, secretKey, userDetails.Username, userDetails.Password)
 	if err != 0 {
 		c.Status(err)
 		return

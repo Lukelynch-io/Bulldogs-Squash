@@ -2,24 +2,23 @@ package infra
 
 import (
 	"errors"
-	"webservice/app/auth"
-	"webservice/app/auth/claim"
+	"webservice/domain"
 )
 
 type MemoryAuthRepository struct {
-	users []auth.User
+	users []domain.User
 }
 
-func (repo *MemoryAuthRepository) GetUserByUserId(userId auth.UserId) (auth.User, error) {
+func (repo *MemoryAuthRepository) GetUserByUserId(userId domain.UserId) (*domain.User, error) {
 	for i := 0; i < len(repo.users); i++ {
 		if repo.users[i].UserId == userId {
-			return repo.users[i], nil
+			return &repo.users[i], nil
 		}
 	}
-	return auth.User{}, errors.New("Could not find user")
+	return nil, errors.New("Could not find user")
 }
 
-func (repo *MemoryAuthRepository) GetUserByUsername(username string) (*auth.User, error) {
+func (repo *MemoryAuthRepository) GetUserByUsername(username string) (*domain.User, error) {
 	for _, user := range repo.users {
 		if user.Username == username {
 			return &user, nil
@@ -28,7 +27,7 @@ func (repo *MemoryAuthRepository) GetUserByUsername(username string) (*auth.User
 	return nil, errors.New("User not found")
 }
 
-func (repo *MemoryAuthRepository) CreateUser(newUser auth.User) (bool, error) {
+func (repo *MemoryAuthRepository) CreateUser(newUser domain.User) (bool, error) {
 	for i := 0; i < len(repo.users); i++ {
 		if repo.users[i].Username == newUser.Username {
 			return false, errors.New("Username already taken. Please try another")
@@ -39,7 +38,7 @@ func (repo *MemoryAuthRepository) CreateUser(newUser auth.User) (bool, error) {
 	return true, nil
 }
 
-func (repo *MemoryAuthRepository) updateUser(userId auth.UserId, updatedUser auth.User) (bool, error) {
+func (repo *MemoryAuthRepository) updateUser(userId domain.UserId, updatedUser domain.User) (bool, error) {
 	for i := 0; i < len(repo.users); i++ {
 		if repo.users[i].UserId == userId {
 			repo.users[i] = updatedUser
@@ -49,7 +48,7 @@ func (repo *MemoryAuthRepository) updateUser(userId auth.UserId, updatedUser aut
 	return false, errors.New("User not found")
 }
 
-func (repo *MemoryAuthRepository) GrantUserClaim(userId auth.UserId, newClaim claim.Claim) (bool, error) {
+func (repo *MemoryAuthRepository) GrantUserClaim(userId domain.UserId, newClaim domain.Claim) (bool, error) {
 	foundUser, getUserError := repo.GetUserByUserId(userId)
 	if getUserError != nil {
 		return false, getUserError

@@ -2,11 +2,11 @@ package infra
 
 import (
 	"strconv"
-	"webservice/app/blog"
+	"webservice/domain"
 )
 
 type MemoryBlogPostRepository struct {
-	posts []blog.Post
+	posts []domain.Post
 }
 
 func (repo *MemoryBlogPostRepository) getNewPostId() (string, error) {
@@ -18,13 +18,13 @@ func (repo *MemoryBlogPostRepository) getNewPostId() (string, error) {
 	return strconv.Itoa(i + 1), nil
 }
 
-func (repo *MemoryBlogPostRepository) GetBlogs() []blog.Post {
+func (repo *MemoryBlogPostRepository) GetBlogs() []domain.Post {
 	return repo.posts
 }
 
-func (repo *MemoryBlogPostRepository) PostBlog(post blog.Post) (bool, error) {
+func (repo *MemoryBlogPostRepository) PostBlog(post domain.Post) (bool, error) {
 	if len(repo.posts) == 0 {
-		repo.posts = []blog.Post{post}
+		repo.posts = []domain.Post{post}
 		return true, nil
 	}
 	var newId, err = repo.getNewPostId()
@@ -36,6 +36,6 @@ func (repo *MemoryBlogPostRepository) PostBlog(post blog.Post) (bool, error) {
 	return true, nil
 }
 
-func (repo *MemoryBlogPostRepository) LoadAllPosts(posts []blog.Post) {
+func (repo *MemoryBlogPostRepository) LoadAllPosts(posts []domain.Post) {
 	repo.posts = posts
 }

@@ -4,8 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"webservice/app/auth"
-	"webservice/app/blog"
+	"webservice/domain"
 	"webservice/env"
 	"webservice/infra"
 	auth_route "webservice/routes/auth"
@@ -15,8 +14,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var IBlogPostRepository blog.IBlogRepository
-var IAuthUserRepository auth.IAuthRepo
+var IBlogPostRepository domain.IBlogRepository
+var IAuthUserRepository domain.IAuthRepo
 var SecretKey []byte
 
 const JWT_SECRET_KEY = "Jwt_Secret_Key"
