@@ -2,26 +2,34 @@ package infra_test
 
 import (
 	"context"
+	"path/filepath"
 	"testing"
 	"time"
+	infra "webservice/infra/postgres"
 
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/modules/postgres"
 	"github.com/testcontainers/testcontainers-go/wait"
 )
 
-func SetupPostgresContainer(t *testing.T) (*postgres.PostgresContainer, func(), bool) {
-	ctx := context.Background()
+func SetupPostgresContainer(t *testing.T, ctx context.Context) (*postgres.PostgresContainer, func(), bool) {
 
-	dbName := "users"
+	dbName := "docker"
 	dbUser := "user"
 	dbPassword := "password"
+	setupFile, err := filepath.Abs("../../testdata/setup_testcontainer.sql")
+	if err != nil {
+		t.Log(err)
+		t.Fail()
+		return nil, func() {}, false
+	}
 
 	postgresContainer, startContainerError := postgres.Run(ctx,
 		"postgres:16-alpine",
 		postgres.WithDatabase(dbName),
 		postgres.WithUsername(dbUser),
 		postgres.WithPassword(dbPassword),
+		postgres.WithInitScripts(setupFile),
 		testcontainers.WithWaitStrategy(
 			wait.ForLog("database system is ready to accept connections").
 				WithOccurrence(2).
@@ -39,17 +47,18 @@ func SetupPostgresContainer(t *testing.T) (*postgres.PostgresContainer, func(), 
 		t.Fail()
 		return nil, func() {}, false
 	}
-	connStr, err := postgresContainer.ConnectionString(ctx)
-	if err != nil {
-		t.Log(err)
-	}
-	t.Log("Connection String: ", connStr)
 	return postgresContainer, terminateContainer, true
 }
 
 func TestTestContainers(t *testing.T) {
-	_, terminateContainerFunction, isSuccess := SetupPostgresContainer(t)
+	ctx := context.Background()
+	postgresContainer, terminateContainerFunction, isSuccess := SetupPostgresContainer(t, ctx)
+	defer terminateContainerFunction()
 	if isSuccess {
 	}
-	terminateContainerFunction()
+	connStr, err := postgresContainer.ConnectionString(ctx, "sslmode=disable")
+	if err != nil {
+		t.Log(err)
+	}
+	infra.SelectFromPostgresTable(connStr)
 }
