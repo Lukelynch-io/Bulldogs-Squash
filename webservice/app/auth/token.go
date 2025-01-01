@@ -38,9 +38,9 @@ func ExtractBearerToken(authHeader string) (string, bool) {
 	return strings.CutPrefix(authHeader, bearerPrefix)
 }
 
-func ValidateToken(tokenString string, secretKey []byte) (*jwt.Token, CustomJwtClaims, bool) {
+func ValidateToken(tokenString string, secretKey []byte) (*CustomJwtClaims, error) {
 	var customClaims CustomJwtClaims
-	token, _ := jwt.ParseWithClaims(tokenString, &customClaims, func(token *jwt.Token) (interface{}, error) {
+	token, err := jwt.ParseWithClaims(tokenString, &customClaims, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 		}
@@ -48,5 +48,8 @@ func ValidateToken(tokenString string, secretKey []byte) (*jwt.Token, CustomJwtC
 		return secretKey, nil
 	})
 
-	return token, customClaims, token.Valid
+	if token.Valid {
+		return &customClaims, nil
+	}
+	return nil, err
 }
