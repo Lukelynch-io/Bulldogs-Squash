@@ -18,7 +18,7 @@ func TestGetBlogPostFromBlogRepo(t *testing.T) {
 		Description: "Test Description",
 		ImageUrl:    "imageUrl",
 	}
-	var authorisedUser domain.User = domain.NewUser("username", "password")
+	authorisedUser := domain.NewUser("username", "password")
 	repo := new(infra.MemoryBlogPostRepository)
 	authorisedUser.Claims[blog_claims.CREATE_BLOG] = blog_claims.CREATE_BLOG
 	// Act

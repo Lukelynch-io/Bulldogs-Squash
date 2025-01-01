@@ -18,7 +18,7 @@ func TestAddBlogPostToBlogRepo(t *testing.T) {
 		Description: "Test Description",
 		ImageUrl:    "imageUrl",
 	}
-	var authorisedUser domain.User = domain.NewUser("username", "password")
+	authorisedUser := domain.NewUser("username", "password")
 	repo := new(infra.MemoryBlogPostRepository)
 	authorisedUser.Claims[blog_claims.CREATE_BLOG] = blog_claims.CREATE_BLOG
 
@@ -33,7 +33,7 @@ func TestPostBlogPostAsUnauthorisedUserDoesntWork(t *testing.T) {
 		Description: "Test Description",
 		ImageUrl:    "imageUrl",
 	}
-	var unauthorisedUser domain.User = domain.NewUser("username", "password")
+	unauthorisedUser := domain.NewUser("username", "password")
 	repo := new(infra.MemoryBlogPostRepository)
 	// Act
 	isPostBlogSuccess, _ := app.PostBlog(repo, newPost, unauthorisedUser.Claims)

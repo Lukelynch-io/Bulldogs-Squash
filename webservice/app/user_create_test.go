@@ -31,7 +31,7 @@ func TestFailToCreateUserAlreadyExists(t *testing.T) {
 	// Arrange
 	const username = "username"
 	const password = "password"
-	var testUser domain.User = domain.NewUser(username, password)
+	testUser := domain.NewUser(username, password)
 	repo := new(infra.MemoryAuthRepository)
 	_, createUserError := repo.CreateUser(testUser)
 	if createUserError != nil {
