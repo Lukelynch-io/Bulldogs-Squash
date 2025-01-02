@@ -11,7 +11,7 @@ func AuthenticateUser(authRepo domain.IAuthRepo, secretKey []byte, username stri
 		return nil, http.StatusUnauthorized
 	}
 
-	tokenString, err := domain.GenerateNewToken(secretKey, foundUser.Claims.IntoArray(), foundUser.Username, nil)
+	tokenString, err := domain.GenerateNewToken(secretKey, foundUser.Claims.IntoArray(), *foundUser, nil)
 	if err != nil {
 		return nil, http.StatusBadRequest
 	}

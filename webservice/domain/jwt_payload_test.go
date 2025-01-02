@@ -15,7 +15,9 @@ var testTime = time.Date(3000, time.January, 1, 0, 0, 0, 0, time.UTC)
 
 func TestGenerateAndValidateToken(t *testing.T) {
 	const username = "username"
-	tokenString, err := domain.GenerateNewToken(secretKey, claims, username, &testTime)
+	const password = "password"
+	user := domain.NewUser(username, password, domain.Viewer)
+	tokenString, err := domain.GenerateNewToken(secretKey, claims, user, &testTime)
 	t.Log(tokenString)
 	if err != nil {
 		t.Fail()
@@ -28,5 +30,5 @@ func TestGenerateAndValidateToken(t *testing.T) {
 		return
 	}
 	t.Log(claims)
-	assert.Equal(t, claims.Username, username)
+	assert.Equal(t, claims.Subject, string(user.UserId))
 }

@@ -6,24 +6,26 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/google/uuid"
 )
 
 type customJwtClaims struct {
-	Username string     `json:"username"`
-	Claims   ClaimArray `json:"claims"`
+	Claims ClaimArray `json:"claims"`
 	jwt.RegisteredClaims
 }
 
-func GenerateNewToken(secretKey []byte, claims []Claim, username string, expirationTime *time.Time) (string, error) {
+func GenerateNewToken(secretKey []byte, claims []Claim, user User, expirationTime *time.Time) (string, error) {
 	if expirationTime == nil {
-		defaultCreationTime := time.Now().Add(time.Hour * 24)
+		defaultCreationTime := time.Now().Add(time.Hour * 24).UTC()
 		expirationTime = &defaultCreationTime
 	}
 	customClaims := customJwtClaims{
-		username,
 		claims,
 		jwt.RegisteredClaims{
+			Subject:   string(user.UserId),
+			IssuedAt:  jwt.NewNumericDate(time.Now().UTC()),
 			ExpiresAt: jwt.NewNumericDate(*expirationTime),
+			ID:        uuid.New().String(),
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, customClaims)
