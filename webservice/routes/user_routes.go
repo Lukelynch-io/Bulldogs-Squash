@@ -10,8 +10,9 @@ import (
 )
 
 type createUserRequestObj struct {
-	Username     string `json:"username"`
-	PasswordHash string `json:"passwordHash"`
+	Username     string          `json:"username"`
+	PasswordHash string          `json:"passwordHash"`
+	Role         domain.UserRole `json:"role"`
 }
 
 type createUserErrorResponse struct {
@@ -27,7 +28,7 @@ func createUser(c *gin.Context) {
 		return
 	}
 
-	_, createUserError := app.CreateUser(authRepo, userDetails.Username, userDetails.PasswordHash)
+	_, createUserError := app.CreateUser(authRepo, userDetails.Username, userDetails.PasswordHash, userDetails.Role)
 	if createUserError != nil {
 		c.IndentedJSON(http.StatusInternalServerError, createUserErrorResponse{
 			Error: createUserError.Error(),

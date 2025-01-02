@@ -15,7 +15,7 @@ func TestCreateUser(t *testing.T) {
 	const password = "password"
 	repo := new(infra.MemoryAuthRepository)
 	// Act
-	newUser, createUserError := app.CreateUser(repo, username, password)
+	newUser, createUserError := app.CreateUser(repo, username, password, domain.Viewer)
 	if createUserError != nil {
 		t.Fatal(createUserError)
 	}
@@ -31,14 +31,13 @@ func TestFailToCreateUserAlreadyExists(t *testing.T) {
 	// Arrange
 	const username = "username"
 	const password = "password"
-	testUser := domain.NewUser(username, password)
 	repo := new(infra.MemoryAuthRepository)
-	_, createUserError := repo.CreateUser(testUser)
+	_, createUserError := app.CreateUser(repo, username, password, domain.Viewer)
 	if createUserError != nil {
 		t.Fatal("Failed to create initial user")
 	}
 	// Act
-	_, expectedCreateUserError := app.CreateUser(repo, username, password)
+	_, expectedCreateUserError := app.CreateUser(repo, username, password, domain.Viewer)
 	if expectedCreateUserError == nil {
 		t.Fatal("Duplicate user was created")
 	}

@@ -6,25 +6,26 @@ import (
 
 type UserId string
 
-type userRole string
+type UserRole string
 
-const AdminRole = userRole("admin")
-const Poster = userRole("poster")
-const Viewer = userRole("viewer")
+const AdminRole = UserRole("admin")
+const Poster = UserRole("poster")
+const Viewer = UserRole("viewer")
 
 type User struct {
 	UserId       UserId
 	Username     string
 	PasswordHash string
-	Claims       map[Claim]Claim
-	Role         userRole
+	Claims       ClaimMap
+	Role         UserRole
 }
 
-func NewUser(username string, passwordHash string) User {
+func NewUser(username string, passwordHash string, role UserRole) User {
 	return User{
 		UserId:       UserId(uuid.New().String()),
 		Username:     username,
 		PasswordHash: passwordHash,
-		Claims:       make(map[Claim]Claim),
+		Claims:       make(ClaimMap),
+		Role:         role,
 	}
 }

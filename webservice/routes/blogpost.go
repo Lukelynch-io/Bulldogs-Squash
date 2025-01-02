@@ -21,13 +21,13 @@ func getBlogPosts(c *gin.Context) {
 
 func addBlogPost(c *gin.Context) {
 	blogRepo := c.MustGet(env.BlogRepo).(domain.IBlogRepository)
-	userClaims := c.MustGet(env.TokenClaims).([]domain.Claim)
+	userClaims := c.MustGet(env.TokenClaims).(domain.ClaimArray)
 	var newBlogPost domain.Post
 
 	if err := c.BindJSON(&newBlogPost); err != nil {
 		c.Status(http.StatusInternalServerError)
 		return
 	}
-	app.PostBlog(blogRepo, newBlogPost, domain.IntoMap(userClaims))
+	app.PostBlog(blogRepo, newBlogPost, userClaims.IntoMap())
 	c.Status(http.StatusCreated)
 }

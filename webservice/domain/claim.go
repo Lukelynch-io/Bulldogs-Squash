@@ -1,8 +1,10 @@
 package domain
 
 type Claim string
+type ClaimArray []Claim
+type ClaimMap map[Claim]Claim
 
-func IntoArray(claimMap map[Claim]Claim) []Claim {
+func (claimMap ClaimMap) IntoArray() ClaimArray {
 	var array []Claim
 	for _, claim := range claimMap {
 		array = append(array, claim)
@@ -10,7 +12,7 @@ func IntoArray(claimMap map[Claim]Claim) []Claim {
 	return array
 }
 
-func IntoMap(claimArray []Claim) map[Claim]Claim {
+func (claimArray ClaimArray) IntoMap() ClaimMap {
 	claimMap := make(map[Claim]Claim)
 	for _, claim := range claimArray {
 		claimMap[claim] = claim

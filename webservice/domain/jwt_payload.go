@@ -9,8 +9,8 @@ import (
 )
 
 type customJwtClaims struct {
-	Username string  `json:"username"`
-	Claims   []Claim `json:"claims"`
+	Username string     `json:"username"`
+	Claims   ClaimArray `json:"claims"`
 	jwt.RegisteredClaims
 }
 
