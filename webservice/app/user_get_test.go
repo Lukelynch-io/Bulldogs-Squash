@@ -11,9 +11,7 @@ import (
 
 func TestGetCreatedUserByUsername(t *testing.T) {
 	// Arrange
-	const username = "username"
-	const password = "password"
-	testUser := domain.NewUser(username, password, domain.Viewer)
+	testUser := createTestUser()
 	repo := infra.NewMemoryAuthRepository()
 	_, createUserError := repo.CreateUser(testUser)
 	if createUserError != nil {
@@ -43,9 +41,7 @@ func TestErrorIsReturnedWhenNoUserByUsername(t *testing.T) {
 
 func TestGetCreatedUserById(t *testing.T) {
 	// Arrange
-	const username = "username"
-	const password = "password"
-	testUser := domain.NewUser(username, password, domain.Viewer)
+	testUser := createTestUser()
 	repo := infra.NewMemoryAuthRepository()
 	_, createUserError := repo.CreateUser(testUser)
 	if createUserError != nil {
@@ -62,13 +58,17 @@ func TestGetCreatedUserById(t *testing.T) {
 
 func TestErrorIsReturnedWhenNoUserByUserId(t *testing.T) {
 	// Arrange
-	const username = "username"
-	const password = "password"
-	testUser := domain.NewUser(username, password, domain.Viewer)
+	testUser := createTestUser()
 	repo := infra.NewMemoryAuthRepository()
 	// Act
 	_, getUserError := app.GetUserById(repo, testUser.UserId)
 	if getUserError == nil {
 		t.Fatal("User found when there should not have been")
 	}
+}
+
+func createTestUser() domain.User {
+	const username = "username"
+	const password = "password"
+	return domain.NewUser(username, password, domain.Viewer)
 }
