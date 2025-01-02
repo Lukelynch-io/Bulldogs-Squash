@@ -5,7 +5,7 @@ import (
 	"webservice/domain"
 )
 
-func AuthenticateUser(authRepo domain.IAuthRepo, secretKey []byte, username string, password string) (*string, int) {
+func AuthenticateUser(authRepo domain.IAuthRepo, secretKey []byte, username string, password string) (*domain.TokenString, int) {
 	foundUser, err := GetUserByUsername(authRepo, username)
 	if err != nil {
 		return nil, http.StatusUnauthorized
@@ -15,5 +15,5 @@ func AuthenticateUser(authRepo domain.IAuthRepo, secretKey []byte, username stri
 	if err != nil {
 		return nil, http.StatusBadRequest
 	}
-	return &tokenString, http.StatusOK
+	return tokenString, http.StatusOK
 }

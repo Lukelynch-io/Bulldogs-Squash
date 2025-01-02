@@ -38,7 +38,7 @@ func setupBlogRepo() gin.HandlerFunc {
 }
 
 func setupDependencies() {
-	IAuthUserRepository = new(infra.MemoryAuthRepository)
+	IAuthUserRepository = infra.NewMemoryAuthRepository()
 	IBlogPostRepository = new(infra.MemoryBlogPostRepository)
 	var secretKey = os.Getenv(JWT_SECRET_KEY)
 	if secretKey == "" {

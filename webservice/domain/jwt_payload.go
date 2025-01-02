@@ -14,7 +14,9 @@ type customJwtClaims struct {
 	jwt.RegisteredClaims
 }
 
-func GenerateNewToken(secretKey []byte, claims []Claim, user User, expirationTime *time.Time) (string, error) {
+type TokenString string
+
+func GenerateNewToken(secretKey []byte, claims []Claim, user User, expirationTime *time.Time) (*TokenString, error) {
 	if expirationTime == nil {
 		defaultCreationTime := time.Now().Add(time.Hour * 24).UTC()
 		expirationTime = &defaultCreationTime
@@ -30,7 +32,13 @@ func GenerateNewToken(secretKey []byte, claims []Claim, user User, expirationTim
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, customClaims)
 
-	return token.SignedString(secretKey)
+	var returnString TokenString
+	tokenString, err := token.SignedString(secretKey)
+	if err != nil {
+		return nil, err
+	}
+	returnString = TokenString(tokenString)
+	return &returnString, nil
 }
 
 func ExtractBearerToken(authHeader string) (string, bool) {

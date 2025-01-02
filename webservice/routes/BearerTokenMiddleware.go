@@ -2,6 +2,7 @@ package routes
 
 import (
 	"net/http"
+	"webservice/app"
 	"webservice/domain"
 	"webservice/env"
 
@@ -27,7 +28,7 @@ func BearerTokenMiddleware(c *gin.Context) {
 
 	parsedUserId := claims.Subject
 	if parsedUserId != "" {
-		_, err := authRepo.GetUserByUserId(domain.UserId(parsedUserId))
+		_, err := app.GetUserById(authRepo, domain.UserId(parsedUserId))
 		if err != nil {
 			c.Status(http.StatusForbidden)
 			c.Abort()

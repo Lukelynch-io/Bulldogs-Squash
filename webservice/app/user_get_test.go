@@ -14,7 +14,7 @@ func TestGetCreatedUserByUsername(t *testing.T) {
 	const username = "username"
 	const password = "password"
 	testUser := domain.NewUser(username, password, domain.Viewer)
-	repo := new(infra.MemoryAuthRepository)
+	repo := infra.NewMemoryAuthRepository()
 	_, createUserError := repo.CreateUser(testUser)
 	if createUserError != nil {
 		t.Fatal("Failed to create initial user")
@@ -33,7 +33,7 @@ func TestErrorIsReturnedWhenNoUserByUsername(t *testing.T) {
 	const username = "username"
 	const password = "password"
 	testUser := domain.NewUser(username, password, domain.Viewer)
-	repo := new(infra.MemoryAuthRepository)
+	repo := infra.NewMemoryAuthRepository()
 	// Act
 	_, getUserError := app.GetUserByUsername(repo, testUser.Username)
 	if getUserError == nil {
@@ -46,7 +46,7 @@ func TestGetCreatedUserById(t *testing.T) {
 	const username = "username"
 	const password = "password"
 	testUser := domain.NewUser(username, password, domain.Viewer)
-	repo := new(infra.MemoryAuthRepository)
+	repo := infra.NewMemoryAuthRepository()
 	_, createUserError := repo.CreateUser(testUser)
 	if createUserError != nil {
 		t.Fatal("Failed to create initial user")
@@ -65,7 +65,7 @@ func TestErrorIsReturnedWhenNoUserByUserId(t *testing.T) {
 	const username = "username"
 	const password = "password"
 	testUser := domain.NewUser(username, password, domain.Viewer)
-	repo := new(infra.MemoryAuthRepository)
+	repo := infra.NewMemoryAuthRepository()
 	// Act
 	_, getUserError := app.GetUserById(repo, testUser.UserId)
 	if getUserError == nil {

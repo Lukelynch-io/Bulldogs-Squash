@@ -23,7 +23,7 @@ func TestGenerateAndValidateToken(t *testing.T) {
 		t.Fail()
 		return
 	}
-	claims, err := domain.ValidateToken(tokenString, secretKey)
+	claims, err := domain.ValidateToken(string(*tokenString), secretKey)
 	if err != nil {
 		t.Log(err)
 		t.Fail()

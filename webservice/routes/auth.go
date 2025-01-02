@@ -12,7 +12,8 @@ import (
 func LoadAuthRoutes(route *gin.Engine) {
 	auth := route.Group("/auth")
 	{
-		auth.POST("/token", requestToken)
+		auth.POST("/token", requestUserToken)
+		auth.DELETE("/token", revokeUserToken)
 		userAuth := auth.Group("/user")
 		{
 			userAuth.POST("/create", createUser)
@@ -27,7 +28,7 @@ type RequestTokenObj struct {
 	Password string `json:"password"`
 }
 
-func requestToken(c *gin.Context) {
+func requestUserToken(c *gin.Context) {
 	authRepo := c.MustGet(env.AuthRepo).(domain.IAuthRepo)
 	secretKey := c.MustGet(env.SecretKey).([]byte)
 	// TODO: Add call to get user claims
@@ -44,9 +45,23 @@ func requestToken(c *gin.Context) {
 	}
 
 	returnObj := struct {
-		Token string `json:"token"`
+		Token domain.TokenString `json:"token"`
 	}{
 		Token: *tokenString,
 	}
 	c.IndentedJSON(http.StatusOK, returnObj)
+}
+
+func revokeUserToken(c *gin.Context) {
+	authRepo := c.MustGet(env.AuthRepo).(domain.IAuthRepo)
+	username := c.Query("username")
+
+	err := app.RevokeUserToken(authRepo, username)
+	if err != nil {
+		if string(*err) == string(app.UserNotFoundError) {
+			c.Status(http.StatusNotFound)
+			return
+		}
+	}
+	c.Status(http.StatusOK)
 }
