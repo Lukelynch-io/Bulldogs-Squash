@@ -1,0 +1,11 @@
+services:
+  db:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: postgres:latest
+    environment:
+      POSTGRES_PASSWORD: examplepass
+      POSTGRES_DB: testdb
+    ports:
+      - "5432:5432"
