@@ -14,10 +14,16 @@ import (
 
 func SetupPostgresContainer(t *testing.T, ctx context.Context) (*postgres.PostgresContainer, func(), bool) {
 
-	dbName := "docker"
-	dbUser := "user"
+	dbName := "testdb"
+	dbUser := "docker"
 	dbPassword := "password"
-	setupFile, err := filepath.Abs("../../testdata/setup_testcontainer.sql")
+	_, err := filepath.Abs("../../testdata/create_database.sql")
+	if err != nil {
+		t.Log(err)
+		t.Fail()
+		return nil, func() {}, false
+	}
+	seedDataFile, err := filepath.Abs("../../testdata/setup_testcontainer.sql")
 	if err != nil {
 		t.Log(err)
 		t.Fail()
@@ -29,7 +35,7 @@ func SetupPostgresContainer(t *testing.T, ctx context.Context) (*postgres.Postgr
 		postgres.WithDatabase(dbName),
 		postgres.WithUsername(dbUser),
 		postgres.WithPassword(dbPassword),
-		postgres.WithInitScripts(setupFile),
+		postgres.WithInitScripts(seedDataFile),
 		testcontainers.WithWaitStrategy(
 			wait.ForLog("database system is ready to accept connections").
 				WithOccurrence(2).
