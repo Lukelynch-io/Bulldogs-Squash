@@ -21,6 +21,6 @@ func TestGrantUserWithCreateClaim(t *testing.T) {
 	repo := infra.NewMemoryAuthRepository()
 	repo.CreateUser(testUser)
 	// Act
-	result := app.UpdateUserClaims(repo, testUser.Username, claim_map)
+	result := app.UpdateUserClaims(&repo, testUser.Username, claim_map)
 	assert.Equal(t, result, http.StatusOK)
 }
