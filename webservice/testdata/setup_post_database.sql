@@ -1,0 +1,11 @@
+
+CREATE DATABASE "Posts";
+
+GRANT ALL PRIVILEGES ON DATABASE "Posts" TO postgres;
+\c Posts
+
+CREATE TABLE IF NOT EXISTS "Posts" (
+    Id INT PRIMARY KEY,
+    Title VARCHAR(255) NOT NULL,
+    Post JSONB
+)

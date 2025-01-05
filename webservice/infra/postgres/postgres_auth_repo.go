@@ -1,37 +1,74 @@
-package infra
+package postgres
 
 import (
 	"database/sql"
-	"fmt"
 	"log"
 
 	_ "github.com/lib/pq"
 )
 
-type Test struct {
-	Id   int32
-	Name string
+type PostgresAuthDatabase struct {
+	db *sql.DB
 }
 
-func SelectFromPostgresTable(connStr string) {
+func (db *PostgresAuthDatabase) Connect(connStr string) {
 	database, err := sql.Open("postgres", connStr)
 	if err != nil {
 		log.Fatalln(err)
 	}
+	db.db = database
+}
 
-	rows, err := database.Query("SELECT * from testdb")
+func (db *PostgresAuthDatabase) SelectUserFromAuthDatabase(username string) *User {
+	sqlStatement := `
+	SELECT * from "Users"
+	WHERE username like $1
+	`
+	rows, err := db.db.Query(sqlStatement, username)
 	defer rows.Close()
 	if err != nil {
-		log.Fatalln(err)
+		panic(err)
 	}
-	var ingestedRows []Test
-
+	var foundUsers []User
 	for rows.Next() {
-		var test Test
-		if err := rows.Scan(&test.Id, &test.Name); err != nil {
+		var user User
+		if err := rows.Scan(&user.UserId, &user.Username, &user.PasswordHash, &user.Role); err != nil {
 			break
 		}
-		ingestedRows = append(ingestedRows, test)
+		foundUsers = append(foundUsers, user)
 	}
-	fmt.Printf("rows: %v\n", ingestedRows)
+	if len(foundUsers) == 0 {
+		panic("No Users found")
+	}
+	return &foundUsers[0]
+}
+
+// func (db *PostgresAuthDatabase) SelectFromPostgresTable() {
+//
+// 	rows, err := db.db.Query("SELECT * from Users")
+// 	defer rows.Close()
+// 	if err != nil {
+// 		log.Fatalln(err)
+// 	}
+// 	var ingestedRows []Test
+//
+// 	for rows.Next() {
+// 		var test Test
+// 		if err := rows.Scan(&test.Id, &test.Name); err != nil {
+// 			break
+// 		}
+// 		ingestedRows = append(ingestedRows, test)
+// 	}
+// 	fmt.Printf("rows: %v\n", ingestedRows)
+// }
+
+func (db *PostgresAuthDatabase) InsertTestUserIntoAuthDatabase(user User) {
+	InserUserStatement := `
+	INSERT INTO "Users" (userId, username, passwordHash, "role")
+	VALUES ($1, $2, $3, $4)
+	`
+	_, err := db.db.Exec(InserUserStatement, user.UserId, user.Username, user.PasswordHash, user.Role)
+	if err != nil {
+		panic(err)
+	}
 }

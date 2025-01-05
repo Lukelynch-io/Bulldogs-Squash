@@ -26,7 +26,7 @@ func setupSecretKey(secretKey []byte) gin.HandlerFunc {
 }
 
 func setupAuthRepo(c *gin.Context) {
-	c.Set(env.AuthRepo, &IAuthUserRepository)
+	c.Set(env.AuthRepo, IAuthUserRepository)
 }
 
 func setupBlogRepo(c *gin.Context) {
