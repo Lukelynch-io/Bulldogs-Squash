@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import Header from './components/Header.vue';
 import LoginModal from './components/LoginModal.vue';
+import { jwtDecode } from 'jwt-decode';
 
 const isLoginActive = ref(false);
 
@@ -11,6 +12,8 @@ const toggleLoginModel = () => {
 
 const storeBearerToken = (token: string) => {
   localStorage.setItem("bearerToken", token)
+  const decoded = jwtDecode(token)
+  console.log(decoded)
 }
 </script>
 
