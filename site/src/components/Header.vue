@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
-const props = defineProps<{
+const { isLoginShowing, loggedInUsername } = defineProps<{
   isLoginShowing: Function
+  loggedInUsername: string
 }>()
 
 const themeToggleTitle = ref("Dark Mode")
@@ -35,7 +36,9 @@ const toggleDarkMode = () => {
           <RouterLink class="hamburger-menu-item" to="/Post">Contact Us</RouterLink>
         </li>
         <li>
-          <p class="hamburger-menu-item" @click="props.isLoginShowing()">Login</p>
+          <p class="hamburger-menu-item" @click="isLoginShowing()">{{ loggedInUsername == "" ? "Login" :
+            loggedInUsername }}</p>
+          <!-- TODO: Show account menu options list item instead-->
         </li>
         <li>
           <p class="hamburger-menu-item" @click="toggleDarkMode">{{ themeToggleTitle }}</p>
