@@ -3,29 +3,39 @@ import { ref } from 'vue';
 import LoginButton from './LoginButton.vue';
 import PasswordInput from './PasswordInput.vue';
 import TextInput from './TextInput.vue';
+import axios from 'axios';
 
-const foo = defineProps<{
+const { flag, toggleFlag, storeBearerToken } = defineProps<{
   flag: boolean
   toggleFlag: Function
+  storeBearerToken: Function
 }>()
 
 window.onclick = function (event) {
   var modal = document.getElementById("login-modal")
   if (event.target == modal) {
-    foo.toggleFlag()
+    toggleFlag()
   }
 }
 
 const username = ref('')
 const password = ref('')
 function SendLoginRequest() {
-  console.log("Username emitted: " + username.value);
-  console.log("Password: " + password.value)
+  axios.post("/api/auth/token", {
+    username: username.value,
+    passwordHash: password.value
+  }, {
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }).then((response) => {
+    storeBearerToken(response.data.token)
+  })
 }
 </script>
 
 <template>
-  <div id="login-modal" class="modal" :class="{ 'is-visible': foo.flag, 'is-hidden': !foo.flag }">
+  <div id="login-modal" class="modal" :class="{ 'is-visible': flag, 'is-hidden': !flag }">
     <div class="modal-content">
       <div class="modal-content-wrapper">
         <TextInput placeholder="Username" @usernameChange="(user: string) => username = user" />

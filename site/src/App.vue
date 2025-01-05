@@ -8,11 +8,15 @@ const isLoginActive = ref(false);
 const toggleLoginModel = () => {
   isLoginActive.value = !isLoginActive.value
 };
+
+const storeBearerToken = (token: string) => {
+  localStorage.setItem("bearerToken", token)
+}
 </script>
 
 <template>
   <Header v-bind:is-login-showing="toggleLoginModel" />
-  <LoginModal :flag="isLoginActive" :toggle-flag="toggleLoginModel" />
+  <LoginModal :flag="isLoginActive" :toggle-flag="toggleLoginModel" :storeBearerToken="storeBearerToken" />
   <main>
     <RouterView />
   </main>

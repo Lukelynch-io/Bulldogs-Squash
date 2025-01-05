@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import sjcl from 'sjcl';
 
 const emit = defineEmits<{
   (event: 'passwordChange', password: string): void
@@ -8,9 +9,14 @@ const props = defineProps<{
   placeholder: string
 }>()
 
+function HashPassword(password: string): string {
+  const bitArray = sjcl.hash.sha256.hash(password)
+  const hash = sjcl.codec.hex.fromBits(bitArray)
+  return hash
+}
 const password = ref('')
 function emitPasswordChange() {
-  emit('passwordChange', password.value)
+  emit('passwordChange', HashPassword(password.value))
 }
 </script>
 
