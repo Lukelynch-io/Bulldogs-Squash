@@ -56,3 +56,17 @@ func updateUserClaims(c *gin.Context) {
 	c.Status(http.StatusOK)
 
 }
+
+type getUserDetailsResponse struct {
+	Username string `json:"username"`
+}
+
+func getUserDetails(c *gin.Context) {
+	currentUser := c.MustGet(env.User).(domain.User)
+
+	response := getUserDetailsResponse{
+		Username: currentUser.Username,
+	}
+	c.IndentedJSON(200, response)
+
+}

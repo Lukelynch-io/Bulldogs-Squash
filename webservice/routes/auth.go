@@ -18,6 +18,7 @@ func LoadAuthRoutes(route *gin.Engine) {
 		{
 			userAuth.POST("/create", createUser)
 			userAuth.PATCH("/claims", updateUserClaims)
+			userAuth.GET("", BearerTokenMiddleware, getUserDetails)
 		}
 	}
 

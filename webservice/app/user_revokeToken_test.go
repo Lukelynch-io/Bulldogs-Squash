@@ -12,7 +12,7 @@ func TestRevokeUserToken(t *testing.T) {
 	// Arrange
 	testAuthrepo := infra.NewMemoryAuthRepository()
 	const username = "username"
-	testAuthrepo.CreateUser(createTestUser())
+	testAuthrepo.CreateUser(CreateTestUser())
 	// Act
 	revokeResult := app.RevokeUserToken(&testAuthrepo, username)
 	// Assert

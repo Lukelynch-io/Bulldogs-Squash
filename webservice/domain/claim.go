@@ -19,3 +19,6 @@ func (claimArray ClaimArray) IntoMap() ClaimMap {
 	}
 	return claimMap
 }
+
+const CREATE_BLOG Claim = "CREATE_BLOG"
+const DELETE_BLOG Claim = "DELETE_BLOG"

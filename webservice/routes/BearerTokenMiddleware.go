@@ -28,13 +28,13 @@ func BearerTokenMiddleware(c *gin.Context) {
 
 	parsedUserId := claims.Subject
 	if parsedUserId != "" {
-		_, err := app.GetUserById(authRepo, domain.UserId(parsedUserId))
+		user, err := app.GetUserById(authRepo, domain.UserId(parsedUserId))
 		if err != nil {
 			c.Status(http.StatusForbidden)
 			c.Abort()
 			return
 		}
-		c.Set(env.UsernameToken, parsedUserId)
+		c.Set(env.User, *user)
 	} else {
 		c.Status(http.StatusBadRequest)
 		c.Abort()

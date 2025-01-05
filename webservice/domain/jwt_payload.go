@@ -56,6 +56,14 @@ func ValidateToken(tokenString string, secretKey []byte) (*customJwtClaims, erro
 		return secretKey, nil
 	})
 
+	tokenExpirationTime, err := token.Claims.GetExpirationTime()
+	if err != nil {
+		return nil, err
+	}
+	if tokenExpirationTime.Time.UTC().Before(time.Now().UTC()) {
+		return nil, fmt.Errorf("Token has expired")
+	}
+
 	if token.Valid {
 		return &customClaims, nil
 	}

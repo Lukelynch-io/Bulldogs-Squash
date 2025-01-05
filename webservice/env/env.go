@@ -3,5 +3,7 @@ package env
 const SecretKey = "secretKey"
 const AuthRepo = "authRepo"
 const BlogRepo = "blogRepo"
-const UsernameToken = "usernameToken"
+
+// Key for retreiving details about current user
+const User = "user"
 const TokenClaims = "tokenClaims"
