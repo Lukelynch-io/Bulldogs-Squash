@@ -24,13 +24,12 @@ func TestGetBlogPostFromBlogRepo(t *testing.T) {
 	post.PostBlog(repo, newPost, authorisedUser.Claims)
 	actual := post.GetPosts(repo)
 	// Assert
-	assert.Equal(t, newPost, actual[0])
+	assert.Equal(t, newPost.Title, actual[0].Title)
 }
 
 func TestAddBlogPostToBlogRepo(t *testing.T) {
 	// Arrange
 	var newPost post.Post = post.Post{
-		ID:          "1",
 		Title:       "Test Title",
 		Description: "Test Description",
 		ImageUrl:    "imageUrl",

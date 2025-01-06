@@ -2,7 +2,6 @@ package post
 
 import (
 	"errors"
-	"webservice/domain"
 	"webservice/pkg/auth"
 )
 

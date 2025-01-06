@@ -2,7 +2,6 @@ package auth_test
 
 import (
 	"testing"
-	"webservice/domain"
 	"webservice/infra"
 	"webservice/pkg/auth"
 
@@ -32,12 +31,12 @@ func TestFailToCreateUserAlreadyExists(t *testing.T) {
 	const username = "username"
 	const password = "password"
 	repo := infra.NewMemoryAuthRepository()
-	_, createUserError := auth.CreateUser(&repo, username, password, domain.Viewer)
+	_, createUserError := auth.CreateUser(&repo, username, password, auth.Viewer)
 	if createUserError != nil {
 		t.Fatal("Failed to create initial user")
 	}
 	// Act
-	_, expectedCreateUserError := auth.CreateUser(&repo, username, password, domain.Viewer)
+	_, expectedCreateUserError := auth.CreateUser(&repo, username, password, auth.Viewer)
 	if expectedCreateUserError == nil {
 		t.Fatal("Duplicate user was created")
 	}
@@ -100,10 +99,10 @@ func TestErrorIsReturnedWhenNoUserByUserId(t *testing.T) {
 	}
 }
 
-func CreateTestUser() domain.User {
+func CreateTestUser() auth.User {
 	const username = "username"
 	const password = "password"
-	return domain.NewUser(username, password, domain.Viewer)
+	return auth.NewUser(username, password, auth.Viewer)
 }
 
 func TestRevokeUserToken(t *testing.T) {
@@ -112,7 +111,7 @@ func TestRevokeUserToken(t *testing.T) {
 	const username = "username"
 	testAuthrepo.CreateUser(CreateTestUser())
 	// Act
-	revokeResult := auth.RevokeUserToken(&testAuthrepo, username)
+	revokeResult := auth.RevokeUserToken(&testAuthrepo, &testAuthrepo, username)
 	// Assert
 	assert.Equal(t, revokeResult, nil)
 }
@@ -122,7 +121,7 @@ func TestRevokeUserTokenErrorsWhenUserIsntFound(t *testing.T) {
 	testAuthrepo := infra.NewMemoryAuthRepository()
 	const username = "username"
 	// Act
-	revokeResult := auth.RevokeUserToken(&testAuthrepo, username)
+	revokeResult := auth.RevokeUserToken(&testAuthrepo, &testAuthrepo, username)
 	// Assert
 	assert.Equal(t, revokeResult, auth.UserNotFoundError)
 }
@@ -131,9 +130,9 @@ func TestGrantUserWithCreateClaim(t *testing.T) {
 	// Arrange
 	const username = "username"
 	const password = "password"
-	var testUser domain.User = domain.NewUser(username, password, domain.Viewer)
-	claim_map := make(map[domain.Claim]domain.Claim)
-	claim_map[domain.CREATE_BLOG] = domain.CREATE_BLOG
+	var testUser auth.User = auth.NewUser(username, password, auth.Viewer)
+	claim_map := make(map[auth.Claim]auth.Claim)
+	claim_map[auth.CREATE_BLOG] = auth.CREATE_BLOG
 	repo := infra.NewMemoryAuthRepository()
 	repo.CreateUser(testUser)
 	// Act

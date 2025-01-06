@@ -2,7 +2,6 @@ package routes
 
 import (
 	"net/http"
-	"webservice/domain"
 	"webservice/env"
 	"webservice/pkg/auth"
 
@@ -40,8 +39,8 @@ func requestUserToken(c *gin.Context) {
 		return
 	}
 	tokenString, resultType := auth.AuthenticateUser(authRepo, secretKey, userDetails.Username, userDetails.Password)
-	if resultType != http.StatusOK {
-		c.Status(resultType)
+	if int(resultType) != http.StatusOK {
+		c.Status(int(resultType))
 		return
 	}
 
@@ -60,7 +59,7 @@ func revokeUserToken(c *gin.Context) {
 
 	err := auth.RevokeUserToken(authRepo, tokenRepo, username)
 	if err != nil {
-		if string(*err) == string(auth.UserNotFoundError) {
+		if int(*err) == int(auth.UserNotFoundError) {
 			c.Status(http.StatusNotFound)
 			return
 		}

@@ -3,8 +3,8 @@ package postgres_test
 import (
 	"context"
 	"testing"
-	"webservice/domain"
 	"webservice/infra/postgres"
+	"webservice/pkg/auth"
 
 	"github.com/go-playground/assert/v2"
 	"github.com/google/uuid"
@@ -32,7 +32,7 @@ func TestInsertNewUserIntoTestContainerDB(t *testing.T) {
 		UserId:       uuid.New().String(),
 		Username:     "hello",
 		PasswordHash: testPasswordHash,
-		Role:         string(domain.Viewer),
+		Role:         string(auth.Viewer),
 	}
 	// Act
 	db.InsertTestUserIntoAuthDatabase(testUser)

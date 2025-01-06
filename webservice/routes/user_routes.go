@@ -2,17 +2,16 @@ package routes
 
 import (
 	"net/http"
-	"webservice/app"
-	"webservice/domain"
 	"webservice/env"
+	"webservice/pkg/auth"
 
 	"github.com/gin-gonic/gin"
 )
 
 type createUserRequestObj struct {
-	Username     string          `json:"username"`
-	PasswordHash string          `json:"passwordHash"`
-	Role         domain.UserRole `json:"role"`
+	Username     string        `json:"username"`
+	PasswordHash string        `json:"passwordHash"`
+	Role         auth.UserRole `json:"role"`
 }
 
 type createUserErrorResponse struct {
@@ -20,7 +19,7 @@ type createUserErrorResponse struct {
 }
 
 func createUser(c *gin.Context) {
-	authRepo := c.MustGet(env.AuthRepo).(domain.IAuthRepo)
+	authRepo := c.MustGet(env.AuthRepo).(auth.UserDataStorage)
 	var userDetails createUserRequestObj
 
 	if err := c.BindJSON(&userDetails); err != nil {
@@ -28,7 +27,7 @@ func createUser(c *gin.Context) {
 		return
 	}
 
-	_, createUserError := app.CreateUser(authRepo, userDetails.Username, userDetails.PasswordHash, userDetails.Role)
+	_, createUserError := auth.CreateUser(authRepo, userDetails.Username, userDetails.PasswordHash, userDetails.Role)
 	if createUserError != nil {
 		c.IndentedJSON(http.StatusInternalServerError, createUserErrorResponse{
 			Error: createUserError.Error(),
@@ -40,19 +39,19 @@ func createUser(c *gin.Context) {
 }
 
 type updateUserClaimsRequestObj struct {
-	Username string                        `json:"username"`
-	Claims   map[domain.Claim]domain.Claim `json:"claims"`
+	Username string                    `json:"username"`
+	Claims   map[auth.Claim]auth.Claim `json:"claims"`
 }
 
 func updateUserClaims(c *gin.Context) {
-	authRepo := c.MustGet(env.AuthRepo).(domain.IAuthRepo)
+	authRepo := c.MustGet(env.AuthRepo).(auth.UserDataStorage)
 	var newUserClaims updateUserClaimsRequestObj
 
 	if err := c.BindJSON(&newUserClaims); err != nil {
 		c.Status(http.StatusBadRequest)
 		return
 	}
-	app.UpdateUserClaims(authRepo, newUserClaims.Username, newUserClaims.Claims)
+	auth.UpdateUserClaims(authRepo, newUserClaims.Username, newUserClaims.Claims)
 	c.Status(http.StatusOK)
 
 }
@@ -62,7 +61,7 @@ type getUserDetailsResponse struct {
 }
 
 func getUserDetails(c *gin.Context) {
-	currentUser := c.MustGet(env.User).(domain.User)
+	currentUser := c.MustGet(env.User).(auth.User)
 
 	response := getUserDetailsResponse{
 		Username: currentUser.Username,

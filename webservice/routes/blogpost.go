@@ -2,7 +2,6 @@ package routes
 
 import (
 	"net/http"
-	"webservice/domain"
 	"webservice/env"
 	"webservice/pkg/auth"
 	"webservice/pkg/post"
