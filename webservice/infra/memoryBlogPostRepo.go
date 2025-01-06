@@ -2,14 +2,14 @@ package infra
 
 import (
 	"strconv"
-	"webservice/domain"
+	"webservice/pkg/post"
 )
 
-type MemoryBlogPostRepository struct {
-	posts []domain.Post
+type MemoryBlogStorage struct {
+	posts []post.Post
 }
 
-func (repo *MemoryBlogPostRepository) getNewPostId() (string, error) {
+func (repo *MemoryBlogStorage) getNewPostId() (string, error) {
 	var latestPost = repo.posts[len(repo.posts)-1]
 	i, err := strconv.Atoi(latestPost.ID)
 	if err != nil {
@@ -18,15 +18,11 @@ func (repo *MemoryBlogPostRepository) getNewPostId() (string, error) {
 	return strconv.Itoa(i + 1), nil
 }
 
-func (repo *MemoryBlogPostRepository) GetBlogs() []domain.Post {
+func (repo *MemoryBlogStorage) GetBlogs() []post.Post {
 	return repo.posts
 }
 
-func (repo *MemoryBlogPostRepository) PostBlog(post domain.Post) (bool, error) {
-	if len(repo.posts) == 0 {
-		repo.posts = []domain.Post{post}
-		return true, nil
-	}
+func (repo *MemoryBlogStorage) PostBlog(post post.Post) (bool, error) {
 	var newId, err = repo.getNewPostId()
 	if err != nil {
 		return false, err
@@ -36,6 +32,6 @@ func (repo *MemoryBlogPostRepository) PostBlog(post domain.Post) (bool, error) {
 	return true, nil
 }
 
-func (repo *MemoryBlogPostRepository) LoadAllPosts(posts []domain.Post) {
+func (repo *MemoryBlogStorage) LoadAllPosts(posts []post.Post) {
 	repo.posts = posts
 }

@@ -2,9 +2,10 @@ package routes
 
 import (
 	"net/http"
-	"webservice/app"
 	"webservice/domain"
 	"webservice/env"
+	"webservice/pkg/auth"
+	"webservice/pkg/post"
 
 	"github.com/gin-gonic/gin"
 )
@@ -15,19 +16,19 @@ func LoadBlogPostRoutes(router *gin.Engine) {
 }
 
 func getBlogPosts(c *gin.Context) {
-	blogRepo := c.MustGet(env.BlogRepo).(domain.IBlogRepository)
+	blogRepo := c.MustGet(env.PostRepo).(post.PostStorage)
 	c.IndentedJSON(http.StatusOK, blogRepo.GetBlogs())
 }
 
 func addBlogPost(c *gin.Context) {
-	blogRepo := c.MustGet(env.BlogRepo).(domain.IBlogRepository)
-	userClaims := c.MustGet(env.TokenClaims).(domain.ClaimArray)
-	var newBlogPost domain.Post
+	blogRepo := c.MustGet(env.PostRepo).(post.PostStorage)
+	userClaims := c.MustGet(env.TokenClaims).(auth.ClaimArray)
+	var newBlogPost post.Post
 
 	if err := c.BindJSON(&newBlogPost); err != nil {
 		c.Status(http.StatusInternalServerError)
 		return
 	}
-	app.PostBlog(blogRepo, newBlogPost, userClaims.IntoMap())
+	post.PostBlog(blogRepo, newBlogPost, userClaims.IntoMap())
 	c.Status(http.StatusCreated)
 }

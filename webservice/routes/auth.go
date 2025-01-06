@@ -2,9 +2,9 @@ package routes
 
 import (
 	"net/http"
-	"webservice/app"
 	"webservice/domain"
 	"webservice/env"
+	"webservice/pkg/auth"
 
 	"github.com/gin-gonic/gin"
 )
@@ -30,7 +30,7 @@ type RequestTokenObj struct {
 }
 
 func requestUserToken(c *gin.Context) {
-	authRepo := c.MustGet(env.AuthRepo).(domain.IAuthRepo)
+	authRepo := c.MustGet(env.AuthRepo).(auth.UserDataStorage)
 	secretKey := c.MustGet(env.SecretKey).([]byte)
 	// TODO: Add call to get user claims
 	var userDetails RequestTokenObj
@@ -39,14 +39,14 @@ func requestUserToken(c *gin.Context) {
 		c.Status(http.StatusBadRequest)
 		return
 	}
-	tokenString, resultType := app.AuthenticateUser(authRepo, secretKey, userDetails.Username, userDetails.Password)
+	tokenString, resultType := auth.AuthenticateUser(authRepo, secretKey, userDetails.Username, userDetails.Password)
 	if resultType != http.StatusOK {
 		c.Status(resultType)
 		return
 	}
 
 	returnObj := struct {
-		Token domain.TokenString `json:"token"`
+		Token auth.TokenString `json:"token"`
 	}{
 		Token: *tokenString,
 	}
@@ -54,12 +54,13 @@ func requestUserToken(c *gin.Context) {
 }
 
 func revokeUserToken(c *gin.Context) {
-	authRepo := c.MustGet(env.AuthRepo).(domain.IAuthRepo)
+	authRepo := c.MustGet(env.AuthRepo).(auth.UserDataStorage)
+	tokenRepo := c.MustGet(env.TokenStorage).(auth.TokenStorage)
 	username := c.Query("username")
 
-	err := app.RevokeUserToken(authRepo, username)
+	err := auth.RevokeUserToken(authRepo, tokenRepo, username)
 	if err != nil {
-		if string(*err) == string(app.UserNotFoundError) {
+		if string(*err) == string(auth.UserNotFoundError) {
 			c.Status(http.StatusNotFound)
 			return
 		}

@@ -1,4 +1,4 @@
-package domain
+package auth
 
 type Claim string
 type ClaimArray []Claim
