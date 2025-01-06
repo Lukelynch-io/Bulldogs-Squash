@@ -22,3 +22,5 @@
     - Contact Us
     - Membership (Signup/pay membership?)
     - Progressive Web App status?
+- Refactoring
+    - Reorganise the repo (again)
