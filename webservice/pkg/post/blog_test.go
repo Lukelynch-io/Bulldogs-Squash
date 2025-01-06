@@ -2,7 +2,6 @@ package post_test
 
 import (
 	"testing"
-	"webservice/infra"
 	"webservice/pkg/auth"
 	"webservice/pkg/post"
 
@@ -18,7 +17,7 @@ func TestGetBlogPostFromBlogRepo(t *testing.T) {
 		ImageUrl:    "imageUrl",
 	}
 	authorisedUser := auth.NewUser("username", "password", auth.Viewer)
-	repo := new(infra.MemoryBlogStorage)
+	repo := new(post.InMemoryPostStorage)
 	authorisedUser.Claims[auth.CREATE_BLOG] = auth.CREATE_BLOG
 	// Act
 	post.PostBlog(repo, newPost, authorisedUser.Claims)
@@ -35,7 +34,7 @@ func TestAddBlogPostToBlogRepo(t *testing.T) {
 		ImageUrl:    "imageUrl",
 	}
 	authorisedUser := auth.NewUser("username", "password", auth.Viewer)
-	repo := new(infra.MemoryBlogStorage)
+	repo := new(post.InMemoryPostStorage)
 	authorisedUser.Claims[auth.CREATE_BLOG] = auth.CREATE_BLOG
 
 	post.PostBlog(repo, newPost, authorisedUser.Claims)
@@ -50,7 +49,7 @@ func TestPostBlogPostAsUnauthorisedUserDoesntWork(t *testing.T) {
 		ImageUrl:    "imageUrl",
 	}
 	unauthorisedUser := auth.NewUser("username", "password", auth.Viewer)
-	repo := new(infra.MemoryBlogStorage)
+	repo := new(post.InMemoryPostStorage)
 	// Act
 	isPostBlogSuccess, _ := post.PostBlog(repo, newPost, unauthorisedUser.Claims)
 	// Assert

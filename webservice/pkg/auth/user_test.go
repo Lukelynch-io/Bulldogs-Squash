@@ -2,7 +2,6 @@ package auth_test
 
 import (
 	"testing"
-	"webservice/infra"
 	"webservice/pkg/auth"
 
 	"github.com/go-playground/assert/v2"
@@ -12,7 +11,7 @@ func TestCreateUser(t *testing.T) {
 	// Arrange
 	const username = "username"
 	const password = "password"
-	repo := infra.NewMemoryAuthRepository()
+	repo := auth.NewInMemoryAuthRepository()
 	// Act
 	newUser, createUserError := auth.CreateUser(&repo, username, password, auth.Viewer)
 	if createUserError != nil {
@@ -30,7 +29,7 @@ func TestFailToCreateUserAlreadyExists(t *testing.T) {
 	// Arrange
 	const username = "username"
 	const password = "password"
-	repo := infra.NewMemoryAuthRepository()
+	repo := auth.NewInMemoryAuthRepository()
 	_, createUserError := auth.CreateUser(&repo, username, password, auth.Viewer)
 	if createUserError != nil {
 		t.Fatal("Failed to create initial user")
@@ -46,7 +45,7 @@ func TestFailToCreateUserAlreadyExists(t *testing.T) {
 func TestGetCreatedUserByUsername(t *testing.T) {
 	// Arrange
 	testUser := CreateTestUser()
-	repo := infra.NewMemoryAuthRepository()
+	repo := auth.NewInMemoryAuthRepository()
 	_, createUserError := repo.CreateUser(testUser)
 	if createUserError != nil {
 		t.Fatal("Failed to create initial user")
@@ -63,7 +62,7 @@ func TestGetCreatedUserByUsername(t *testing.T) {
 func TestErrorIsReturnedWhenNoUserByUsername(t *testing.T) {
 	// Arrange
 	testUser := CreateTestUser()
-	repo := infra.NewMemoryAuthRepository()
+	repo := auth.NewInMemoryAuthRepository()
 	// Act
 	_, getUserError := auth.GetUserByUsername(&repo, testUser.Username)
 	if getUserError == nil {
@@ -74,7 +73,7 @@ func TestErrorIsReturnedWhenNoUserByUsername(t *testing.T) {
 func TestGetCreatedUserById(t *testing.T) {
 	// Arrange
 	testUser := CreateTestUser()
-	repo := infra.NewMemoryAuthRepository()
+	repo := auth.NewInMemoryAuthRepository()
 	_, createUserError := repo.CreateUser(testUser)
 	if createUserError != nil {
 		t.Fatal("Failed to create initial user")
@@ -91,7 +90,7 @@ func TestGetCreatedUserById(t *testing.T) {
 func TestErrorIsReturnedWhenNoUserByUserId(t *testing.T) {
 	// Arrange
 	testUser := CreateTestUser()
-	repo := infra.NewMemoryAuthRepository()
+	repo := auth.NewInMemoryAuthRepository()
 	// Act
 	_, getUserError := auth.GetUserById(&repo, testUser.UserId)
 	if getUserError == nil {
@@ -107,7 +106,7 @@ func CreateTestUser() auth.User {
 
 func TestRevokeUserToken(t *testing.T) {
 	// Arrange
-	testAuthrepo := infra.NewMemoryAuthRepository()
+	testAuthrepo := auth.NewInMemoryAuthRepository()
 	const username = "username"
 	testAuthrepo.CreateUser(CreateTestUser())
 	// Act
@@ -118,7 +117,7 @@ func TestRevokeUserToken(t *testing.T) {
 
 func TestRevokeUserTokenErrorsWhenUserIsntFound(t *testing.T) {
 	// Arrange
-	testAuthrepo := infra.NewMemoryAuthRepository()
+	testAuthrepo := auth.NewInMemoryAuthRepository()
 	const username = "username"
 	// Act
 	revokeResult := auth.RevokeUserToken(&testAuthrepo, &testAuthrepo, username)
@@ -133,7 +132,7 @@ func TestGrantUserWithCreateClaim(t *testing.T) {
 	var testUser auth.User = auth.NewUser(username, password, auth.Viewer)
 	claim_map := make(map[auth.Claim]auth.Claim)
 	claim_map[auth.CREATE_BLOG] = auth.CREATE_BLOG
-	repo := infra.NewMemoryAuthRepository()
+	repo := auth.NewInMemoryAuthRepository()
 	repo.CreateUser(testUser)
 	// Act
 	result := auth.UpdateUserClaims(&repo, testUser.Username, claim_map)

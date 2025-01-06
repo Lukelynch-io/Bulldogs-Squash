@@ -1,4 +1,4 @@
-package postgres_test
+package post_test
 
 import (
 	"context"
@@ -48,18 +48,3 @@ func SetupPostgresContainer(t *testing.T, ctx context.Context) (*postgres.Postgr
 	}
 	return postgresContainer, terminateContainer, true
 }
-
-// func TestTestContainers(t *testing.T) {
-// 	ctx := context.Background()
-// 	postgresContainer, terminateContainerFunction, isSuccess := SetupPostgresContainer(t, ctx)
-// 	defer terminateContainerFunction()
-// 	if !isSuccess {
-// 		t.Fatal("Something went wrong setting up the test container")
-// 	}
-// 	connStr, err := postgresContainer.ConnectionString(ctx, "sslmode=disable")
-// 	if err != nil {
-// 		t.Log(err)
-// 	}
-//
-// 	infra.SelectFromPostgresTable(connStr)
-// }

@@ -1,23 +1,22 @@
-package infra
+package auth
 
 import (
 	"errors"
-	"webservice/pkg/auth"
 )
 
-type MemoryAuthRepository struct {
-	users  []auth.User
-	tokens map[auth.UserId][]auth.TokenString
+type InMemoryAuthRepository struct {
+	users  []User
+	tokens map[UserId][]TokenString
 }
 
-func NewMemoryAuthRepository() MemoryAuthRepository {
-	return MemoryAuthRepository{
-		users:  make([]auth.User, 0),
-		tokens: make(map[auth.UserId][]auth.TokenString),
+func NewInMemoryAuthRepository() InMemoryAuthRepository {
+	return InMemoryAuthRepository{
+		users:  make([]User, 0),
+		tokens: make(map[UserId][]TokenString),
 	}
 }
 
-func (repo *MemoryAuthRepository) GetUserByUserId(userId auth.UserId) (*auth.User, error) {
+func (repo *InMemoryAuthRepository) GetUserByUserId(userId UserId) (*User, error) {
 	for i := 0; i < len(repo.users); i++ {
 		if repo.users[i].UserId == userId {
 			return &repo.users[i], nil
@@ -26,7 +25,7 @@ func (repo *MemoryAuthRepository) GetUserByUserId(userId auth.UserId) (*auth.Use
 	return nil, errors.New("Could not find user")
 }
 
-func (repo *MemoryAuthRepository) GetUserByUsername(username string) (*auth.User, error) {
+func (repo *InMemoryAuthRepository) GetUserByUsername(username string) (*User, error) {
 	for _, user := range repo.users {
 		if user.Username == username {
 			return &user, nil
@@ -35,7 +34,7 @@ func (repo *MemoryAuthRepository) GetUserByUsername(username string) (*auth.User
 	return nil, errors.New("User not found")
 }
 
-func (repo *MemoryAuthRepository) CreateUser(newUser auth.User) (*auth.User, error) {
+func (repo *InMemoryAuthRepository) CreateUser(newUser User) (*User, error) {
 	for i := 0; i < len(repo.users); i++ {
 		if repo.users[i].Username == newUser.Username {
 			return nil, errors.New("Username already taken. Please try another")
@@ -46,7 +45,7 @@ func (repo *MemoryAuthRepository) CreateUser(newUser auth.User) (*auth.User, err
 	return &newUser, nil
 }
 
-func (repo *MemoryAuthRepository) updateUser(userId auth.UserId, updatedUser auth.User) (bool, error) {
+func (repo *InMemoryAuthRepository) updateUser(userId UserId, updatedUser User) (bool, error) {
 	for i := 0; i < len(repo.users); i++ {
 		if repo.users[i].UserId == userId {
 			repo.users[i] = updatedUser
@@ -56,7 +55,7 @@ func (repo *MemoryAuthRepository) updateUser(userId auth.UserId, updatedUser aut
 	return false, errors.New("User not found")
 }
 
-func (repo *MemoryAuthRepository) GrantUserClaim(userId auth.UserId, newClaim auth.Claim) (bool, error) {
+func (repo *InMemoryAuthRepository) GrantUserClaim(userId UserId, newClaim Claim) (bool, error) {
 	foundUser, getUserError := repo.GetUserByUserId(userId)
 	if getUserError != nil {
 		return false, getUserError
@@ -65,12 +64,12 @@ func (repo *MemoryAuthRepository) GrantUserClaim(userId auth.UserId, newClaim au
 	return true, nil
 }
 
-func (repo *MemoryAuthRepository) StoreToken(userId auth.UserId, tokenId auth.TokenString) error {
+func (repo *InMemoryAuthRepository) StoreToken(userId UserId, tokenId TokenString) error {
 	repo.tokens[userId] = append(repo.tokens[userId], tokenId)
 	return nil
 }
 
-func (repo *MemoryAuthRepository) RevokeToken(userId auth.UserId) error {
+func (repo *InMemoryAuthRepository) RevokeToken(userId UserId) error {
 	delete(repo.tokens, userId)
 	return nil
 }

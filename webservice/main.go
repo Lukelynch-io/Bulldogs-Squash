@@ -5,7 +5,6 @@ import (
 	"log"
 	"os"
 	"webservice/env"
-	"webservice/infra"
 	"webservice/pkg/auth"
 	"webservice/pkg/post"
 	"webservice/routes"
@@ -14,7 +13,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-var IBlogPostRepository post.PostStorage = new(infra.MemoryBlogStorage)
+var IBlogPostRepository post.PostStorage = new(post.InMemoryPostStorage)
 var IAuthUserRepository auth.UserDataStorage
 var TokenStorage auth.TokenStorage
 var SecretKey []byte
@@ -37,7 +36,7 @@ func setupBlogRepo(c *gin.Context) {
 }
 
 func init() {
-	authRepo := infra.NewMemoryAuthRepository()
+	authRepo := auth.NewInMemoryAuthRepository()
 	IAuthUserRepository = &authRepo
 	TokenStorage = &authRepo
 	secretKey := os.Getenv(JWT_SECRET_KEY)
