@@ -13,12 +13,6 @@ func LoadAuthRoutes(route *gin.Engine) {
 	{
 		auth.POST("/token", requestUserToken)
 		auth.DELETE("/token", revokeUserToken)
-		userAuth := auth.Group("/user")
-		{
-			userAuth.POST("/create", createUser)
-			userAuth.PATCH("/claims", updateUserClaims)
-			userAuth.GET("", BearerTokenMiddleware, getUserDetails)
-		}
 	}
 
 }

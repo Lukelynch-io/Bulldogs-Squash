@@ -1,11 +1,20 @@
-
-CREATE DATABASE "Posts";
+DO
+$$
+BEGIN
+    IF NOT EXISTS (
+        SELECT FROM pg_database WHERE datname = 'Posts'
+    ) THEN
+        CREATE DATABASE "Posts";
+    END IF;
+END
+$$;
 
 GRANT ALL PRIVILEGES ON DATABASE "Posts" TO postgres;
 \c Posts
 
 CREATE TABLE IF NOT EXISTS "Posts" (
-    Id INT PRIMARY KEY,
+    Id UUID PRIMARY KEY,
     Title VARCHAR(255) NOT NULL,
-    Post JSONB
+    Description TEXT,
+    ImageUrl VARCHAR(255)
 )

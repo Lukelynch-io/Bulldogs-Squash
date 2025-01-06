@@ -28,6 +28,6 @@ func addBlogPost(c *gin.Context) {
 		c.Status(http.StatusInternalServerError)
 		return
 	}
-	post.PostBlog(blogRepo, newBlogPost, userClaims.IntoMap())
+	post.InsertPost(blogRepo, newBlogPost, userClaims.IntoMap())
 	c.Status(http.StatusCreated)
 }

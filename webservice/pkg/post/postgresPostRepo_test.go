@@ -5,7 +5,9 @@ import (
 	"path/filepath"
 	"testing"
 	"time"
+	"webservice/pkg/post"
 
+	"github.com/google/uuid"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/modules/postgres"
 	"github.com/testcontainers/testcontainers-go/wait"
@@ -13,10 +15,10 @@ import (
 
 func SetupPostgresContainer(t *testing.T, ctx context.Context) (*postgres.PostgresContainer, func(), bool) {
 
-	dbName := "Auth"
+	dbName := "Posts"
 	dbUser := "postgres"
 	dbPassword := "password"
-	seedDataFile, err := filepath.Abs("../../testdata/setup_auth_database.sql")
+	seedDataFile, err := filepath.Abs("../../testdata/setup_post_database.sql")
 	if err != nil {
 		t.Log(err)
 		t.Fail()
@@ -47,4 +49,33 @@ func SetupPostgresContainer(t *testing.T, ctx context.Context) (*postgres.Postgr
 		return nil, func() {}, false
 	}
 	return postgresContainer, terminateContainer, true
+}
+
+func TestInsertPost(t *testing.T) {
+	ctx := context.Background()
+	pqContainer, terminate, isSuccess := SetupPostgresContainer(t, ctx)
+	defer terminate()
+	if !isSuccess {
+		t.Fatal("Something went wrong setting up the test container")
+	}
+	connStr, err := pqContainer.ConnectionString(ctx, "sslmode=disable")
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(connStr)
+	var db post.PostStorage
+	pgdb := new(post.PostgresPostDatabase)
+	pgdb.Connect(connStr)
+	db = pgdb
+	testPost := post.Post{
+		ID:          uuid.NewString(),
+		Title:       "Test Title",
+		Description: "Test Description",
+		ImageUrl:    "Test URL",
+	}
+	// Act
+	_, insertError := db.InsertPost(testPost)
+	if insertError != nil {
+		t.Fatal(insertError)
+	}
 }

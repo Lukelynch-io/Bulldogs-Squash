@@ -13,8 +13,10 @@ func (repo *InMemoryPostStorage) GetBlogs() []Post {
 	return repo.posts
 }
 
-func (repo *InMemoryPostStorage) PostBlog(post Post) (bool, error) {
-	post.ID = uuid.NewString()
+func (repo *InMemoryPostStorage) InsertPost(post Post) (bool, error) {
+	if post.ID == "" {
+		post.ID = uuid.NewString()
+	}
 	repo.posts = append(repo.posts, post)
 	return true, nil
 }

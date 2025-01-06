@@ -1,22 +1,13 @@
 package auth
 
 import (
-	"database/sql"
-	"log"
+	"webservice/pkg/database"
 
 	_ "github.com/lib/pq"
 )
 
 type PostgresAuthDatabase struct {
-	db *sql.DB
-}
-
-func (db *PostgresAuthDatabase) Connect(connStr string) {
-	database, err := sql.Open("postgres", connStr)
-	if err != nil {
-		log.Fatalln(err)
-	}
-	db.db = database
+	database.PostgresDatabase
 }
 
 func (db *PostgresAuthDatabase) SelectUserFromAuthDatabase(username string) *User {
@@ -24,7 +15,8 @@ func (db *PostgresAuthDatabase) SelectUserFromAuthDatabase(username string) *Use
 	SELECT * from "Users"
 	WHERE username like $1
 	`
-	rows, err := db.db.Query(sqlStatement, username)
+
+	rows, err := db.DB.Query(sqlStatement, username)
 	defer rows.Close()
 	if err != nil {
 		panic(err)
@@ -63,11 +55,11 @@ func (db *PostgresAuthDatabase) SelectUserFromAuthDatabase(username string) *Use
 // }
 
 func (db *PostgresAuthDatabase) InsertTestUserIntoAuthDatabase(user User) {
-	InserUserStatement := `
+	InsertUserStatement := `
 	INSERT INTO "Users" (userId, username, passwordHash, "role")
 	VALUES ($1, $2, $3, $4)
 	`
-	_, err := db.db.Exec(InserUserStatement, user.UserId, user.Username, user.PasswordHash, user.Role)
+	_, err := db.DB.Exec(InsertUserStatement, user.UserId, user.Username, user.PasswordHash, user.Role)
 	if err != nil {
 		panic(err)
 	}

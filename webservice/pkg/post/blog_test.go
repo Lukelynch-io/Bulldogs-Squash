@@ -6,12 +6,13 @@ import (
 	"webservice/pkg/post"
 
 	"github.com/go-playground/assert/v2"
+	"github.com/google/uuid"
 )
 
 func TestGetBlogPostFromBlogRepo(t *testing.T) {
 	// Arrange
 	var newPost post.Post = post.Post{
-		ID:          "1",
+		ID:          uuid.NewString(),
 		Title:       "Test Title",
 		Description: "Test Description",
 		ImageUrl:    "imageUrl",
@@ -20,15 +21,16 @@ func TestGetBlogPostFromBlogRepo(t *testing.T) {
 	repo := new(post.InMemoryPostStorage)
 	authorisedUser.Claims[auth.CREATE_BLOG] = auth.CREATE_BLOG
 	// Act
-	post.PostBlog(repo, newPost, authorisedUser.Claims)
+	post.InsertPost(repo, newPost, authorisedUser.Claims)
 	actual := post.GetPosts(repo)
 	// Assert
-	assert.Equal(t, newPost.Title, actual[0].Title)
+	assert.Equal(t, newPost, actual[0])
 }
 
 func TestAddBlogPostToBlogRepo(t *testing.T) {
 	// Arrange
 	var newPost post.Post = post.Post{
+		ID:          uuid.NewString(),
 		Title:       "Test Title",
 		Description: "Test Description",
 		ImageUrl:    "imageUrl",
@@ -37,13 +39,13 @@ func TestAddBlogPostToBlogRepo(t *testing.T) {
 	repo := new(post.InMemoryPostStorage)
 	authorisedUser.Claims[auth.CREATE_BLOG] = auth.CREATE_BLOG
 
-	post.PostBlog(repo, newPost, authorisedUser.Claims)
+	post.InsertPost(repo, newPost, authorisedUser.Claims)
 }
 
 func TestPostBlogPostAsUnauthorisedUserDoesntWork(t *testing.T) {
 	// Arrange
 	var newPost post.Post = post.Post{
-		ID:          "1",
+		ID:          uuid.NewString(),
 		Title:       "Test Title",
 		Description: "Test Description",
 		ImageUrl:    "imageUrl",
@@ -51,7 +53,7 @@ func TestPostBlogPostAsUnauthorisedUserDoesntWork(t *testing.T) {
 	unauthorisedUser := auth.NewUser("username", "password", auth.Viewer)
 	repo := new(post.InMemoryPostStorage)
 	// Act
-	isPostBlogSuccess, _ := post.PostBlog(repo, newPost, unauthorisedUser.Claims)
+	isPostBlogSuccess, _ := post.InsertPost(repo, newPost, unauthorisedUser.Claims)
 	// Assert
 	assert.Equal(t, isPostBlogSuccess, false)
 }

@@ -8,6 +8,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func LoadUserRoutes(route *gin.Engine) {
+	userAuth := route.Group("/auth/user")
+	{
+		userAuth.POST("/create", createUser)
+		userAuth.PATCH("/claims", updateUserClaims)
+		userAuth.GET("", BearerTokenMiddleware, getUserDetails)
+	}
+}
+
 type createUserRequestObj struct {
 	Username     string        `json:"username"`
 	PasswordHash string        `json:"passwordHash"`
