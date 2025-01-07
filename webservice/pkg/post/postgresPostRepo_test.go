@@ -7,6 +7,7 @@ import (
 	"time"
 	"webservice/pkg/post"
 
+	"github.com/go-playground/assert/v2"
 	"github.com/google/uuid"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/modules/postgres"
@@ -77,5 +78,29 @@ func TestInsertPost(t *testing.T) {
 }
 
 func TestGetPost(t *testing.T) {
+	// Arrange
+	connStr, terminateFunction, err := SetupPostgresContainer(t)
+	defer terminateFunction()
+	if err != nil {
+		t.Fatal("Something went wrong setting up the test container")
+	}
+	var db post.PostStorage
+	pgdb := new(post.PostgresPostDatabase)
+	pgdb.Connect(connStr)
+	db = pgdb
+	testPost := post.Post{
+		ID:          uuid.NewString(),
+		Title:       "Test Title",
+		Description: "Test Description",
+		ImageUrl:    "Test URL",
+	}
+	_, insertError := db.InsertPost(testPost)
+	if insertError != nil {
+		t.Fatal(insertError)
+	}
+	// Act
+	blogs := db.GetBlogs()
+	// Assert
+	assert.Equal(t, blogs[0], testPost)
 
 }

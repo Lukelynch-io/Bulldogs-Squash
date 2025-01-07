@@ -19,10 +19,11 @@ func (db *PostgresPostDatabase) GetBlogs() []Post {
 
 	for rows.Next() {
 		var post Post
+
 		if err := rows.Scan(&post.ID, &post.Title, &post.Description, &post.ImageUrl); err != nil {
 			panic(err)
 		}
-
+		posts = append(posts, post)
 	}
 
 	return posts
