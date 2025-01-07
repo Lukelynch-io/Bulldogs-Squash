@@ -38,7 +38,7 @@ const toggleDarkMode = () => {
         <li>
           <p class="hamburger-menu-item" @click="isLoginShowing()">{{ loggedInUsername == "" ? "Login" :
             loggedInUsername }}</p>
-          <!-- TODO: Show account menu options list item instead-->
+          <!-- TODO: Show account menu options list item instead -->
         </li>
         <li>
           <p class="hamburger-menu-item" @click="toggleDarkMode">{{ themeToggleTitle }}</p>

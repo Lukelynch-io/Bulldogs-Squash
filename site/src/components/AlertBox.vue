@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { MessageType } from '@/datatypes/MessageType';
+import { MessageType } from '@/datatypes/MessageType';
 import { onMounted, ref } from 'vue';
 
-const props = defineProps<{
+const { messageType, messageTitle, messageDescription } = defineProps<{
   messageType: MessageType
   messageTitle: string
   messageDescription: string
@@ -14,13 +14,26 @@ onMounted(() => {
     showAlert.value = true;
   }, 100);
 })
+
+function determineAlertColour() {
+  if (messageType == MessageType.Success)
+    return "green-alert"
+  switch (messageType) {
+    case MessageType.Info:
+      return "blue-alert";
+    case MessageType.Warning:
+      return "orange-alert"
+    case MessageType.Error:
+      return "red-alert"
+  }
+}
 </script>
 
 <template>
   <div class="alert-area" :class="{ show: showAlert }">
-    <div class="alert-wrapper">
-      <h3 class="alert-header">{{ props.messageTitle }}</h3>
-      <p>{{ props.messageDescription }}</p>
+    <div class="alert-wrapper" :class="determineAlertColour()">
+      <h3 class="alert-header">{{ messageTitle }}</h3>
+      <p>{{ messageDescription }}</p>
     </div>
   </div>
 </template>
@@ -30,9 +43,27 @@ onMounted(() => {
   text-align: center;
 }
 
-.alert-wrapper {
+.green-alert {
   border: 5px solid greenyellow;
   background: green;
+}
+
+.blue-alert {
+  border: 5px solid aliceblue;
+  background: blue;
+}
+
+.orange-alert {
+  border: 5px solid yellow;
+  background: orange;
+}
+
+.red-alert {
+  border: 5px solid red;
+  background: red;
+}
+
+.alert-wrapper {
   color: white;
   border-radius: 5px 5px 5px 5px;
   padding-left: 1rem;

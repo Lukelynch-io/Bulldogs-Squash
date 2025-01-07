@@ -2,38 +2,26 @@
 import { ref } from 'vue';
 import Header from './components/Header.vue';
 import LoginModal from './components/LoginModal.vue';
-import { jwtDecode } from 'jwt-decode';
-import axios from 'axios';
+import { GetUsername } from './api_calls';
 
 const isLoginActive = ref(false);
+const token = ref("")
 const loggedInUser = ref("");
 
 const toggleLoginModel = () => {
   isLoginActive.value = !isLoginActive.value
 };
 
-const storeBearerToken = (token: string) => {
-  localStorage.setItem("bearerToken", token)
-  const decoded = jwtDecode(token)
-  console.log(decoded)
-  GetUsername(token)
-}
-
-function GetUsername(token: string) {
-  axios.get("/api/auth/user", {
-    headers: {
-      "Authorization": "Bearer " + token
-    }
-  }).then((response) => {
-    loggedInUser.value = response.data.username
-  })
+async function HandleTokenUpdate(newToken: string) {
+  token.value = newToken
+  loggedInUser.value = await GetUsername(token.value)
 }
 
 </script>
 
 <template>
   <Header v-bind:is-login-showing="toggleLoginModel" :loggedInUsername="loggedInUser" />
-  <LoginModal :flag="isLoginActive" :toggle-flag="toggleLoginModel" :storeBearerToken="storeBearerToken" />
+  <LoginModal :flag="isLoginActive" :toggle-flag="toggleLoginModel" @tokenUpdate="HandleTokenUpdate" />
   <main>
     <RouterView />
   </main>

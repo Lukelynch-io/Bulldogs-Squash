@@ -3,12 +3,14 @@ import { ref } from 'vue';
 import LoginButton from './LoginButton.vue';
 import PasswordInput from './PasswordInput.vue';
 import TextInput from './TextInput.vue';
-import axios from 'axios';
+import { RequestUserToken } from '@/api_calls';
 
-const { flag, toggleFlag, storeBearerToken } = defineProps<{
+const { flag, toggleFlag } = defineProps<{
   flag: boolean
   toggleFlag: Function
-  storeBearerToken: Function
+}>()
+const emit = defineEmits<{
+  (event: 'tokenUpdate', token: string): void
 }>()
 
 window.onclick = function (event) {
@@ -20,17 +22,9 @@ window.onclick = function (event) {
 
 const username = ref('')
 const password = ref('')
-function SendLoginRequest() {
-  axios.post("/api/auth/token", {
-    username: username.value,
-    passwordHash: password.value
-  }, {
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }).then((response) => {
-    storeBearerToken(response.data.token)
-  })
+async function SendLoginRequest() {
+  let token = await RequestUserToken(username.value, password.value)
+  emit('tokenUpdate', token)
 }
 </script>
 
