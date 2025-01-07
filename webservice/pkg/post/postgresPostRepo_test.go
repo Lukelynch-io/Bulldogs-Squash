@@ -13,16 +13,14 @@ import (
 	"github.com/testcontainers/testcontainers-go/wait"
 )
 
-func SetupPostgresContainer(t *testing.T, ctx context.Context) (*postgres.PostgresContainer, func(), bool) {
-
+func SetupPostgresContainer(t *testing.T) (string, func(), error) {
+	ctx := context.Background()
 	dbName := "Posts"
 	dbUser := "postgres"
 	dbPassword := "password"
 	seedDataFile, err := filepath.Abs("../../testdata/setup_post_database.sql")
 	if err != nil {
-		t.Log(err)
-		t.Fail()
-		return nil, func() {}, false
+		return "", func() {}, err
 	}
 
 	postgresContainer, startContainerError := postgres.Run(ctx,
@@ -46,23 +44,21 @@ func SetupPostgresContainer(t *testing.T, ctx context.Context) (*postgres.Postgr
 	if startContainerError != nil {
 		t.Logf("failed to start container: %s", startContainerError)
 		t.Fail()
-		return nil, func() {}, false
+		return "", func() {}, startContainerError
 	}
-	return postgresContainer, terminateContainer, true
-}
-
-func TestInsertPost(t *testing.T) {
-	ctx := context.Background()
-	pqContainer, terminate, isSuccess := SetupPostgresContainer(t, ctx)
-	defer terminate()
-	if !isSuccess {
-		t.Fatal("Something went wrong setting up the test container")
-	}
-	connStr, err := pqContainer.ConnectionString(ctx, "sslmode=disable")
+	connStr, err := postgresContainer.ConnectionString(ctx, "sslmode=disable")
 	if err != nil {
 		t.Fatal(err)
 	}
-	t.Log(connStr)
+	return connStr, terminateContainer, nil
+}
+
+func TestInsertPost(t *testing.T) {
+	connStr, terminateFunction, err := SetupPostgresContainer(t)
+	defer terminateFunction()
+	if err != nil {
+		t.Fatal("Something went wrong setting up the test container")
+	}
 	var db post.PostStorage
 	pgdb := new(post.PostgresPostDatabase)
 	pgdb.Connect(connStr)
@@ -78,4 +74,8 @@ func TestInsertPost(t *testing.T) {
 	if insertError != nil {
 		t.Fatal(insertError)
 	}
+}
+
+func TestGetPost(t *testing.T) {
+
 }
