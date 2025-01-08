@@ -4,6 +4,7 @@ import AlertBox from '../components/AlertBox.vue'
 import { MessageType } from '@/datatypes/MessageType'
 
 
+
 const meta: Meta<typeof AlertBox> = {
   component: AlertBox,
 }
@@ -29,4 +30,14 @@ export const Primary: Story = {
     messageTitle: "Alert Title",
     messageDescription: "This is the message"
   },
+  argTypes: {
+    messageType: {
+      options: Object.keys(MessageType).filter((item) => {
+        return isNaN(Number(item))
+      }),
+      control: {
+        type: 'select'
+      }
+    }
+  }
 }

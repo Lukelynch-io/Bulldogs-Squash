@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import type BlogPostData from '@/datatypes/BlogPost';
-import { ref } from 'vue';
+import TextArea from '@/components/TextArea.vue';
+import { reactive, ref } from 'vue';
+import TextInput from '@/components/TextInput.vue';
+import FileInput from '@/components/FileInput.vue';
 
 const newPostTitle = ref<string>("");
 const newPostDescription = ref<string>("");
+const textAreaPostDetail = "Post Detail"
+let uploadedFile = reactive(File)
 function PostBlogPost(test: BlogPostData) {
   fetch("/api/blogposts", {
     method: "POST",
@@ -29,16 +34,28 @@ const addPost = () => {
   }
   console.error("Invalid Post");
 };
-</script>
 
+
+function onFileChange(e: any) {
+  var files = e.target.files || e.dataTransfer.files;
+  if (!files.length)
+    return;
+  uploadedFile = files[0]
+  console.log(uploadedFile)
+}
+const acceptedFileTypes = ["image/png", "image/jpeg"].join(",")
+</script>
 
 <template>
   <div>
-    <input type="text" v-model="newPostTitle" placeholder="Enter a blog title" />
-    <br>
-    <textarea rows="5" cols="50" v-model="newPostDescription" placeholder="Enter your blog description"
-      @keyup.enter="addPost" />
-    <br>
-    <button @click="addPost">Add Post</button>
+    <form @submit.prevent="addPost">
+      <TextInput :placeholder='"Test"' />
+      <br>
+      <TextArea :placeholder="textAreaPostDetail" @keyup.enter="addPost" />
+      <br>
+      <FileInput id="file" :acceptedFileTypes="acceptedFileTypes" v-on:fileChange="onFileChange" />
+      <br>
+      <button type="submit">Add Post</button>
+    </form>
   </div>
 </template>

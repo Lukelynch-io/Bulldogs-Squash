@@ -2,20 +2,20 @@
 import { ref } from 'vue';
 
 const emit = defineEmits<{
-  (event: 'usernameChange', username: string): void
+  (event: 'textChange', text: string): void
 }>()
 const props = defineProps<{
   placeholder: string,
 }>()
 
-const username = ref('')
-function emitUsernameChange() {
-  emit('usernameChange', username.value)
+const text = ref('')
+function emitTextChange() {
+  emit('textChange', text.value)
 }
 </script>
 
 <template>
-  <input type="text" :placeholder="props.placeholder" v-model="username" @input="emitUsernameChange()" />
+  <input type="text" :placeholder="props.placeholder" v-model="text" @input="emitTextChange()" />
 </template>
 
 <style scoped>
