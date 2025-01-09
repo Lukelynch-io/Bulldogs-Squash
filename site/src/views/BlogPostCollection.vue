@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import type BlogPostData from '@/datatypes/BlogPost';
 import BlogPost from '../components/BlogPost.vue';
 import AlertBox from '@/components/AlertBox.vue';
@@ -9,7 +9,7 @@ const blogPosts = ref<BlogPostData[]>([]); // Reactive array for blog posts
 const errorOccurred = ref(false);
 const errorMessage = ref('')
 const errorTitle = ref('Error Title')
-
+let postLoadInterval = 0;
 function RefreshBlogPosts() {
   // Fetch blog posts from the API
   fetch("/api/blogposts")
@@ -26,7 +26,11 @@ function RefreshBlogPosts() {
 
 onMounted(() => {
   RefreshBlogPosts();
-  setInterval(RefreshBlogPosts, 10000);
+  postLoadInterval = setInterval(RefreshBlogPosts, 10000);
+})
+
+onUnmounted(() => {
+  clearInterval(postLoadInterval)
 })
 
 </script>
