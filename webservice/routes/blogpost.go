@@ -1,9 +1,10 @@
 package routes
 
 import (
-	"mime/multipart"
 	"net/http"
 	"webservice/env"
+	"webservice/pkg/auth"
+	"webservice/pkg/filestore"
 	"webservice/pkg/post"
 
 	"github.com/gin-gonic/gin"
@@ -11,28 +12,24 @@ import (
 
 func LoadBlogPostRoutes(router *gin.Engine) {
 	router.GET("/blogposts", getBlogPosts)
-	router.POST("/blogposts", addBlogPost)
+	router.POST("/blogposts", BearerTokenMiddleware, addBlogPost)
 }
 
 func getBlogPosts(c *gin.Context) {
 	blogRepo := c.MustGet(env.PostRepo).(post.PostStorage)
-	c.IndentedJSON(http.StatusOK, blogRepo.GetBlogs())
-}
-
-type PostWithFile struct {
-	PostTitle       string                `form:"postTitle"`
-	PostDescription string                `form:"postDescription"`
-	FileData        *multipart.FileHeader `form:"imageFile"`
+	c.IndentedJSON(http.StatusOK, post.GetPosts(blogRepo))
 }
 
 func addBlogPost(c *gin.Context) {
-	// blogRepo := c.MustGet(env.PostRepo).(post.PostStorage)
-	// userClaims := c.MustGet(env.TokenClaims).(auth.ClaimArray)
-	var newBlogPost PostWithFile
+	postRepo := c.MustGet(env.PostRepo).(post.PostStorage)
+	userClaims := c.MustGet(env.TokenClaims).(auth.ClaimArray)
+	var newBlogPost post.NewPost
 
-	if err := c.ShouldBind(&newBlogPost); err != nil {
+	if err := c.Bind(&newBlogPost); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
 	}
-	c.SaveUploadedFile(newBlogPost.FileData, "/Users/lukelynch/Desktop/hello.png")
+	filestore.SetFilestoreLocation("/Users/lukelynch/Desktop/")
+	post.InsertPost(postRepo, newBlogPost, userClaims.IntoMap())
 	c.Status(http.StatusCreated)
 }

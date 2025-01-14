@@ -9,7 +9,7 @@ type InMemoryPostStorage struct {
 	posts []Post
 }
 
-func (repo *InMemoryPostStorage) GetBlogs() []Post {
+func (repo *InMemoryPostStorage) GetPosts() []Post {
 	return repo.posts
 }
 

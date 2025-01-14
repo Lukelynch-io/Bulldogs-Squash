@@ -48,7 +48,9 @@ func init() {
 }
 
 func main() {
+	gin.ForceConsoleColor()
 	router := gin.New()
+
 	router.Use(
 		setupSecretKey(SecretKey),
 		setupAuthRepo,
