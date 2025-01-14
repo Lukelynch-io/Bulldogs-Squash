@@ -6,6 +6,7 @@ import (
 	"os"
 	"webservice/env"
 	"webservice/pkg/auth"
+	"webservice/pkg/filestore"
 	"webservice/pkg/post"
 	"webservice/routes"
 	"webservice/testdata"
@@ -16,6 +17,7 @@ import (
 var IBlogPostRepository post.PostStorage = new(post.InMemoryPostStorage)
 var IAuthUserRepository auth.UserDataStorage
 var TokenStorage auth.TokenStorage
+var FileStorage filestore.LocalFilestore
 var SecretKey []byte
 
 const JWT_SECRET_KEY = "Jwt_Secret_Key"
@@ -35,6 +37,11 @@ func setupBlogRepo(c *gin.Context) {
 	c.Set(env.PostRepo, IBlogPostRepository)
 }
 
+func setupFileStorage(c *gin.Context) {
+	FileStorage.SetFilestoreLocation("/Users/lukelynch/Desktop/")
+	c.Set(env.FileStorage, FileStorage)
+}
+
 func init() {
 	authRepo := auth.NewInMemoryAuthRepository()
 	IAuthUserRepository = &authRepo
@@ -48,7 +55,6 @@ func init() {
 }
 
 func main() {
-	gin.ForceConsoleColor()
 	router := gin.New()
 
 	router.Use(

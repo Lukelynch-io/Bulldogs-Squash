@@ -8,30 +8,21 @@ import (
 	"github.com/google/uuid"
 )
 
-var filestoreLocation string
-
-func SetFilestoreLocation(path string) {
-	filestoreLocation = path
+type Filestore interface {
+	StoreFile(file *multipart.FileHeader) (string, error)
 }
 
-func extractFilenameExtension(filename string) string {
-	extensionStart := -1
-	for i := len(filename) - 1; i >= 0; i-- {
-		if filename[i] == '.' {
-			extensionStart = i
-			break
-		}
-	}
-
-	if extensionStart == -1 {
-		return ""
-	}
-	return filename[extensionStart:]
+type LocalFilestore struct {
+	filestoreLocation string
 }
 
-func StoreFile(file *multipart.FileHeader) (string, error) {
+func (fs *LocalFilestore) SetFilestoreLocation(path string) {
+	fs.filestoreLocation = path
+}
+
+func (fs *LocalFilestore) StoreFile(file *multipart.FileHeader) (string, error) {
 	newFileName := uuid.NewString()
-	completeFilePath := filestoreLocation + newFileName + extractFilenameExtension(file.Filename)
+	completeFilePath := fs.filestoreLocation + newFileName + extractFilenameExtension(file.Filename)
 	// TODO: validate filepath
 	inputfile, err := file.Open()
 	if err != nil {
@@ -49,4 +40,19 @@ func StoreFile(file *multipart.FileHeader) (string, error) {
 	}
 
 	return completeFilePath, nil
+}
+
+func extractFilenameExtension(filename string) string {
+	extensionStart := -1
+	for i := len(filename) - 1; i >= 0; i-- {
+		if filename[i] == '.' {
+			extensionStart = i
+			break
+		}
+	}
+
+	if extensionStart == -1 {
+		return ""
+	}
+	return filename[extensionStart:]
 }

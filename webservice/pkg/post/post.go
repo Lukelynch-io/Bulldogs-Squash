@@ -30,11 +30,11 @@ func GetPosts(repo PostStorage) []Post {
 	return repo.GetPosts()
 }
 
-func InsertPost(blogRepo PostStorage, post NewPost, actingUserClaims map[auth.Claim]auth.Claim) (bool, error) {
+func InsertPost(blogRepo PostStorage, fileStorage filestore.Filestore, post NewPost, actingUserClaims map[auth.Claim]auth.Claim) (bool, error) {
 	if actingUserClaims[auth.CREATE_BLOG] != auth.CREATE_BLOG {
 		return false, errors.New("User does not have permission to perform this action")
 	}
-	filepath, err := filestore.StoreFile(post.FileData)
+	filepath, err := fileStorage.StoreFile(post.FileData)
 	if err != nil {
 		return false, errors.New("Failed to upload image")
 	}

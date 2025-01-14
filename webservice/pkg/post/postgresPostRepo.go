@@ -6,7 +6,7 @@ type PostgresPostDatabase struct {
 	database.PostgresDatabase
 }
 
-func (db *PostgresPostDatabase) GetBlogs() []Post {
+func (db *PostgresPostDatabase) GetPosts() []Post {
 	sqlStatement := `
 	SELECT * FROM "Posts";
 	`

@@ -23,13 +23,13 @@ func getBlogPosts(c *gin.Context) {
 func addBlogPost(c *gin.Context) {
 	postRepo := c.MustGet(env.PostRepo).(post.PostStorage)
 	userClaims := c.MustGet(env.TokenClaims).(auth.ClaimArray)
+	fileStorage := c.MustGet(env.FileStorage).(filestore.Filestore)
 	var newBlogPost post.NewPost
 
 	if err := c.Bind(&newBlogPost); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	filestore.SetFilestoreLocation("/Users/lukelynch/Desktop/")
-	post.InsertPost(postRepo, newBlogPost, userClaims.IntoMap())
+	post.InsertPost(postRepo, fileStorage, newBlogPost, userClaims.IntoMap())
 	c.Status(http.StatusCreated)
 }
