@@ -1,7 +1,9 @@
-import type { Preview, Decorator } from '@storybook/vue3'
+import { Preview } from '@storybook/vue3'
+
 
 import '../style.css'
 import '../colours.css'
+import { vueRouter } from 'storybook-vue3-router';
 export const globalTypes = {
   theme: {
     name: 'Dark Mode',
@@ -31,7 +33,8 @@ const preview: Preview = {
       return {
         template: '<story/>',
       };
-    }
+    },
+    vueRouter()
   ],
   parameters: {
     controls: {

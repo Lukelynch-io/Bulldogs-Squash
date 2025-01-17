@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-
+import { vueRouter } from 'storybook-vue3-router';
 import Header from '../components/Header.vue';
 
 const meta: Meta<typeof Header> = {
@@ -23,5 +23,7 @@ export const Primary: Story = {
     template: '<Header />',
   }),
   args: {
+    isLoginShowing: () => true,
+    loggedInUsername: "TestUser"
   },
 };
