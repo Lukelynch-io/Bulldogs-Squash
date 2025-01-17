@@ -4,24 +4,23 @@ import type BlogPostData from '@/datatypes/BlogPost';
 import BlogPost from '../components/BlogPost.vue';
 import AlertBox from '@/components/AlertBox.vue';
 import { MessageType } from '@/datatypes/MessageType';
+import { GetBlogPosts } from '@/api_calls';
 
 const blogPosts = ref<BlogPostData[]>([]); // Reactive array for blog posts
 const errorOccurred = ref(false);
 const errorMessage = ref('')
 const errorTitle = ref('Error Title')
 let postLoadInterval = 0;
-function RefreshBlogPosts() {
+async function RefreshBlogPosts() {
   // Fetch blog posts from the API
-  fetch("/api/blogposts")
-    .then((response) => response.json())
-    .then((data: BlogPostData[]) => {
-      errorOccurred.value = false;
-      blogPosts.value = data; // Update the reactive array
-    })
-    .catch((error) => {
-      errorOccurred.value = true;
-      errorMessage.value = "Error fetching blog posts: " + error;
-    });
+  let [returnArray, returnError] = await GetBlogPosts();
+  if (returnError != "") {
+    errorOccurred.value = true;
+    errorMessage.value = returnError
+    return;
+  }
+  errorOccurred.value = false;
+  blogPosts.value = returnArray;
 }
 
 onMounted(() => {
