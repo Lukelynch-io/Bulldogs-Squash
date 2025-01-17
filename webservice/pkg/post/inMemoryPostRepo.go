@@ -9,8 +9,27 @@ type InMemoryPostStorage struct {
 	posts []Post
 }
 
-func (repo *InMemoryPostStorage) GetPosts() []Post {
-	return repo.posts
+func (repo *InMemoryPostStorage) GetPosts() ([]Post, error) {
+	return repo.posts, nil
+}
+
+func (repo *InMemoryPostStorage) GetPostSnippets() ([]Post, error) {
+	var trimmedPosts []Post
+	for _, post := range repo.posts {
+		if len(post.Description) > 100 {
+			trimmedDescription := post.Description[:100]
+			tempPost := Post{
+				post.ID,
+				post.Title,
+				trimmedDescription,
+				post.ImageUrl,
+			}
+			trimmedPosts = append(trimmedPosts, tempPost)
+			continue
+		}
+		trimmedPosts = append(trimmedPosts, post)
+	}
+	return trimmedPosts, nil
 }
 
 func (repo *InMemoryPostStorage) InsertPost(post Post) (bool, error) {

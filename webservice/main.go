@@ -63,7 +63,7 @@ func main() {
 		setupBlogRepo)
 	routes.LoadAuthRoutes(router)
 	routes.LoadUserRoutes(router)
-	routes.LoadBlogPostRoutes(router)
+	routes.LoadPostRoutes(router)
 
 	router.RunTLS("localhost:8080", "./certs/dev-cert.pem", "./certs/dev-key.pem")
 }

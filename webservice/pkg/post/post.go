@@ -21,13 +21,25 @@ type NewPost struct {
 }
 
 type PostStorage interface {
-	GetPosts() []Post
+	GetPosts() ([]Post, error)
+	GetPostSnippets() ([]Post, error)
 	InsertPost(Post) (bool, error)
 	LoadAllPosts([]Post)
 }
 
-func GetPosts(repo PostStorage) []Post {
+func GetPosts(repo PostStorage) ([]Post, error) {
 	return repo.GetPosts()
+}
+
+func GetPostSnippets(repo PostStorage) ([]Post, error) {
+	posts, err := repo.GetPostSnippets()
+	if err != nil {
+		return posts, err
+	}
+	for i := 0; i < len(posts); i++ {
+		posts[i].Description = posts[i].Description + "..."
+	}
+	return posts, nil
 }
 
 func InsertPost(blogRepo PostStorage, fileStorage filestore.Filestore, post NewPost, actingUserClaims map[auth.Claim]auth.Claim) (bool, error) {

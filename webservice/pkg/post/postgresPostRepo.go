@@ -6,7 +6,7 @@ type PostgresPostDatabase struct {
 	database.PostgresDatabase
 }
 
-func (db *PostgresPostDatabase) GetPosts() []Post {
+func (db *PostgresPostDatabase) GetPosts() ([]Post, error) {
 	sqlStatement := `
 	SELECT * FROM "Posts";
 	`
@@ -14,19 +14,43 @@ func (db *PostgresPostDatabase) GetPosts() []Post {
 	rows, err := db.DB.Query(sqlStatement)
 	defer rows.Close()
 	if err != nil {
-		panic(err)
+		return posts, err
 	}
 
 	for rows.Next() {
 		var post Post
 
 		if err := rows.Scan(&post.ID, &post.Title, &post.Description, &post.ImageUrl); err != nil {
-			panic(err)
+			return posts, err
 		}
 		posts = append(posts, post)
 	}
 
-	return posts
+	return posts, nil
+}
+
+func (db *PostgresPostDatabase) GetPostSnippets() ([]Post, error) {
+	sqlStatement := `
+	SELECT Id, Title, substr(Description, 1, 100)
+	FROM "Posts"
+	`
+	var posts []Post
+	rows, err := db.DB.Query(sqlStatement)
+	defer rows.Close()
+	if err != nil {
+		return posts, err
+	}
+
+	for rows.Next() {
+		var post Post
+
+		if err := rows.Scan(&post.ID, &post.Title, &post.Description, &post.ImageUrl); err != nil {
+			return posts, err
+		}
+		posts = append(posts, post)
+	}
+
+	return posts, nil
 }
 
 func (db *PostgresPostDatabase) InsertPost(post Post) (bool, error) {

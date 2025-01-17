@@ -22,7 +22,7 @@ const emit = defineEmits<{
 <style>
 .blog-post {
   color: var(--shadow-color);
-  background-color: white;
+  background-color: var(--color-background);
   border: 1px solid #ccc;
   border-radius: 6px;
   padding: 2rem;

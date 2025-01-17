@@ -10,17 +10,33 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func LoadBlogPostRoutes(router *gin.Engine) {
-	router.GET("/blogposts", getBlogPosts)
-	router.POST("/blogposts", BearerTokenMiddleware, addBlogPost)
+func LoadPostRoutes(router *gin.Engine) {
+	router.GET("/blogposts", getPosts)
+	router.POST("/blogposts", BearerTokenMiddleware, addPost)
 }
 
-func getBlogPosts(c *gin.Context) {
+func getPosts(c *gin.Context) {
 	blogRepo := c.MustGet(env.PostRepo).(post.PostStorage)
-	c.IndentedJSON(http.StatusOK, post.GetPosts(blogRepo))
+	trimRequest := c.Query("trimmed")
+	var posts []post.Post
+	var err error
+	if trimRequest == "true" {
+		postSnippets, e := post.GetPostSnippets(blogRepo)
+		posts = postSnippets
+		err = e
+	} else {
+		postsArray, e := post.GetPosts(blogRepo)
+		posts = postsArray
+		err = e
+	}
+	if err != nil {
+		c.IndentedJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.IndentedJSON(http.StatusOK, posts)
 }
 
-func addBlogPost(c *gin.Context) {
+func addPost(c *gin.Context) {
 	postRepo := c.MustGet(env.PostRepo).(post.PostStorage)
 	userClaims := c.MustGet(env.TokenClaims).(auth.ClaimArray)
 	fileStorage := c.MustGet(env.FileStorage).(filestore.Filestore)
