@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
-import type BlogPostData from '@/datatypes/BlogPost';
-import BlogPost from '../components/BlogPost.vue';
+import type PostData from '@/datatypes/PostData';
+import Post from '../components/Post.vue';
 import AlertBox from '@/components/AlertBox.vue';
 import { MessageType } from '@/datatypes/MessageType';
 import { GetBlogPosts } from '@/api_calls';
 
-const blogPosts = ref<BlogPostData[]>([]); // Reactive array for blog posts
+const postsArray = ref<PostData[]>([]); // Reactive array for blog posts
 const errorOccurred = ref(false);
 const errorMessage = ref('')
 const errorTitle = ref('Error Title')
@@ -20,7 +20,7 @@ async function RefreshBlogPosts() {
     return;
   }
   errorOccurred.value = false;
-  blogPosts.value = returnArray;
+  postsArray.value = returnArray;
 }
 
 onMounted(() => {
@@ -36,7 +36,7 @@ onUnmounted(() => {
 
 <template>
   <div class="card-collection">
-    <BlogPost v-for="(post, index) in blogPosts" :key=index v-bind="post" />
+    <Post v-for="(post, index) in postsArray" :key=index v-bind="post" />
   </div>
   <AlertBox v-if="errorOccurred" :messageType="MessageType.Info" :messageTitle="errorTitle"
     :messageDescription="errorMessage" />
