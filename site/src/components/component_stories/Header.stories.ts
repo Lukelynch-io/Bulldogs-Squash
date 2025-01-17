@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
-import { vueRouter } from 'storybook-vue3-router';
-import Header from '../components/Header.vue';
+import Header from '../Header.vue';
 
 const meta: Meta<typeof Header> = {
   component: Header,

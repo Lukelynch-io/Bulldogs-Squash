@@ -59,7 +59,7 @@ function determineAlertColour() {
 }
 
 .red-alert {
-  border: 5px solid red;
+  border: 5px solid #9d0000;
   background: red;
 }
 
@@ -68,6 +68,7 @@ function determineAlertColour() {
   border-radius: 5px 5px 5px 5px;
   padding-left: 1rem;
   padding-right: 1rem;
+  box-shadow: 0px 5px 5px grey;
 }
 
 .alert-area {

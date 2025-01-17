@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3';
 
-import BlogPost from '../components/BlogPost.vue';
+import BlogPost from '../BlogPost.vue';
 
 const meta: Meta<typeof BlogPost> = {
   component: BlogPost,

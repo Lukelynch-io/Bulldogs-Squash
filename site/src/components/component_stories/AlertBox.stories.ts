@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 
-import AlertBox from '../components/AlertBox.vue'
+import AlertBox from '../AlertBox.vue'
 import { MessageType } from '@/datatypes/MessageType'
 
 

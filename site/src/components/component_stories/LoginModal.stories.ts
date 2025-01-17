@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 
-import LoginModal from '../components/LoginModal.vue'
+import LoginModal from '../LoginModal.vue'
 
 const meta: Meta<typeof LoginModal> = {
   component: LoginModal,
