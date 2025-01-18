@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { PostData } from '@/datatypes/PostData';
+
 const postData = defineProps<PostData>()
 
 const emit = defineEmits<{
@@ -15,14 +16,14 @@ const emit = defineEmits<{
     <p>
       {{ postData.description }}
     </p>
-    <img :src=postData.imageUrl alt="Bulldog">
+    <img src='{{ postData.imageUrl ? postData.imageUrl : "" }}' alt="Bulldog">
   </div>
 </template>
 
 <style>
 .blog-post {
   color: var(--shadow-color);
-  background-color: var(--color-background);
+  background-color: white;
   border: 1px solid #ccc;
   border-radius: 6px;
   padding: 2rem;

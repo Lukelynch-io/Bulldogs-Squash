@@ -21,17 +21,23 @@ type NewPost struct {
 }
 
 type PostStorage interface {
+	GetPost(string) (Post, error)
 	GetPosts() ([]Post, error)
-	GetPostSnippets() ([]Post, error)
+	GetPostSnippets(int) ([]Post, error)
 	InsertPost(Post) (bool, error)
 	LoadAllPosts([]Post)
 }
 
+func GetPost(repo PostStorage, postId string) (Post, error) {
+	return repo.GetPost(postId)
+}
+
 func GetPosts(repo PostStorage, trimDescriptions bool) ([]Post, error) {
-	if trimDescriptions {
+	if trimDescriptions == false {
 		return repo.GetPosts()
 	}
-	posts, err := repo.GetPostSnippets()
+	const trimAmount = 200
+	posts, err := repo.GetPostSnippets(trimAmount)
 	if err != nil {
 		return posts, err
 	}

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue';
-import type PostData from '@/datatypes/PostData';
+import type { PostData } from '@/datatypes/PostData';
 import Post from '../components/Post.vue';
 import AlertBox from '@/components/AlertBox.vue';
 import { MessageType } from '@/datatypes/MessageType';

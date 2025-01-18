@@ -29,7 +29,7 @@ func TestGetBlogPostFromBlogRepo(t *testing.T) {
 	authorisedUser.Claims[auth.CREATE_BLOG] = auth.CREATE_BLOG
 	// Act
 	post.InsertPost(repo, testFileStorage, newPost, authorisedUser.Claims)
-	actual := post.GetPosts(repo)
+	actual, _ := post.GetPosts(repo, false)
 	// Assert
 	assert.Equal(t, newPost.PostTitle, actual[0].Title)
 }

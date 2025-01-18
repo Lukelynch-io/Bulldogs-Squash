@@ -1,9 +1,34 @@
 package post
 
-import "webservice/pkg/database"
+import (
+	"errors"
+	"webservice/pkg/database"
+)
 
 type PostgresPostDatabase struct {
 	database.PostgresDatabase
+}
+
+func (db *PostgresPostDatabase) GetPost(postId string) (Post, error) {
+	sqlStatement := `
+	SELECT * FROM "Posts"
+	WHERE "Id" like $1;
+
+	`
+	var post Post
+	rows, err := db.DB.Query(sqlStatement, postId)
+	defer rows.Close()
+	if err != nil {
+		return post, err
+	}
+
+	for rows.Next() {
+		if err := rows.Scan(&post.ID, &post.Title, &post.Description, &post.ImageUrl); err != nil {
+			return post, err
+		}
+		return post, nil
+	}
+	return post, errors.New("No rows returned")
 }
 
 func (db *PostgresPostDatabase) GetPosts() ([]Post, error) {
@@ -29,13 +54,13 @@ func (db *PostgresPostDatabase) GetPosts() ([]Post, error) {
 	return posts, nil
 }
 
-func (db *PostgresPostDatabase) GetPostSnippets() ([]Post, error) {
+func (db *PostgresPostDatabase) GetPostSnippets(trimAmount int) ([]Post, error) {
 	sqlStatement := `
-	SELECT Id, Title, substr(Description, 1, 100)
+	SELECT Id, Title, substr(Description, 1, $1)
 	FROM "Posts"
 	`
 	var posts []Post
-	rows, err := db.DB.Query(sqlStatement)
+	rows, err := db.DB.Query(sqlStatement, trimAmount)
 	defer rows.Close()
 	if err != nil {
 		return posts, err

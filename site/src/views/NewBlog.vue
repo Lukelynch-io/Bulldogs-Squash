@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import type BlogPostData from '@/datatypes/BlogPost';
 import TextArea from '@/components/TextArea.vue';
 import { ref } from 'vue';
 import TextInput from '@/components/TextInput.vue';
 import FileInput from '@/components/FileInput.vue';
 import axios from 'axios';
+import type { NewPost } from '@/datatypes/PostData';
 
 const newPostTitle = ref("");
 const newPostDescription = ref("");
@@ -26,14 +26,14 @@ const addPost = () => {
     console.error("Invalid Post");
     return
   }
-  const newPost: BlogPostData = { title: newPostTitle.value, description: newPostDescription.value, imageUrl: null };
+  const newPost: NewPost = { title: newPostTitle.value, description: newPostDescription.value, imageUrl: null };
   PostBlogPost(newPost, uploadedFile);
 };
 
-function PostBlogPost(test: BlogPostData, imageFile: Blob) {
+function PostBlogPost(newPost: NewPost, imageFile: Blob) {
   const formData = new FormData()
-  formData.append("postTitle", test.title)
-  formData.append("postDescription", test.description)
+  formData.append("postTitle", newPost.title)
+  formData.append("postDescription", newPost.description)
   formData.append("imageFile", imageFile)
   axios.post("/api/blogposts", formData)
 }

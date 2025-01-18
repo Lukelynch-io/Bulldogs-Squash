@@ -11,18 +11,30 @@ import (
 )
 
 func LoadPostRoutes(router *gin.Engine) {
-	router.GET("/blogposts", getPosts)
-	router.POST("/blogposts", BearerTokenMiddleware, addPost)
+	router.GET("/post/:postId", getPost)
+	router.GET("/posts", getPosts)
+	router.POST("/posts", BearerTokenMiddleware, addPost)
+}
+
+func getPost(c *gin.Context) {
+	postRepo := c.MustGet(env.PostRepo).(post.PostStorage)
+	postId := c.Param("postId")
+	if postId == "" {
+		c.Status(http.StatusBadRequest)
+		return
+	}
+	post, err := post.GetPost(postRepo, postId)
+	if err != nil {
+		c.IndentedJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+	c.IndentedJSON(http.StatusOK, post)
 }
 
 func getPosts(c *gin.Context) {
 	blogRepo := c.MustGet(env.PostRepo).(post.PostStorage)
-	trimRequest := c.Query("trimmed")
-	trimRequestBool := false
-	if trimRequest == "true" {
-		trimRequestBool = true
-	}
-	posts, err := post.GetPosts(blogRepo, trimRequestBool)
+	trimResponse := c.Query("trimmed") == "true"
+	posts, err := post.GetPosts(blogRepo, trimResponse)
 	if err != nil {
 		c.IndentedJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

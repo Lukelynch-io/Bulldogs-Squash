@@ -99,7 +99,7 @@ func TestGetPost(t *testing.T) {
 		t.Fatal(insertError)
 	}
 	// Act
-	blogs := db.GetPosts()
+	blogs, _ := db.GetPosts()
 	// Assert
 	assert.Equal(t, blogs[0], testPost)
 

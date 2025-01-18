@@ -1,12 +1,12 @@
 import axios from "axios";
-import type BlogPostData from "./datatypes/BlogPost";
+import type { PostData } from "./datatypes/PostData";
 
-export async function GetBlogPosts(): Promise<[BlogPostData[], string]> {
-  let returnArray: BlogPostData[] = [];
+export async function GetBlogPosts(): Promise<[PostData[], string]> {
+  let returnArray: PostData[] = [];
   let returnError: string = "";
-  await axios.get("/api/blogposts")
+  await axios.get("/api/posts?trimmed=true")
     .then((response) => {
-      let array = response.data as BlogPostData[]
+      let array = response.data as PostData[]
       returnArray = array
     })
     .catch((error) => {
