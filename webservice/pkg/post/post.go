@@ -27,11 +27,10 @@ type PostStorage interface {
 	LoadAllPosts([]Post)
 }
 
-func GetPosts(repo PostStorage) ([]Post, error) {
-	return repo.GetPosts()
-}
-
-func GetPostSnippets(repo PostStorage) ([]Post, error) {
+func GetPosts(repo PostStorage, trimDescriptions bool) ([]Post, error) {
+	if trimDescriptions {
+		return repo.GetPosts()
+	}
 	posts, err := repo.GetPostSnippets()
 	if err != nil {
 		return posts, err

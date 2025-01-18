@@ -18,17 +18,11 @@ func LoadPostRoutes(router *gin.Engine) {
 func getPosts(c *gin.Context) {
 	blogRepo := c.MustGet(env.PostRepo).(post.PostStorage)
 	trimRequest := c.Query("trimmed")
-	var posts []post.Post
-	var err error
+	trimRequestBool := false
 	if trimRequest == "true" {
-		postSnippets, e := post.GetPostSnippets(blogRepo)
-		posts = postSnippets
-		err = e
-	} else {
-		postsArray, e := post.GetPosts(blogRepo)
-		posts = postsArray
-		err = e
+		trimRequestBool = true
 	}
+	posts, err := post.GetPosts(blogRepo, trimRequestBool)
 	if err != nil {
 		c.IndentedJSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
