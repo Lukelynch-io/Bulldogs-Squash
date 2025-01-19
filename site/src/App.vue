@@ -23,7 +23,7 @@ async function HandleTokenUpdate(newToken: string) {
 <template>
   <Header v-bind:is-login-showing="toggleLoginModal" :loggedInUsername="loggedInUser" />
   <Transition>
-    <Modal v-if="isLoginActive" :elementId="'login-modal'" :closeModal="toggleLoginModal">
+    <Modal v-if="isLoginActive" :elementId="'login-modal'" :closeModal="toggleLoginModal" :custom-content-style="''">
       <LoginForm @token-update="HandleTokenUpdate" />
     </Modal>
   </Transition>

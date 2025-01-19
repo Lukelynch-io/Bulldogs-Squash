@@ -33,9 +33,4 @@ button {
   display: block;
   margin: 1ch 1ch 0ch 1ch;
 }
-
-.modal-content-wrapper {
-  display: block;
-  text-align: center;
-}
 </style>

@@ -1,9 +1,11 @@
 <script setup lang="ts">
 
-const { elementId, closeModal } = defineProps<{
+// TODO: Add pass in to modal content margin and height
+const { elementId, closeModal, customContentStyle } = defineProps<{
   elementId: string
   // For the modal to close itself if it wants
   closeModal: Function
+  customContentStyle: string
 }>()
 
 window.onclick = function (event) {
@@ -17,7 +19,7 @@ window.onclick = function (event) {
 
 <template>
   <div :id="elementId" class="modal">
-    <div class="modal-content">
+    <div class="modal-content" :style=customContentStyle>
       <div class="modal-content-wrapper">
         <slot></slot>
       </div>
@@ -38,7 +40,6 @@ window.onclick = function (event) {
   overflow: auto;
   /* cubic-bezier creates a smoother transition curve */
   background-color: rgba(0, 0, 0, 0.4);
-
   display: grid;
   place-items: center;
 }
@@ -47,24 +48,21 @@ window.onclick = function (event) {
 .v-leave-active {
   transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s linear;
   visibility: visible;
-  /* Visible when displayed */
 }
 
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
   visibility: hidden;
-  /* Hidden when not displayed */
 }
 
 .modal-content {
   background-color: #fefefe;
   box-shadow: 0px 0px 20px 0px black;
-  margin: 15% auto;
-  /* 15% from the top and centered */
   padding: 20px;
   border: 1px solid #888;
   border-radius: 15px 15px 15px 15px;
+  margin: 15%;
   height: 30%;
   /* Could be more or less, depending on screen size */
   display: grid;
