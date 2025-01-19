@@ -13,9 +13,13 @@ stages:
   - test
   - build
 
+services:
+  - docker:dind
+
 variables:
   GOWORKDIR: "./webservice"
-  TESTCONTAINERS_HOST_OVERRIDE: "<ip-docker-host>"
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_TLS_CERTDIR: ""
 
 format:
   stage: test
