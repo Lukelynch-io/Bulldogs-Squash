@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/vue3'
 
-import LoginModal from '../LoginModal.vue'
+import LoginForm from '../LoginForm.vue'
 
-const meta: Meta<typeof LoginModal> = {
-  component: LoginModal,
+const meta: Meta<typeof LoginForm> = {
+  component: LoginForm,
 }
 
 export default meta
-type Story = StoryObj<typeof LoginModal>
+type Story = StoryObj<typeof LoginForm>
 
 /*
  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
@@ -16,13 +16,12 @@ type Story = StoryObj<typeof LoginModal>
  */
 export const Primary: Story = {
   render: (args) => ({
-    components: { LoginModal },
+    components: { LoginForm },
     setup() {
       return { args }
     },
-    template: '<LoginModal v-bind="args"/>',
+    template: '<LoginForm v-bind="args"/>',
   }),
   args: {
-    flag: true,
   },
 }

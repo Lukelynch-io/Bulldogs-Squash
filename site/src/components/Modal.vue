@@ -1,22 +1,22 @@
 <script setup lang="ts">
-import { ref } from 'vue';
 
-const { flag, toggleFlag } = defineProps<{
-  flag: boolean
-  toggleFlag: Function
+const { elementId, closeModal } = defineProps<{
+  elementId: string
+  // For the modal to close itself if it wants
+  closeModal: Function
 }>()
 
 window.onclick = function (event) {
-  var modal = document.getElementById("login-modal")
+  var modal = document.getElementById(elementId)
   if (event.target == modal) {
-    toggleFlag()
+    closeModal()
   }
 }
 
 </script>
 
 <template>
-  <div id="login-modal" class="modal" :class="{ 'is-visible': flag, 'is-hidden': !flag }">
+  <div :id="elementId" class="modal">
     <div class="modal-content">
       <div class="modal-content-wrapper">
         <slot></slot>
@@ -37,20 +37,21 @@ window.onclick = function (event) {
   height: 100%;
   overflow: auto;
   /* cubic-bezier creates a smoother transition curve */
-  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s linear;
   background-color: rgba(0, 0, 0, 0.4);
 
   display: grid;
   place-items: center;
 }
 
-.modal.is-visible {
-  opacity: 1;
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s linear;
   visibility: visible;
   /* Visible when displayed */
 }
 
-.modal.is-hidden {
+.v-enter-from,
+.v-leave-to {
   opacity: 0;
   visibility: hidden;
   /* Hidden when not displayed */

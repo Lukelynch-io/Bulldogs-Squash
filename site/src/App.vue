@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Header from './components/Header.vue';
-import LoginModal from './components/LoginModal.vue';
+import LoginForm from './components/LoginForm.vue';
 import { GetUsername } from './api_calls';
+import Modal from './components/Modal.vue';
 
 const isLoginActive = ref(false);
 const token = ref("")
 const loggedInUser = ref("");
 
-const toggleLoginModel = () => {
+const toggleLoginModal = () => {
   isLoginActive.value = !isLoginActive.value
 };
 
@@ -20,8 +21,12 @@ async function HandleTokenUpdate(newToken: string) {
 </script>
 
 <template>
-  <Header v-bind:is-login-showing="toggleLoginModel" :loggedInUsername="loggedInUser" />
-  <LoginModal :flag="isLoginActive" :toggle-flag="toggleLoginModel" @tokenUpdate="HandleTokenUpdate" />
+  <Header v-bind:is-login-showing="toggleLoginModal" :loggedInUsername="loggedInUser" />
+  <Transition>
+    <Modal v-if="isLoginActive" :elementId="'login-modal'" :closeModal="toggleLoginModal">
+      <LoginForm @token-update="HandleTokenUpdate" />
+    </Modal>
+  </Transition>
   <main>
     <RouterView />
   </main>
