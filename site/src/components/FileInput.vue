@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { acceptedFileTypes } = defineProps<{
   acceptedFileTypes: string
-  onFileChange: Function
+  onFileChange: (event: Event) => void
 }>()
 
 </script>

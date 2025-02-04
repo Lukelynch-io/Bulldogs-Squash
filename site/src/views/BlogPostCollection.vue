@@ -11,10 +11,10 @@ const postsArray = ref<PostData[]>([]); // Reactive array for blog posts
 const errorOccurred = ref(false);
 const errorMessage = ref('')
 const errorTitle = ref('Error Title')
-let postLoadInterval = 0;
+let postLoadInterval: ReturnType<typeof setInterval>;
 async function RefreshBlogPosts() {
   // Fetch blog posts from the API
-  let [returnArray, returnError] = await GetPosts();
+  const [returnArray, returnError] = await GetPosts();
   if (returnError != "") {
     errorOccurred.value = true;
     errorMessage.value = returnError

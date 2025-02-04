@@ -26,7 +26,7 @@ func TestGetBlogPostFromBlogRepo(t *testing.T) {
 	authorisedUser := auth.NewUser("username", "password", auth.Viewer)
 	repo := new(post.InMemoryPostStorage)
 	testFileStorage := new(TestFileStorage)
-	authorisedUser.Claims[auth.CREATE_BLOG] = auth.CREATE_BLOG
+	authorisedUser.Claims[auth.CREATE_POST] = auth.CREATE_POST
 	// Act
 	post.InsertPost(repo, testFileStorage, newPost, authorisedUser.Claims)
 	actual, _ := post.GetPosts(repo, false)
@@ -43,7 +43,7 @@ func TestAddBlogPostToBlogRepo(t *testing.T) {
 	}
 	authorisedUser := auth.NewUser("username", "password", auth.Viewer)
 	repo := new(post.InMemoryPostStorage)
-	authorisedUser.Claims[auth.CREATE_BLOG] = auth.CREATE_BLOG
+	authorisedUser.Claims[auth.CREATE_POST] = auth.CREATE_POST
 	testFileStorage := new(TestFileStorage)
 
 	post.InsertPost(repo, testFileStorage, newPost, authorisedUser.Claims)

@@ -1,13 +1,12 @@
-import type { Meta, StoryObj } from '@storybook/vue3';
-
-import BlogPost from '../BlogPost.vue';
+import type { Meta, StoryObj } from '@storybook/vue3'
+import BlogPost from '../Post.vue'
 
 const meta: Meta<typeof BlogPost> = {
   component: BlogPost,
-};
+}
 
-export default meta;
-type Story = StoryObj<typeof BlogPost>;
+export default meta
+type Story = StoryObj<typeof BlogPost>
 
 /*
  *👇 Render functions are a framework specific feature to allow you control on how the component renders.
@@ -18,13 +17,13 @@ export const Primary: Story = {
   render: (args, { globals }) => ({
     components: { BlogPost },
     setup() {
-      return { args, theme: globals.theme };
+      return { args, theme: globals.theme }
     },
     template: '<BlogPost v-bind="args"/>',
   }),
   args: {
-    title: "Bulldogs Competition",
-    description: "Test Description",
-    imageUrl: "ImageUrl",
-  }
-};
+    title: 'Bulldogs Competition',
+    description: 'Test Description',
+    imageUrl: 'ImageUrl',
+  },
+}

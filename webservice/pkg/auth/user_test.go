@@ -131,7 +131,7 @@ func TestGrantUserWithCreateClaim(t *testing.T) {
 	const password = "password"
 	var testUser auth.User = auth.NewUser(username, password, auth.Viewer)
 	claim_map := make(map[auth.Claim]auth.Claim)
-	claim_map[auth.CREATE_BLOG] = auth.CREATE_BLOG
+	claim_map[auth.CREATE_POST] = auth.CREATE_POST
 	repo := auth.NewInMemoryAuthRepository()
 	repo.CreateUser(testUser)
 	// Act

@@ -15,7 +15,7 @@ const emit = defineEmits<{
     <p>
       {{ postData.description }}
     </p>
-    <img :src=postData.imageUrl alt="Bulldog">
+    <img :src="postData.imageUrl ?? ''" alt="Bulldog">
   </div>
 </template>
 

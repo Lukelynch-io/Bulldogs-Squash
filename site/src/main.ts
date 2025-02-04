@@ -1,19 +1,19 @@
 import { createApp } from 'vue'
-import { createMemoryHistory, createRouter } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
 import BlogPostCollection from './views/BlogPostCollection.vue'
 import NewBlog from './views/NewBlog.vue'
+import AboutPage from './views/AboutPage.vue'
 
 const routes = [
   { path: '/', component: BlogPostCollection },
-  { path: '/Post', component: NewBlog }
+  { path: '/Post', component: NewBlog },
+  { path: '/About', component: AboutPage },
 ]
 
 const router = createRouter({
-  history: createMemoryHistory(),
-  routes
+  history: createWebHistory(),
+  routes,
 })
 
-createApp(App)
-  .use(router)
-  .mount('#app')
+createApp(App).use(router).mount('#app')

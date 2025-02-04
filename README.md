@@ -11,7 +11,7 @@
         - <del>Request JWT token for user from backend</del>
         - <del>Store JWT token in frontend</del>
         - Admin
-            - Revoke JWT token (50% complete)
+            - <del>Revoke JWT token</del>
         - /admin 
     - Payments?
     - Infra
@@ -23,4 +23,5 @@
     - Membership (Signup/pay membership?)
     - Progressive Web App status?
 - Refactoring
-    - Reorganise the repo (again)
+    - <del>Reorganise the repo (again)</del>
+    - Webservice - Create boundary objects - add objects for error passing from app to api layer

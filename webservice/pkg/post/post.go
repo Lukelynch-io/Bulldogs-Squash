@@ -48,7 +48,7 @@ func GetPosts(repo PostStorage, trimDescriptions bool) ([]Post, error) {
 }
 
 func InsertPost(blogRepo PostStorage, fileStorage filestore.Filestore, post NewPost, actingUserClaims map[auth.Claim]auth.Claim) (bool, error) {
-	if actingUserClaims[auth.CREATE_BLOG] != auth.CREATE_BLOG {
+	if actingUserClaims[auth.CREATE_POST] != auth.CREATE_POST {
 		return false, errors.New("User does not have permission to perform this action")
 	}
 	filepath, err := fileStorage.StoreFile(post.FileData)
