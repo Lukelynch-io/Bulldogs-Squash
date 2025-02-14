@@ -32,6 +32,10 @@ const emit = defineEmits<{
   grid-row: span 4;
 }
 
+.blog-post p {
+  text-align: left;
+}
+
 
 .blog-post img {
   max-width: 100%;

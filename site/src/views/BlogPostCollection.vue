@@ -55,12 +55,30 @@ function ClosePost() {
   <Transition>
     <Modal v-if="isPostModal" :elementId="'postModal'" :closeModal="ClosePost"
       :custom-content-style="'margin: 5%; height: auto'">
-      <Post v-bind="postData" />
+      <div class="post-modal-grid">
+        <div id="post-modal-image">
+          <img :src="postData.imageUrl ?? ''" alt="Bulldog">
+        </div>
+        <div id="div-modal-text">
+          <h1>{{ postData.title }}</h1>
+          <p>{{ postData.description }}</p>
+        </div>
+      </div>
     </Modal>
   </Transition>
 </template>
 
 <style scoped>
+.post-modal-grid {
+  display: grid;
+  grid-template:
+    "a b";
+}
+
+.post-modal-grid p {
+  text-align: left;
+}
+
 .card-collection {
   padding-left: 5%;
   padding-right: 5%;
