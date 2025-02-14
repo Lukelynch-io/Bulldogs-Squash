@@ -47,25 +47,32 @@ function ClosePost() {
 </script>
 
 <template>
-  <div class="card-collection">
-    <Post v-for="(post, index) in postsArray" :key=index v-bind="post" @expand-post="LoadPost" />
+  <div class="post-collection-view">
+    <div style="display:flex; justify-content:center">
+      <RouterLink to="/Post">
+        <button>Create new post</button>
+      </RouterLink>
+    </div>
+    <div class="card-collection">
+      <Post v-for="(post, index) in postsArray" :key=index v-bind="post" @expand-post="LoadPost" />
+    </div>
+    <AlertBox v-if="errorOccurred" :messageType="MessageType.Info" :messageTitle="errorTitle"
+      :messageDescription="errorMessage" />
+    <Transition>
+      <Modal v-if="isPostModal" :elementId="'postModal'" :closeModal="ClosePost"
+        :custom-content-style="'margin: 5%; height: auto'">
+        <div class="post-modal-grid">
+          <div id="post-modal-image">
+            <img :src="postData.imageUrl ?? ''" alt="Bulldog">
+          </div>
+          <div id="div-modal-text">
+            <h1>{{ postData.title }}</h1>
+            <p>{{ postData.description }}</p>
+          </div>
+        </div>
+      </Modal>
+    </Transition>
   </div>
-  <AlertBox v-if="errorOccurred" :messageType="MessageType.Info" :messageTitle="errorTitle"
-    :messageDescription="errorMessage" />
-  <Transition>
-    <Modal v-if="isPostModal" :elementId="'postModal'" :closeModal="ClosePost"
-      :custom-content-style="'margin: 5%; height: auto'">
-      <div class="post-modal-grid">
-        <div id="post-modal-image">
-          <img :src="postData.imageUrl ?? ''" alt="Bulldog">
-        </div>
-        <div id="div-modal-text">
-          <h1>{{ postData.title }}</h1>
-          <p>{{ postData.description }}</p>
-        </div>
-      </div>
-    </Modal>
-  </Transition>
 </template>
 
 <style scoped>
@@ -79,14 +86,18 @@ function ClosePost() {
   text-align: left;
 }
 
-.card-collection {
+.post-collection-view {
   padding-left: 5%;
   padding-right: 5%;
+  margin-top: 5rem;
+}
+
+.card-collection {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
   grid-template-rows: 100% repeat(auto-fit, minmax(150px, 1fr));
   gap: 1rem;
-  margin-top: 5rem;
+  margin-top: 1rem;
 }
 
 @media only screen and (min-width: 1200px) {
