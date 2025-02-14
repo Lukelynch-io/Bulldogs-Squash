@@ -1,5 +1,14 @@
 package testdata
 
-import "webservice/pkg/auth"
+import (
+	"crypto/sha256"
+	// "webservice/pkg/auth"
+)
 
-var TestUser = auth.NewUser()
+func CreateTestUsers() {
+	var password1 = "Password1"
+	h := sha256.New()
+	h.Write([]byte(password1))
+
+	// var _ = auth.NewUser("hello", string(h.Sum(nil)), auth.AdminRole)
+}
