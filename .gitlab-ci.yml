@@ -23,9 +23,9 @@ variables:
 
 Build and Test:
   stage: test
-  # rules:
-  #   - changes:
-  #       - webservice/**
+  rules:
+    - changes:
+        - webservice/**
   script:
     - cd $GOWORKDIR
     - go fmt $(go list ./... | grep -v /vendor/)
