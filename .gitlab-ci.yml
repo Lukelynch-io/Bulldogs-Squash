@@ -21,7 +21,7 @@ variables:
   DOCKER_HOST: tcp://docker:2375
   DOCKER_TLS_CERTDIR: ""
 
-Build & Test:
+Build and Test:
   stage: test
   # rules:
   #   - changes:
