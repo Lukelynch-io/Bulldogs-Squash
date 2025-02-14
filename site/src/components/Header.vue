@@ -33,7 +33,7 @@ const toggleDarkMode = () => {
           <RouterLink class="hamburger-menu-item" to="/Fixtures">Fixtures</RouterLink>
         </li>
         <li>
-          <RouterLink class="hamburger-menu-item" to="/Post">Contact Us</RouterLink>
+          <RouterLink class="hamburger-menu-item" to="/Contact">Contact Us</RouterLink>
         </li>
         <li>
           <p class="hamburger-menu-item" @click="isLoginShowing()">{{ loggedInUsername == "" ? "Login" :
