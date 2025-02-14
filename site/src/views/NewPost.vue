@@ -5,7 +5,6 @@ import TextInput from '@/components/TextInput.vue';
 import FileInput from '@/components/FileInput.vue';
 import axios from 'axios';
 import type { NewPost } from '@/datatypes/PostData';
-
 const newPostTitle = ref("");
 const newPostDescription = ref("");
 const textAreaPostDetail = "Post Detail"
