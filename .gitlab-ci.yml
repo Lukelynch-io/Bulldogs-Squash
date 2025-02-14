@@ -21,11 +21,11 @@ variables:
   DOCKER_HOST: tcp://docker:2375
   DOCKER_TLS_CERTDIR: ""
 
-test:
+Build & Test:
   stage: test
-  rules:
-    - changes:
-        - webservice/**
+  # rules:
+  #   - changes:
+  #       - webservice/**
   script:
     - cd $GOWORKDIR
     - go fmt $(go list ./... | grep -v /vendor/)
