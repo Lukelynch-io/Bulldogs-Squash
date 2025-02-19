@@ -31,7 +31,6 @@ export async function RequestUserToken(username: string, passwordHash: string): 
       'Content-Type': 'application/json'
     }
   }).then((response) => {
-    localStorage.setItem("bearerToken", response.data.token)
     return response.data.token
   })
 }

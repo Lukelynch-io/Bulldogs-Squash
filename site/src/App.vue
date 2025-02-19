@@ -4,6 +4,7 @@ import Header from './components/Header.vue';
 import LoginForm from './components/LoginForm.vue';
 import { GetUsername } from './api_calls';
 import Modal from './components/Modal.vue';
+import { StoreUserJWT } from './auth/auth';
 
 const isLoginActive = ref(false);
 const token = ref("")
@@ -15,6 +16,7 @@ const toggleLoginModal = () => {
 
 async function HandleTokenUpdate(newToken: string) {
   token.value = newToken
+  StoreUserJWT(newToken);
   loggedInUser.value = await GetUsername(token.value)
 }
 
@@ -45,7 +47,6 @@ main {
 
 .logo {
   max-width: 100%;
-  /* Optional: keeps the image responsive */
 }
 
 .wrapper {

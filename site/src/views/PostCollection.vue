@@ -6,6 +6,7 @@ import AlertBox from '@/components/AlertBox.vue';
 import { MessageType } from '@/datatypes/MessageType';
 import { GetPosts, GetPost } from '@/api_calls';
 import Modal from '@/components/Modal.vue';
+import { CanLoggedInUserCreatePost, UserRole } from '@/auth/auth';
 
 const postsArray = ref<PostData[]>([]); // Reactive array for blog posts
 const errorOccurred = ref(false);
@@ -48,7 +49,7 @@ function ClosePost() {
 
 <template>
   <div class="post-collection-view">
-    <div style="display:flex; justify-content:center">
+    <div v-if="CanLoggedInUserCreatePost()" style="display:flex; justify-content:center">
       <RouterLink to="/Post">
         <button>Create new post</button>
       </RouterLink>
