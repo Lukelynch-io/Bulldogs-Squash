@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import type { CurrentUser } from '@/auth/auth';
+import { inject, ref, type Ref } from 'vue';
 import { RouterLink } from 'vue-router';
-const { isLoginShowing, loggedInUsername } = defineProps<{
+const { isLoginShowing } = defineProps<{
   isLoginShowing: Function
-  loggedInUsername: string
 }>()
-
+let currentUser = inject<Ref<CurrentUser | null>>("currentUser");
 const themeToggleTitle = ref("Dark Mode")
 const toggleDarkMode = () => {
   document.body.classList.toggle('dark')
@@ -36,8 +36,9 @@ const toggleDarkMode = () => {
           <RouterLink class="hamburger-menu-item" to="/Contact">Contact Us</RouterLink>
         </li>
         <li>
-          <p class="hamburger-menu-item" @click="isLoginShowing()">{{ loggedInUsername == "" ? "Login" :
-            loggedInUsername }}</p>
+          <p class="hamburger-menu-item" @click="isLoginShowing()">{{ currentUser?.username == "" ? "Login" :
+            currentUser?.username
+            }}</p>
           <!-- TODO: Show account menu options list item instead -->
         </li>
         <li>

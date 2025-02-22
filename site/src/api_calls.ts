@@ -36,11 +36,13 @@ export async function RequestUserToken(username: string, passwordHash: string): 
 }
 
 export async function GetUsername(token: string): Promise<string> {
-  return axios.get("/api/auth/user", {
-    headers: {
-      "Authorization": "Bearer " + token
-    }
-  }).then((response) => {
-    return response.data.username
-  })
+  try {
+    return await axios.get("/api/auth/user", {
+      headers: {
+        "Authorization": "Bearer " + token
+      }
+    }).then((response) => response.data.username)
+  } catch (_) {
+    return "";
+  }
 }

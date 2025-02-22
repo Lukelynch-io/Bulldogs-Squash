@@ -1,29 +1,49 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, provide, reactive, onBeforeMount } from 'vue';
 import Header from './components/Header.vue';
 import LoginForm from './components/LoginForm.vue';
 import { GetUsername } from './api_calls';
 import Modal from './components/Modal.vue';
-import { StoreUserJWT } from './auth/auth';
+import { CurrentUser, StoreUserJWT } from './auth/auth';
 
 const isLoginActive = ref(false);
-const token = ref("")
-const loggedInUser = ref("");
+let currentUser = ref<CurrentUser | null>(null);
+provide("currentUser", currentUser);
+let currentUsername = ref("");
+
+// TODO:
+// 1. pull jwt from localStorage
+// 2. add it to some UserClass
+// 3. provide a reference to that so vue can inject it
+async function loadUserFromContentStore() {
+  const tryToken = localStorage.getItem("UserJWT");
+  if (tryToken !== null) {
+    let username = await GetUsername(tryToken);
+
+    var newCurrentUser = new CurrentUser(tryToken, username);
+    currentUser.value = reactive(newCurrentUser);
+    currentUsername.value = newCurrentUser.username
+  }
+}
+
+onBeforeMount(async () => {
+  await loadUserFromContentStore();
+
+})
 
 const toggleLoginModal = () => {
   isLoginActive.value = !isLoginActive.value
 };
 
 async function HandleTokenUpdate(newToken: string) {
-  token.value = newToken
   StoreUserJWT(newToken);
-  loggedInUser.value = await GetUsername(token.value)
+  await loadUserFromContentStore();
 }
 
 </script>
 
 <template>
-  <Header v-bind:is-login-showing="toggleLoginModal" :loggedInUsername="loggedInUser" />
+  <Header v-bind:is-login-showing="toggleLoginModal" />
   <Transition>
     <Modal v-if="isLoginActive" :elementId="'login-modal'" :closeModal="toggleLoginModal" :custom-content-style="''">
       <LoginForm @token-update="HandleTokenUpdate" />
