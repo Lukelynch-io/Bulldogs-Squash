@@ -42,7 +42,9 @@ const toggleDarkMode = () => {
           <!-- TODO: Show account menu options list item instead -->
         </li>
         <li>
-          <p class="hamburger-menu-item" @click="toggleDarkMode">{{ themeToggleTitle }}</p>
+          <img v-if="themeToggleTitle == 'Light Mode'" src="../../public/img/light_mode_icon.svg"
+            @click="toggleDarkMode" />
+          <img v-else src="../../public/img/dark_mode_icon.svg" @click="toggleDarkMode" />
         </li>
       </ul>
     </div>
@@ -61,6 +63,12 @@ const toggleDarkMode = () => {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+}
+
+img {
+  cursor: pointer;
+  filter: brightness(100%) !important;
+  padding-right: 0.5rem;
 }
 
 .flex {
