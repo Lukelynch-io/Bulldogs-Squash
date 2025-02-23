@@ -60,8 +60,7 @@ function ClosePost() {
     <AlertBox v-if="errorOccurred" :messageType="MessageType.Info" :messageTitle="errorTitle"
       :messageDescription="errorMessage" />
     <Transition>
-      <Modal v-if="isPostModal" :elementId="'postModal'" :closeModal="ClosePost"
-        :custom-content-style="'margin: 5%; height: auto'">
+      <Modal v-if="isPostModal" :closeModal="ClosePost" :custom-content-style="'margin: 5%; height: auto'">
         <div class="post-modal-grid">
           <div id="post-modal-image">
             <img :src="postData.imageUrl ?? ''" alt="Bulldog">

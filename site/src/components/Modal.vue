@@ -1,16 +1,18 @@
 <script setup lang="ts">
+import { ref } from 'vue';
+
 
 // TODO: Add pass in to modal content margin and height
-const { elementId, closeModal, customContentStyle } = defineProps<{
-  elementId: string
+const { closeModal, customContentStyle } = defineProps<{
   // For the modal to close itself if it wants
   closeModal: Function
   customContentStyle: string
 }>()
 
+const modal = ref<HTMLInputElement | null>(null)
+
 window.onclick = function (event) {
-  var modal = document.getElementById(elementId)
-  if (event.target == modal) {
+  if (event.target == modal?.value) {
     closeModal()
   }
 }
@@ -18,7 +20,7 @@ window.onclick = function (event) {
 </script>
 
 <template>
-  <div :id="elementId" class="modal">
+  <div ref=modal class="modal">
     <div class="modal-content" :style=customContentStyle>
       <div class="modal-content-wrapper">
         <slot></slot>

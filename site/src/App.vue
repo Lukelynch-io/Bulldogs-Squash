@@ -11,10 +11,6 @@ let currentUser = ref<CurrentUser | null>(null);
 provide("currentUser", currentUser);
 let currentUsername = ref("");
 
-// TODO:
-// 1. pull jwt from localStorage
-// 2. add it to some UserClass
-// 3. provide a reference to that so vue can inject it
 async function loadUserFromContentStore() {
   const tryToken = localStorage.getItem("UserJWT");
   if (tryToken !== null) {
@@ -45,7 +41,7 @@ async function HandleTokenUpdate(newToken: string) {
 <template>
   <Header v-bind:is-login-showing="toggleLoginModal" />
   <Transition>
-    <Modal v-if="isLoginActive" :elementId="'login-modal'" :closeModal="toggleLoginModal" :custom-content-style="''">
+    <Modal v-if="isLoginActive" :closeModal="toggleLoginModal" :custom-content-style="''">
       <LoginForm @token-update="HandleTokenUpdate" />
     </Modal>
   </Transition>
