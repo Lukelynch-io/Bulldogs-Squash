@@ -16,6 +16,11 @@ const toggleDarkMode = () => {
   }
 }
 
+function logOut() {
+  currentUser!.value = null;
+  localStorage.removeItem("UserJWT");
+}
+
 </script>
 
 <template>
@@ -36,9 +41,9 @@ const toggleDarkMode = () => {
           <RouterLink class="hamburger-menu-item" to="/Contact">Contact Us</RouterLink>
         </li>
         <li>
-          <p class="hamburger-menu-item" @click="isLoginShowing()">{{ currentUser?.username == "" ? "Login" :
-            currentUser?.username
-            }}</p>
+          <p v-if="currentUser != null && currentUser.username != ''" class="hamburger-menu-item" @click="logOut()">{{
+            currentUser?.username }}</p>
+          <p v-else class="hamburger-menu-item" @click="isLoginShowing()">Login</p>
           <!-- TODO: Show account menu options list item instead -->
         </li>
         <li>
