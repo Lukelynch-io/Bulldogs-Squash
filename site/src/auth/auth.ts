@@ -16,7 +16,9 @@ export class CurrentUser {
     this.username = username;
   }
 
-
+  CanUserCreatePosts(): boolean {
+    return this.claims.find((element) => element === "CREATE_BLOG") !== undefined
+  }
 }
 
 interface CustomJwtPayload extends JwtPayload {

@@ -41,10 +41,14 @@ function logOut() {
           <RouterLink class="hamburger-menu-item" to="/Contact">Contact Us</RouterLink>
         </li>
         <li>
-          <p v-if="currentUser != null && currentUser.username != ''" class="hamburger-menu-item" @click="logOut()">{{
-            currentUser?.username }}</p>
+          <div v-if="currentUser != null && currentUser.username != ''" class="dropdown">
+            <p class="hamburger-menu-item dropdown-button">{{ currentUser?.username }}</p>
+            <div class="dropdown-content">
+              <RouterLink to="/Profile">Profile</RouterLink>
+              <p @click="logOut()">Log out</p>
+            </div>
+          </div>
           <p v-else class="hamburger-menu-item" @click="isLoginShowing()">Login</p>
-          <!-- TODO: Show account menu options list item instead -->
         </li>
         <li>
           <img v-if="themeToggleTitle == 'Light Mode'" src="../../public/img/light_mode_icon.svg"
@@ -68,6 +72,21 @@ function logOut() {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+}
+
+.dropdown:not(:hover) .dropdown-content {
+  display: none;
+}
+
+.dropdown-content {
+  display: block;
+  position: absolute;
+  background-color: red;
+  padding: 5px;
+}
+
+.dropdown-content p {
+  cursor: pointer;
 }
 
 img {

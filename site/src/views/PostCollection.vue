@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref } from 'vue';
+import { inject, onMounted, onUnmounted, ref, type Ref } from 'vue';
 import type { PostData } from '@/datatypes/PostData';
 import Post from '../components/Post.vue';
 import AlertBox from '@/components/AlertBox.vue';
 import { MessageType } from '@/datatypes/MessageType';
 import { GetPosts, GetPost } from '@/api_calls';
 import Modal from '@/components/Modal.vue';
-import { CanLoggedInUserCreatePost, UserRole } from '@/auth/auth';
+import { CurrentUser } from '@/auth/auth';
 
+let currentUser = inject<Ref<CurrentUser | null>>("currentUser");
 const postsArray = ref<PostData[]>([]); // Reactive array for blog posts
 const errorOccurred = ref(false);
 const errorMessage = ref('')
 const errorTitle = ref('Error Title')
 let postLoadInterval: ReturnType<typeof setInterval>;
+
 async function RefreshBlogPosts() {
   // Fetch blog posts from the API
   const [returnArray, returnError] = await GetPosts();
@@ -49,7 +51,7 @@ function ClosePost() {
 
 <template>
   <div class="post-collection-view">
-    <div v-if="CanLoggedInUserCreatePost()" style="display:flex; justify-content:center">
+    <div v-if="currentUser?.CanUserCreatePosts()" style="display:flex; justify-content:center">
       <RouterLink to="/Post">
         <button>Create new post</button>
       </RouterLink>
