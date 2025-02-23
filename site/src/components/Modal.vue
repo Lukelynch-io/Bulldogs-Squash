@@ -1,14 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 
-
-// TODO: Add pass in to modal content margin and height
 const { closeModal, customContentStyle } = defineProps<{
   // For the modal to close itself if it wants
   closeModal: Function
   customContentStyle: string
 }>()
-
 const modal = ref<HTMLInputElement | null>(null)
 
 window.onclick = function (event) {
