@@ -30,32 +30,21 @@ function logOut() {
       <RouterLink to="/">Bulldogs Squash Club</RouterLink>
     </h1>
     <div class="flex flex-1">
-      <ul class="hamburger-menu">
-        <li>
-          <RouterLink class="hamburger-menu-item" to="/About">About</RouterLink>
-        </li>
-        <li>
-          <RouterLink class="hamburger-menu-item" to="/Fixtures">Fixtures</RouterLink>
-        </li>
-        <li>
-          <RouterLink class="hamburger-menu-item" to="/Contact">Contact Us</RouterLink>
-        </li>
-        <li>
-          <div v-if="currentUser != null && currentUser.username != ''" class="dropdown">
-            <p class="hamburger-menu-item dropdown-button">{{ currentUser?.username }}</p>
-            <div class="dropdown-content">
-              <RouterLink to="/Profile">Profile</RouterLink>
-              <p @click="logOut()">Log out</p>
-            </div>
+      <div class="hamburger-menu">
+        <RouterLink class="hamburger-menu-item" to="/About">About</RouterLink>
+        <RouterLink class="hamburger-menu-item" to="/Fixtures">Fixtures</RouterLink>
+        <RouterLink class="hamburger-menu-item" to="/Contact">Contact Us</RouterLink>
+        <div v-if="currentUser != null && currentUser.username != ''" class="dropdown">
+          <RouterLink class="hamburger-menu-item" to="/Profile">{{ currentUser?.username }}</RouterLink>
+          <div class="dropdown-content">
+            <p @click="logOut()">Log out</p>
           </div>
-          <p v-else class="hamburger-menu-item" @click="isLoginShowing()">Login</p>
-        </li>
-        <li>
-          <img v-if="themeToggleTitle == 'Light Mode'" src="../../public/img/light_mode_icon.svg"
-            @click="toggleDarkMode" />
-          <img v-else src="../../public/img/dark_mode_icon.svg" @click="toggleDarkMode" />
-        </li>
-      </ul>
+        </div>
+        <p v-else class="hamburger-menu-item" @click="isLoginShowing()">Login</p>
+        <img style="width: 30px;" v-if="themeToggleTitle == 'Light Mode'" src="../../public/img/light_mode_icon.svg"
+          @click="toggleDarkMode" />
+        <img style="width: 30px;" v-else src="../../public/img/dark_mode_icon.svg" @click="toggleDarkMode" />
+      </div>
     </div>
   </div>
 </template>
@@ -68,10 +57,15 @@ function logOut() {
   color: var(--blue-contrast);
   border-radius: 0px 0px 5px 5px;
   width: 100%;
+  height: 60px;
   padding-left: 1ch;
   display: flex;
   align-items: center;
   justify-content: flex-end;
+}
+
+.dropdown {
+  display: flex;
 }
 
 .dropdown:not(:hover) .dropdown-content {
@@ -81,12 +75,20 @@ function logOut() {
 .dropdown-content {
   display: block;
   position: absolute;
-  background-color: red;
-  padding: 5px;
+  top: 60px;
+  background-color: white;
+  color: black;
+  box-shadow: 3px 3px 5px black;
 }
 
+.dropdown-content a,
 .dropdown-content p {
+  display: block;
+  color: black;
   cursor: pointer;
+  margin: 0;
+  min-width: 50px;
+  min-height: 50px;
 }
 
 img {
@@ -102,6 +104,7 @@ img {
 
 .flex-1 {
   flex: 1;
+  height: 100%;
 }
 
 /* TODO: Clean this up */
@@ -117,6 +120,8 @@ a {
   display: flex;
   list-style: none;
   justify-content: space-between;
+  align-items: stretch;
+  height: 100%;
 }
 
 .hamburger-menu-item {
@@ -127,6 +132,8 @@ a {
   text-decoration: none;
   white-space: nowrap;
   overflow: hidden;
+  display: flex;
+  align-items: center;
 }
 
 .hamburger-menu-item:hover {

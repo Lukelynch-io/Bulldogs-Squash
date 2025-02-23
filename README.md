@@ -18,10 +18,11 @@
         - Setup persistent auth related storage (postgres) (50% complete)
         - Setup persistent blog related storage (postgres) (50% complete)
 - Website
-    - Blog Page
-    - Contact Us
+    - Blog Page - WIP
+    - Contact Us - WIP
     - Membership (Signup/pay membership?)
     - Progressive Web App status?
+    - Dropdown
 - Refactoring
     - <del>Reorganise the repo (again)</del>
     - Webservice - Create boundary objects - add objects for error passing from app to api layer
