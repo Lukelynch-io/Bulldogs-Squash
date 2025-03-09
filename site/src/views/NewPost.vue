@@ -4,7 +4,7 @@ import { ref } from 'vue';
 import TextInput from '@/components/TextInput.vue';
 import FileInput from '@/components/FileInput.vue';
 import axios from 'axios';
-import type { NewPost } from '@/datatypes/PostData';
+import type { NewPost } from '../datatypes/PostData';
 const newPostTitle = ref("");
 const newPostDescription = ref("");
 const textAreaPostDetail = "Post Detail"
@@ -39,7 +39,7 @@ function PostBlogPost(newPost: NewPost, imageFile: Blob) {
 
 
 function onFileChange(e: any) {
-  var files = e.target.files || e.dataTransfer.files;
+  const files = e.target.files || e.dataTransfer.files;
   if (!files.length)
     return;
   uploadedFile = files[0]
